@@ -52,7 +52,7 @@ internal class Program
         {
             var questionIndex = questionOrder[i];
 
-            Console.WriteLine($"Вопрос номер: {i + 1}");
+            Console.WriteLine($"\nВопрос номер: {i + 1}");
             Console.WriteLine(DiagnosticTestResources.Questions[questionIndex]);
             countRightAnswers += CheckAnswerUserQuestion(userName, questionIndex);
         }
@@ -81,7 +81,7 @@ internal class Program
 
     static void ShowResults(string userName, int answer)
     {
-        Console.WriteLine($"{userName}, вы ответили верно на {answer} вопросов.");
+        Console.WriteLine($"\n{userName}, вы ответили верно на {answer} вопросов.");
         Console.WriteLine($"Ваш результат: {DiagnosticTestResources.DiagnosisCalculationUser(answer)}");
     }
 }

@@ -54,7 +54,7 @@ public static class DiagnosticTestResources
     {
         if (answer.ToLower() != "да")
         {
-            Console.WriteLine($"Спасибо {name}, что прошли наш тест. Всего хорошего.");
+            Console.WriteLine($"\nСпасибо {name}, что прошли наш тест. Всего хорошего.");
             return false;
         }
         else return true;
