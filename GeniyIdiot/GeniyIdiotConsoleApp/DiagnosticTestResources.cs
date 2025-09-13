@@ -59,5 +59,18 @@ public static class DiagnosticTestResources
         }
         else return true;
     }
+
+    public static string DiagnosisCalculationUser(int correctAnswer)
+    {
+        var result = correctAnswer * 100.0 / Questions.Count;
+        return result switch
+        {
+            >= 83.33 => "Гений",
+            >= 66.67 => "Талант",
+            >= 50.00 => "Нормальный",
+            >= 33.33 => "Дурак",
+            >= 16.67 => "Идиот",
+            _ => "Кретин"
+        };
+    }
 }
- 
