@@ -94,27 +94,18 @@ namespace GeniyIdiotConsoleApp
             diagnoses[4] = "Талант";
             diagnoses[5] = "Гений";
 
-            var resultIndex = 0;
+            int resultIndex = 0;
             double index = (double)countRightAnswers / (double)countQuestions;
 
-            switch (index)
+            resultIndex = index switch
             {
-                case 1:
-                    resultIndex = 5;
-                    break;
-                case >= 0.8:
-                    resultIndex = 4;
-                    break;
-                case >= 0.6:
-                    resultIndex = 3;
-                    break;
-                case >= 0.4:
-                    resultIndex = 2;
-                    break;
-                case >= 0.2:
-                    resultIndex = 1;
-                    break;
-            }
+                1 => resultIndex = 5,
+                0.8 => resultIndex = 4,
+                0.6 => resultIndex = 3,
+                0.4 => resultIndex = 2,
+                0.2 => resultIndex = 1,
+
+            };
 
             return diagnoses[resultIndex];
         }
