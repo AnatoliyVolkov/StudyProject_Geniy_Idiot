@@ -82,7 +82,7 @@ internal class Program
     static void ShowResults(string userName, int answer)
     {
         Console.WriteLine($"\n{userName}, вы ответили верно на {answer} вопросов.");
-        Console.WriteLine($"Ваш результат: {DiagnosticTestResources.DiagnosisCalculationUser(answer)}");
+        Console.WriteLine($"Ваш результат: {DiagnosticTestResources.GetDiagnose(answer)}");
     }
 }
 

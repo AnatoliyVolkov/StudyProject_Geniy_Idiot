@@ -60,7 +60,7 @@ public static class DiagnosticTestResources
         else return true;
     }
 
-    public static string DiagnosisCalculationUser(int correctAnswer)
+    public static string GetDiagnose(int correctAnswer)
     {
         var result = correctAnswer * 100.0 / Questions.Count;
         return result switch
