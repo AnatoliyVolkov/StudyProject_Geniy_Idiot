@@ -14,8 +14,8 @@ internal class Program
     static void Main(string[] args)
     {
         Console.WriteLine("Добрый день, вы сейчас будете проходить тест на определение вашей гениальности.\nПожалуйста введите свое имя.");
-        var userName = GetValidUserName();
-        Console.WriteLine($"Добро пожаловать {userName}! Мы приступаем.");
+        var userName = GetUserName();
+        Console.WriteLine($"Добро пожаловать {userName}! Приступаем к тесту.");
 
         var restart = true;
         while (restart)
@@ -27,7 +27,7 @@ internal class Program
         }
     }
 
-    static string GetValidUserName()
+    static string GetUserName()
     {
         while (true)
         {
@@ -54,28 +54,26 @@ internal class Program
 
             Console.WriteLine($"\nВопрос номер: {i + 1}");
             Console.WriteLine(DiagnosticTestResources.Questions[questionIndex]);
-            countRightAnswers += CheckAnswerUserQuestion(userName, questionIndex);
+            countRightAnswers += GetCorrectAnswer(userName, questionIndex);
         }
         return countRightAnswers;
     }
 
-    static int CheckAnswerUserQuestion(string userName, int questionIndex)
+    static int GetCorrectAnswer(string userName, int questionIndex)
     {
         while (true)
         {
-            try
+            var userInput = Console.ReadLine();
+            if (short.TryParse(userInput, out var answer))
             {
-                var userInput = Console.ReadLine();
-                if (short.TryParse(userInput, out var answer))
-                {
-                    return answer == DiagnosticTestResources.Answers[questionIndex] ? 1 : 0;
-                }
-                Console.WriteLine($"{userName}, вы ввели букву или оставили поле пустым, Вам нужно ввести число не длинее 6 знаков.");
+                return answer == DiagnosticTestResources.Answers[questionIndex] ? 1 : 0;
             }
-            catch
+            if (long.TryParse(userInput, out _))
             {
-                Console.WriteLine($"{userName}, произошла ошибка. Попробуйте еще раз.");
+                Console.WriteLine($"{userName}, вы ввели число, превышающее допустимое значение. Вам нужно ввести число не длинее 6 знаков.\n Повторите ввод ответа.");
+                continue;
             }
+            else { Console.WriteLine($"{userName}, вы ввели букву или оставили поле пустым. Вам нужно ввести число не длинее 6 знаков.\n Повторите ввод ответа."); }
         }
     }
 
