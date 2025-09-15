@@ -99,11 +99,11 @@ namespace GeniyIdiotConsoleApp
 
             resultIndex = index switch
             {
-                1 => resultIndex = 5,
-                0.8 => resultIndex = 4,
-                0.6 => resultIndex = 3,
-                0.4 => resultIndex = 2,
-                0.2 => resultIndex = 1,
+                1 => 5,
+                0.8 => 4,
+                0.6 => 3,
+                0.4 => 2,
+                0.2 => 1,
 
             };
 
