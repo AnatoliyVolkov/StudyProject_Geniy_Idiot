@@ -23,7 +23,7 @@ namespace GeniyIdiotConsoleApp
 
                 int countRightAnswers = 0;
 
-                MixingOfQuestions(questions, answers, countQuestions);
+                MixQuestions(questions, answers, countQuestions);
 
 
                 for (int i = 0; i < countQuestions; i++)
@@ -126,7 +126,7 @@ namespace GeniyIdiotConsoleApp
 
         }
 
-        static void MixingOfQuestions(string[] questions, int[] answers, int countQuestions)
+        static void MixQuestions(string[] questions, int[] answers, int countQuestions)
 
         {
             Random random = new Random();
