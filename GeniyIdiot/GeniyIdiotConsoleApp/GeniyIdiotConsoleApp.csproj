@@ -7,8 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="D:\Программирование\C#\Проекты\OOP na praktike\GeniyIdiotGit\Program.cs" Link="Program.cs" />
-  </ItemGroup>
-
 </Project>
