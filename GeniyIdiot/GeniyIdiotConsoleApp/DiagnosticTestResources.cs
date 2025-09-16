@@ -85,7 +85,9 @@ public static class DiagnosticTestResources
                 {
                     throw new Exception($"Вы дали ответ числом.\n Пожалуйста дайте ответ Да или Нет.");
                 }
-                else { return answer; }
+                if (answer.Trim().ToLower() == "нет" || answer.Trim().ToLower() == "да")
+                { return answer; }
+                else { throw new Exception($"Вы дали не корректный ответ.\n Пожалуйста дайте ответ Да или Нет."); }
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }

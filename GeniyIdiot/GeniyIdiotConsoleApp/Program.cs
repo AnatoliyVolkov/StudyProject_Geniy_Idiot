@@ -1,31 +1,33 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Timers;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace GeniyIdiotApp;
 
 internal class Program
 {
+    private static SaveUserTest CurrentUser;
+
     static void Main(string[] args)
     {
-        Console.WriteLine("Добрый день, вы сейчас будете проходить тест на определение вашей гениальности.\nПожалуйста введите свое имя.");
-        var userName = GetValidUserName();
-        Console.WriteLine($"Добро пожаловать {userName}! Мы приступаем.");
+        var userNameInfo = UserFIO();
+        Console.WriteLine($"Добро пожаловать {userNameInfo.userName}! Мы приступаем.");
 
+        CurrentUser = new SaveUserTest(userNameInfo.userLastName, userNameInfo.userName, userNameInfo.userPatronymic);
         var restart = true;
+
         while (restart)
         {
-            var score = RunTest(userName);
-            ShowResults(userName, score);
-            Console.WriteLine($"{userName} хотите пройти тест еще раз?");
-            restart = DiagnosticTestResources.GetUserConfirm(userName);
+            var score = RunTest(userNameInfo.userName);
+            ShowResults(userNameInfo.userName, score);
+            Console.WriteLine($"\n{userNameInfo.userName}, хотите пройти тест еще раз? (да/нет)");
+            restart = DiagnosticTestResources.GetUserConfirm(userNameInfo.userName);
         }
-        Console.WriteLine($"\nСпасибо {userName}, что прошли наш тест. Всего хорошего.");
+
+        ShowAllResult();
+        Console.WriteLine($"\nСпасибо {userNameInfo.userName}, что прошли наш тест. Всего хорошего.");
     }
 
     static string GetValidUserName()
@@ -83,18 +85,37 @@ internal class Program
                 {
                     throw new Exception($"{userName}, вы ввели букву, Вам нужно ввести число не длинее 6 знаков.");
                 }
-                }
+            }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
     }
 
     static void ShowResults(string userName, int answer)
     {
+        var diagnostic = DiagnosticTestResources.GetDiagnose(answer);
+        CurrentUser.SaveTestResults(answer, diagnostic);
         Console.WriteLine($"\n{userName}, вы ответили верно на {answer} вопросов.");
-        Console.WriteLine($"Ваш результат: {DiagnosticTestResources.GetDiagnose(answer)}");
+        Console.WriteLine($"Ваш результат: {diagnostic}");
+    }
+
+    public static (string userLastName, string userName, string userPatronymic) UserFIO()
+    {
+        Console.WriteLine("Добрый день, вы сейчас будете проходить тест на определение вашей гениальности.\n");
+        Console.WriteLine("Пожалуйста введите свою фамилию.");
+        var lastName = GetValidUserName();
+        Console.WriteLine("Пожалуйста введите свое имя.");
+        var name = GetValidUserName();
+        Console.WriteLine("Пожалуйста введите свое отчество.");
+        var patronymicName = GetValidUserName();
+        return (lastName, name, patronymicName);
+    }
+
+    public static void ShowAllResult()
+    {
+        Console.WriteLine($"Хотите посмотреть все результаты тестирования? (да/нет)");
+        if (DiagnosticTestResources.CheckUserAnswer().Trim().ToLower() == "да")
+        {
+            SaveUserTest.ShowAllTestResults();
+        }
     }
 }
-
-
-
-
