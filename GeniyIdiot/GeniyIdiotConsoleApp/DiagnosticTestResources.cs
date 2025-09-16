@@ -50,14 +50,10 @@ public static class DiagnosticTestResources
         }
     }
 
-    public static bool GetUserConfirm(string answer, string name)
+    public static bool GetUserConfirm(string name)
     {
-        if (answer.ToLower() != "да")
-        {
-            Console.WriteLine($"\nСпасибо {name}, что прошли наш тест. Всего хорошего.");
-            return false;
-        }
-        else return true;
+        if (CheckUserAnswer().Trim().ToLower() == "да") { return true; }
+        else { return false; }
     }
 
     public static string GetDiagnose(int correctAnswer)
@@ -72,5 +68,26 @@ public static class DiagnosticTestResources
             >= 16.67 => "Идиот",
             _ => "Кретин"
         };
+    }
+
+    public static string CheckUserAnswer()
+    {
+        while (true)
+        {
+            try
+            {
+                var answer = Console.ReadLine();
+                if (string.IsNullOrEmpty(answer))
+                {
+                    throw new Exception($"Вы дали ответ пустой строкой.\n Пожалуйста дайте ответ Да или Нет.");
+                }
+                if (long.TryParse(answer, out _))
+                {
+                    throw new Exception($"Вы дали ответ числом.\n Пожалуйста дайте ответ Да или Нет.");
+                }
+                else { return answer; }
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+        }
     }
 }

@@ -23,8 +23,9 @@ internal class Program
             var score = RunTest(userName);
             ShowResults(userName, score);
             Console.WriteLine($"{userName} хотите пройти тест еще раз?");
-            restart = DiagnosticTestResources.GetUserConfirm(Console.ReadLine(), userName);
+            restart = DiagnosticTestResources.GetUserConfirm(userName);
         }
+        Console.WriteLine($"\nСпасибо {userName}, что прошли наш тест. Всего хорошего.");
     }
 
     static string GetValidUserName()
@@ -66,16 +67,24 @@ internal class Program
             try
             {
                 var userInput = Console.ReadLine();
+                if (string.IsNullOrEmpty(userInput))
+                {
+                    throw new Exception($"Вы дали ответ пустой строкой.\n Вам нужно ввести число не длинее 6 знаков.");
+                }
                 if (short.TryParse(userInput, out var answer))
                 {
                     return answer == DiagnosticTestResources.Answers[questionIndex] ? 1 : 0;
                 }
-                Console.WriteLine($"{userName}, вы ввели букву или оставили поле пустым, Вам нужно ввести число не длинее 6 знаков.");
-            }
-            catch
-            {
-                Console.WriteLine($"{userName}, произошла ошибка. Попробуйте еще раз.");
-            }
+                if (long.TryParse(userInput, out var _))
+                {
+                    throw new Exception($"{userName}, вы ввели слишком большое число, Вам нужно ввести число не длинее 6 знаков.");
+                }
+                else
+                {
+                    throw new Exception($"{userName}, вы ввели букву, Вам нужно ввести число не длинее 6 знаков.");
+                }
+                }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
     }
 
