@@ -20,7 +20,7 @@ public static class FileProvider
 
     public static void CreateFileHeader()
     {
-        using (StreamWriter sw = new StreamWriter(filePath, false))
+        using (var sw = new StreamWriter(filePath, false))
         {
             sw.WriteLine("|| {0,-35} || {1,-25} || {2,-15} ||", "ФИО", "Набранные баллы", "Диагноз");
             sw.WriteLine(new string('=', 85));
@@ -31,7 +31,7 @@ public static class FileProvider
     {
         var userFullName = $"{userSurname} {userName} {userPatronymic}";
 
-        using (StreamWriter sw = new StreamWriter(filePath, true))
+        using (var sw = new StreamWriter(filePath, true))
         {
             sw.WriteLine("|| {0,-35} || {1,-25} || {2,-15} ||",
                         userFullName,
@@ -42,12 +42,12 @@ public static class FileProvider
 
     public static void ShowResults()
     {
-        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "test_results.txt");
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "test_results.txt");
 
         if (File.Exists(filePath))
         {
             Console.WriteLine("\n=== РЕЗУЛЬТАТЫ ТЕСТИРОВАНИЯ ===\n");
-            using (StreamReader sr = new StreamReader(filePath))
+            using (var sr = new StreamReader(filePath))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
