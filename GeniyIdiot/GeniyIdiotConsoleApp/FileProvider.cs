@@ -3,29 +3,22 @@ using System.IO;
 
 namespace GeniyIdiotApp;
 
-public class SaveUserTest
+public static class FileProvider
 {
-    string userName { get; }
-    string userSurname { get; }
-    string userPatronymic { get; }
-    string directoryPath;
-    string filePath;
+    private static string userName { get; set; }
+    private static string userSurname { get; set; }
+    private static string userPatronymic { get; set; }
+    private static string directoryPath = Directory.GetCurrentDirectory();
+    private static string filePath = Path.Combine(directoryPath, "test_results.txt");
 
-    public SaveUserTest(string userLastName, string userName, string userPatronymic)
+    public static void SafeUserData (string name, string surname, string patronymic)
     {
-        this.userName = userName;
-        this.userSurname = userLastName;
-        this.userPatronymic = userPatronymic;
-        this.directoryPath = Directory.GetCurrentDirectory();
-        this.filePath = Path.Combine(directoryPath, "test_results.txt");
-
-        if (!File.Exists(filePath))
-        {
-            CreateFileHeader();
-        }
+        userName = name;
+        userSurname = surname;
+        userPatronymic = patronymic;
     }
 
-    private void CreateFileHeader()
+    public static void CreateFileHeader()
     {
         using (StreamWriter sw = new StreamWriter(filePath, false))
         {
@@ -34,7 +27,7 @@ public class SaveUserTest
         }
     }
 
-    public void SaveTestResults(int correctAnswer, string diagnostic)
+    public static void SaveResults(int correctAnswer, string diagnostic)
     {
         var userFullName = $"{userSurname} {userName} {userPatronymic}";
 
@@ -47,7 +40,7 @@ public class SaveUserTest
         }
     }
 
-    public static void ShowAllTestResults()
+    public static void ShowResults()
     {
         string filePath = Path.Combine(Directory.GetCurrentDirectory(), "test_results.txt");
 

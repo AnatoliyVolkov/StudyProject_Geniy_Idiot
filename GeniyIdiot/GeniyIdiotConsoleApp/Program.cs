@@ -8,14 +8,10 @@ namespace GeniyIdiotApp;
 
 internal class Program
 {
-    private static SaveUserTest CurrentUser;
-
     static void Main(string[] args)
     {
         var userNameInfo = UserFIO();
         Console.WriteLine($"Добро пожаловать {userNameInfo.userName}! Мы приступаем.");
-
-        CurrentUser = new SaveUserTest(userNameInfo.userLastName, userNameInfo.userName, userNameInfo.userPatronymic);
         var restart = true;
 
         while (restart)
@@ -93,7 +89,7 @@ internal class Program
     static void ShowResults(string userName, int answer)
     {
         var diagnostic = DiagnosticTestResources.GetDiagnose(answer);
-        CurrentUser.SaveTestResults(answer, diagnostic);
+        FileProvider.SaveResults(answer, diagnostic);
         Console.WriteLine($"\n{userName}, вы ответили верно на {answer} вопросов.");
         Console.WriteLine($"Ваш результат: {diagnostic}");
     }
@@ -107,6 +103,7 @@ internal class Program
         var name = GetValidUserName();
         Console.WriteLine("Пожалуйста введите свое отчество.");
         var patronymicName = GetValidUserName();
+        FileProvider.SafeUserData(name, lastName, patronymicName);
         return (lastName, name, patronymicName);
     }
 
@@ -115,7 +112,7 @@ internal class Program
         Console.WriteLine($"Хотите посмотреть все результаты тестирования? (да/нет)");
         if (DiagnosticTestResources.CheckUserAnswer().Trim().ToLower() == "да")
         {
-            SaveUserTest.ShowAllTestResults();
+            FileProvider.ShowResults();
         }
     }
 }
