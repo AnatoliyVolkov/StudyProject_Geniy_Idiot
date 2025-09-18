@@ -50,9 +50,8 @@ public static class FileProvider
         {
             if (File.Exists(filePath))
             {
-                Console.WriteLine($"Путь к файлу: {filePath}");
                 Console.WriteLine("\n=== РЕЗУЛЬТАТЫ ТЕСТИРОВАНИЯ ===\n");
-                using (StreamReader sr = new StreamReader(filePath))
+                using (var sr = new StreamReader(filePath))
                 {
                     string line;
                     while ((line = sr.ReadLine()) != null)
