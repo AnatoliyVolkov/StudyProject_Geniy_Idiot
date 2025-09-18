@@ -40,9 +40,17 @@ public static class DiagnosticTestResources
 
     public static string CheckUsernameEntry(string name)
     {
-        if (string.IsNullOrEmpty(name) || short.TryParse(name, out _))
+        if (string.IsNullOrEmpty(name))
         {
-            throw new Exception("Нельзя вводить числа и оставлять поле пустым, будьте внимательней");
+            throw new Exception("Нельзя оставлять поле пустым, будьте внимательней");
+        }
+        if (short.TryParse(name, out _))
+        {
+            throw new Exception("Нельзя вводить числа, будьте внимательней");
+        }
+        if (name.Contains(" "))
+        {
+            throw new Exception("Можно вводить только одно слово без пробелов, будьте внимательней");
         }
         else
         {
@@ -50,14 +58,46 @@ public static class DiagnosticTestResources
         }
     }
 
-    public static bool GetUserConfirm(string answer, string name)
+    public static bool GetUserConfirm(string name)
     {
-        if (answer.ToLower() != "да")
+        if (CheckUserAnswer().Trim().ToLower() == "да") { return true; }
+        else { return false; }
+    }
+
+    public static string GetDiagnose(int correctAnswer)
+    {
+        var result = correctAnswer * 100.0 / Questions.Count;
+        return result switch
         {
-            Console.WriteLine($"\nСпасибо {name}, что прошли наш тест. Всего хорошего.");
-            return false;
+            >= 83.33 => "Гений",
+            >= 66.67 => "Талант",
+            >= 50.00 => "Нормальный",
+            >= 33.33 => "Дурак",
+            >= 16.67 => "Идиот",
+            _ => "Кретин"
+        };
+    }
+
+    public static string CheckUserAnswer()
+    {
+        while (true)
+        {
+            try
+            {
+                var answer = Console.ReadLine();
+                if (string.IsNullOrEmpty(answer))
+                {
+                    throw new Exception($"Вы дали ответ пустой строкой.\n Пожалуйста дайте ответ Да или Нет.");
+                }
+                if (long.TryParse(answer, out _))
+                {
+                    throw new Exception($"Вы дали ответ числом.\n Пожалуйста дайте ответ Да или Нет.");
+                }
+                if (answer.Trim().ToLower() == "нет" || answer.Trim().ToLower() == "да")
+                { return answer; }
+                else { throw new Exception($"Вы дали не корректный ответ.\n Пожалуйста дайте ответ Да или Нет."); }
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
-        else return true;
     }
 }
- 
