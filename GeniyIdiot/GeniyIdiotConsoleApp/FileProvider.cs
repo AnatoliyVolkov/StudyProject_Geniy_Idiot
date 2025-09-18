@@ -5,22 +5,22 @@ namespace GeniyIdiotApp;
 
 public static class FileProvider
 {
-    private static string userName { get; set; }
-    private static string userSurname { get; set; }
-    private static string userPatronymic { get; set; }
+    private static string _userName { get; set; }
+    private static string _userSurname { get; set; }
+    private static string _userPatronymic { get; set; }
     private static string directoryPath = Directory.GetCurrentDirectory();
     private static string filePath = Path.Combine(directoryPath, "test_results.txt");
 
     public static void SafeUserData(string name, string surname, string patronymic)
     {
-        userName = name;
-        userSurname = surname;
-        userPatronymic = patronymic;
+        _userName = name;
+        _userSurname = surname;
+        _userPatronymic = patronymic;
     }
 
     public static void SaveResults(int correctAnswer, string diagnostic)
     {
-        var userFullName = $"{userSurname} {userName} {userPatronymic}";
+        var userFullName = $"{_userSurname} {_userName} {_userPatronymic}";
         using (var sw = new StreamWriter(filePath, true))
         {
             if (sw.BaseStream.Length == 0)

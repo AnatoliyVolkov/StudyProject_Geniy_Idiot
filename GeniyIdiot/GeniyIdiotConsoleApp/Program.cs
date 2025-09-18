@@ -26,7 +26,7 @@ internal class Program
         Console.WriteLine($"\nСпасибо {userNameInfo.userName}, что прошли наш тест. Всего хорошего.");
     }
 
-    static string GetUserName()
+    static string GetValidUserName()
     {
         while (true)
         {
