@@ -40,13 +40,17 @@ public static class DiagnosticTestResources
 
     public static string CheckUsernameEntry(string name)
     {
-        if (string.IsNullOrEmpty(name)) 
+        if (string.IsNullOrEmpty(name))
         {
             throw new Exception("Нельзя оставлять поле пустым, будьте внимательней");
         }
         if (short.TryParse(name, out _))
         {
             throw new Exception("Нельзя вводить числа, будьте внимательней");
+        }
+        if (name.Contains(" "))
+        {
+            throw new Exception("Можно вводить только одно слово без пробелов, будьте внимательней");
         }
         else
         {
