@@ -1,26 +1,18 @@
 ﻿using System;
 using System.IO;
+using System.Reflection.Metadata;
+using static GeniyIdiotApp.Program;
 
 namespace GeniyIdiotApp;
 
 public static class FileProvider
 {
-    private static string _userName { get; set; }
-    private static string _userSurname { get; set; }
-    private static string _userPatronymic { get; set; }
-    private static string directoryPath = Directory.GetCurrentDirectory();
-    private static string filePath = Path.Combine(directoryPath, "test_results.txt");
-
-    public static void SafeUserData(string name, string surname, string patronymic)
-    {
-        _userName = name;
-        _userSurname = surname;
-        _userPatronymic = patronymic;
-    }
+    static string directoryPath = Directory.GetCurrentDirectory();
+    static string filePath = Path.Combine(directoryPath, "test_results.txt");
 
     public static void SaveResults(int correctAnswer, string diagnostic)
     {
-        var userFullName = $"{_userSurname} {_userName} {_userPatronymic}";
+        var userFullName = $"{User.UserName} {User.UserSurname} {User.UserPatronymic}";
         using (var sw = new StreamWriter(filePath, true))
         {
             if (sw.BaseStream.Length == 0)
