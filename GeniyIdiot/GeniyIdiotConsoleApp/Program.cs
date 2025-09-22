@@ -10,6 +10,7 @@ internal partial class Program
 {
     static void Main(string[] args)
     {
+        ChekFile();
         var userNameInfo = User.UserFIO();
         Console.WriteLine($"Добро пожаловать {userNameInfo.userName}! Мы приступаем.");
         var restart = true;
@@ -44,7 +45,8 @@ internal partial class Program
     static void ShowResults(string userName, int answer)
     {
         var diagnostic = DiagnosticTestResources.GetDiagnose(answer);
-        FileProvider.SaveResults(answer, diagnostic);
+        var SaveResult = $"{diagnostic} {answer}";
+        Append.SaveData("test_results", SaveResult);
         Console.WriteLine($"\n{userName}, вы ответили верно на {answer} вопросов.");
         Console.WriteLine($"Ваш результат: {diagnostic}");
     }
@@ -54,7 +56,27 @@ internal partial class Program
         Console.WriteLine($"Хотите посмотреть все результаты тестирования? (да/нет)");
         if (DiagnosticTestResources.CheckUserAnswer().Trim().ToLower() == "да")
         {
-            FileProvider.ShowResults();
+            Append.ShowResults("test_results");
+            Append.ShowResults("Question");
+        }
+    }
+
+    public static void ChekFile()
+    {
+        var directoryPath = Directory.GetCurrentDirectory();
+        var TestPath = Path.Combine(directoryPath, "test_results");
+        var QuestionPath = Path.Combine(directoryPath, "Question");
+        Directory.CreateDirectory(directoryPath);
+        var TestExists = Append.CheckFileExists(TestPath);
+        var QuestionExists = Append.CheckFileExists(QuestionPath);
+        if (QuestionExists) { return; }
+        else
+        {
+            foreach (var question in Questions.GetQuestions)
+            {
+                var q = $"{question.Question}|{question.Answer}";
+                Append.SaveData("Question", q);
+            }
         }
     }
 }
