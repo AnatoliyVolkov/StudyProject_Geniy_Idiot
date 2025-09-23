@@ -4,7 +4,7 @@ namespace GeniyIdiotApp;
 
 public static class FileProvider
 {
-    public static bool FileExists(string filePath)
+    public static bool Exists(string filePath)
     {
         try
         {
@@ -17,7 +17,7 @@ public static class FileProvider
         }
     }
 
-    public static void FileCreater(string filePath, string header)
+    public static void Creater(string filePath, string header)
     {
         try
         {
@@ -37,7 +37,7 @@ public static class FileProvider
         }
     }
 
-    public static void AppendLine(string filePath, string line)
+    public static void Append(string filePath, string line)
     {
         try
         {
@@ -50,7 +50,7 @@ public static class FileProvider
         }
     }
 
-    public static List<string> ReadAllLines(string filePath)
+    public static List<string> Read(string filePath)
     {
         try
         {
@@ -64,7 +64,7 @@ public static class FileProvider
         }
     }
 
-    public static void ShowFile(string filePath, string title)
+    public static void Show(string filePath, string title)
     {
         if (!File.Exists(filePath))
         {
@@ -72,7 +72,7 @@ public static class FileProvider
             return;
         }
         Console.WriteLine($"\n=== {title} ===\n");
-        foreach (var line in ReadAllLines(filePath))
+        foreach (var line in Read(filePath))
         {
             Console.WriteLine(line);
         }

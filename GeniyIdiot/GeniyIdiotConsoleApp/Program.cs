@@ -53,7 +53,7 @@ internal partial class Program
             answer.ToString(),
             diagnostic);
 
-        FileProvider.AppendLine(testPath, line);
+        FileProvider.Append(testPath, line);
 
         Console.WriteLine($"\n{userName}, вы ответили верно на {answer} вопросов.");
         Console.WriteLine($"Ваш результат: {diagnostic}");
@@ -65,31 +65,31 @@ internal partial class Program
         if (DiagnosticTestResources.CheckUserAnswer().Trim().ToLower() == "да")
         {
             var dir = Directory.GetCurrentDirectory();
-            FileProvider.ShowFile(Path.Combine(dir, "test_results"), "РЕЗУЛЬТАТЫ ТЕСТИРОВАНИЯ");
-            FileProvider.ShowFile(Path.Combine(dir, "Question"), "ТАБЛИЦА ВОПРОС/ОТВЕТ");
+            FileProvider.Show(Path.Combine(dir, "test_results"), "РЕЗУЛЬТАТЫ ТЕСТИРОВАНИЯ");
+            FileProvider.Show(Path.Combine(dir, "Question"), "ТАБЛИЦА ВОПРОС/ОТВЕТ");
         }
     }
 
     public static void ChekFile()
     {
         var directoryPath = Directory.GetCurrentDirectory();
-        var TestPath = Path.Combine(directoryPath, "test_results");
-        var QuestionPath = Path.Combine(directoryPath, "Question");
+        var testPath = Path.Combine(directoryPath, "test_results");
+        var questionPath = Path.Combine(directoryPath, "Question");
         Directory.CreateDirectory(directoryPath);
 
         string testHeader = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||", "ФИО", "Набранные баллы", "Диагноз");
         string questionHeader = string.Format("|| {0,-85} || {1,-15}", "Вопрос", "Ответ");
 
-        FileProvider.FileCreater(TestPath, testHeader);
-        FileProvider.FileCreater(QuestionPath, questionHeader);
+        FileProvider.Creater(testPath, testHeader);
+        FileProvider.Creater(questionPath, questionHeader);
 
-        var lines = FileProvider.ReadAllLines(QuestionPath);
+        var lines = FileProvider.Read(questionPath);
         if (lines.Count <= 3) 
         {
             foreach (var question in Questions.GetQuestions)
             {
                 string formatted = $"|| {question.Question,-85} || {question.Answer,-15}";
-                FileProvider.AppendLine(QuestionPath, formatted);
+                FileProvider.Append(questionPath, formatted);
             }
         }
     }
