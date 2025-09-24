@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,34 +12,69 @@ internal partial class Program
 {
     static void Main(string[] args)
     {
-        ChekFile();
-        var userNameInfo = User.UserFIO();
-        Console.WriteLine($"Добро пожаловать {userNameInfo.userName}! Мы приступаем.");
-        var restart = true;
-
-        while (restart)
+        try
         {
-            var score = RunTest(userNameInfo.userName);
-            ShowResults(userNameInfo.userName, score);
-            Console.WriteLine($"\n{userNameInfo.userName}, хотите пройти тест еще раз? (да/нет)");
-            restart = DiagnosticTestResources.GetUserConfirm(userNameInfo.userName);
-        }
+            if (ValidationHelper.CheckLogin())
+            {
+                ChekFile();
+                var userNameInfo = UserFIO();
+                Console.WriteLine($"Добро пожаловать {userNameInfo.userName}! Мы приступаем.");
+                var restart = true;
 
-        ShowAllResult();
-        Console.WriteLine($"\nСпасибо {userNameInfo.userName}, что прошли наш тест. Всего хорошего.");
+                while (restart)
+                {
+                    var score = RunTest(userNameInfo.userName);
+                    ShowResults(userNameInfo.userName, score);
+                    Console.WriteLine($"\n{userNameInfo.userName}, хотите пройти тест еще раз? (да/нет)");
+                    restart = DiagnosticTestResources.GetUserConfirm(userNameInfo.userName);
+                }
+
+                ShowAllResult();
+                Console.WriteLine($"\nСпасибо {userNameInfo.userName}, что прошли наш тест. Всего хорошего.");
+            }
+            else
+            {
+                if (AdminWork.TryLoginAdmin())
+                {
+                    var dir = Directory.GetCurrentDirectory();
+                    var questionPath = Path.Combine(dir, "Question");
+
+                    AdminWork.AdminMenu(questionPath);
+                }
+                else
+                {
+                    Console.WriteLine("Не удалось войти в режим администратора. Завершение работы.");
+                    return;
+                }
+            }
+        }
+        catch (Exception ex) { Console.WriteLine(ex.Message); }
+    }
+
+    public static (string userLastName, string userName, string userPatronymic) UserFIO()
+    {
+        Console.WriteLine("Добрый день, вы сейчас будете проходить тест на определение вашей гениальности.\n");
+        Console.WriteLine("Пожалуйста введите свою фамилию.");
+        var lastName = ValidationHelper.GetUserName();
+        Console.WriteLine("Пожалуйста введите свое имя.");
+        var name = ValidationHelper.GetUserName();
+        Console.WriteLine("Пожалуйста введите свое отчество.");
+        var patronymicName = ValidationHelper.GetUserName();
+        User.SafeUserData(name, lastName, patronymicName);
+        return (lastName, name, patronymicName);
     }
 
     static int RunTest(string userName)
     {
         var countRightAnswers = 0;
         var questionOrder = DiagnosticTestResources.ShuffleTestQuestions();
-        for (var i = 0 ; i < Questions.GetQuestions.Count ; i++)
+        for (var i = 0; i < QuestionsStorage.GetQuestions.Count; i++)
         {
             var questionIndex = questionOrder[i];
 
-            Console.WriteLine($"\nВопрос номер: {i  + 1}");
-            Console.WriteLine(Questions.GetQuestions[questionIndex].Question);
-            countRightAnswers += Questions.CheckAnswerUserQuestion(userName, questionIndex);
+            Console.WriteLine($"\nВопрос номер: {i + 1}");
+            Console.WriteLine(QuestionsStorage.GetQuestions[questionIndex].Question);
+            countRightAnswers += ValidationHelper.CheckAnswerUserQuestion(userName, questionIndex);
         }
         return countRightAnswers;
     }
@@ -62,11 +98,10 @@ internal partial class Program
     public static void ShowAllResult()
     {
         Console.WriteLine($"Хотите посмотреть все результаты тестирования? (да/нет)");
-        if (DiagnosticTestResources.CheckUserAnswer().Trim().ToLower() == "да")
+        if (ValidationHelper.CheckUserAnswer().Trim().ToLower() == "да")
         {
             var dir = Directory.GetCurrentDirectory();
-            FileProvider.Show(Path.Combine(dir, "test_results"), "РЕЗУЛЬТАТЫ ТЕСТИРОВАНИЯ");
-            FileProvider.Show(Path.Combine(dir, "Question"), "ТАБЛИЦА ВОПРОС/ОТВЕТ");
+            FileProvider.Show(Path.Combine(dir, "test_results"));
         }
     }
 
@@ -82,15 +117,7 @@ internal partial class Program
 
         FileProvider.Creater(testPath, testHeader);
         FileProvider.Creater(questionPath, questionHeader);
-
-        var lines = FileProvider.Read(questionPath);
-        if (lines.Count <= 3) 
-        {
-            foreach (var question in Questions.GetQuestions)
-            {
-                string formatted = $"|| {question.Question,-85} || {question.Answer,-15}";
-                FileProvider.Append(questionPath, formatted);
-            }
-        }
+        QuestionsStorage.CreaterFirstQuestions(questionPath);
     }
-}
+
+ }

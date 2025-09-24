@@ -17,7 +17,7 @@ public static class DiagnosticTestResources
     "Гений",
 };
 
-    static private char[] InvalidChars =
+    static public char[] InvalidChars =
     {
         '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
         '_', '+', '=', '{', '}', '[', ']', '|', '\\', ':',
@@ -27,8 +27,8 @@ public static class DiagnosticTestResources
     public static List<int> ShuffleTestQuestions()
     {
         var randomQuestion = new Random();
-        var questionIndexes = Enumerable.Range(0, Questions.GetQuestions.Count).ToList();
-        for (var i = questionIndexes.Count - 1 ; i > 0 ; i--)
+        var questionIndexes = Enumerable.Range(0, QuestionsStorage.GetQuestions.Count).ToList();
+        for (var i = questionIndexes.Count - 1; i > 0; i--)
         {
             var j = randomQuestion.Next(i + 1);
             (questionIndexes[i], questionIndexes[j]) = (questionIndexes[j], questionIndexes[i]);
@@ -36,40 +36,15 @@ public static class DiagnosticTestResources
         return questionIndexes;
     }
 
-    public static string CheckUsernameEntry(string name)
-    {
-
-        if (string.IsNullOrEmpty(name))
-        {
-            throw new Exception("Нельзя оставлять поле пустым, будьте внимательней");
-        }
-        if (short.TryParse(name, out _))
-        {
-            throw new Exception("Нельзя вводить числа, будьте внимательней");
-        }
-        if (name.Contains(" "))
-        {
-            throw new Exception("Можно вводить только одно слово без пробелов, будьте внимательней");
-        }
-        if (name.Any(c => InvalidChars.Contains(c)))
-        {
-            throw new Exception("Были введены не допустимые символы, будьте внимательней");
-        }
-        else
-        {
-            return name.Substring(0, 1).ToUpper() + name.Substring(1).ToLower();
-        }
-    }
-
     public static bool GetUserConfirm(string name)
     {
-        if (CheckUserAnswer().Trim().ToLower() == "да") { return true; }
+        if (ValidationHelper.CheckUserAnswer().Trim().ToLower() == "да") { return true; }
         else { return false; }
     }
 
     public static string GetDiagnose(int correctAnswer)
     {
-        var result = correctAnswer * 100.0 / Questions.GetQuestions.Count;
+        var result = correctAnswer * 100.0 / QuestionsStorage.GetQuestions.Count;
         return result switch
         {
             >= 83.33 => "Гений",
@@ -79,28 +54,5 @@ public static class DiagnosticTestResources
             >= 16.67 => "Идиот",
             _ => "Кретин"
         };
-    }
-
-    public static string CheckUserAnswer()
-    {
-        while (true)
-        {
-            try
-            {
-                var answer = Console.ReadLine();
-                if (string.IsNullOrEmpty(answer))
-                {
-                    throw new Exception($"Вы дали ответ пустой строкой.\n Пожалуйста дайте ответ Да или Нет.");
-                }
-                if (long.TryParse(answer, out _))
-                {
-                    throw new Exception($"Вы дали ответ числом.\n Пожалуйста дайте ответ Да или Нет.");
-                }
-                if (answer.Trim().ToLower() == "нет" || answer.Trim().ToLower() == "да")
-                { return answer; }
-                else { throw new Exception($"Вы дали не корректный ответ.\n Пожалуйста дайте ответ Да или Нет."); }
-            }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
-        }
     }
 }

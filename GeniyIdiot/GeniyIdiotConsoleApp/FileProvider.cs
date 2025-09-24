@@ -64,17 +64,34 @@ public static class FileProvider
         }
     }
 
-    public static void Show(string filePath, string title)
+    public static void Show(string filePath)
     {
         if (!File.Exists(filePath))
         {
             Console.WriteLine($"Файл не найден: {filePath}");
             return;
         }
-        Console.WriteLine($"\n=== {title} ===\n");
+        Console.WriteLine($"\n======\n");
         foreach (var line in Read(filePath))
         {
             Console.WriteLine(line);
+        }
+    }
+
+    public static void RemoveLine(string filePath, int lineNumber)
+    {
+        try
+        {
+            var lines = Read(filePath);
+            if (lineNumber > 0 && lineNumber <= lines.Count)
+            {
+                lines.RemoveAt(lineNumber - 1);
+                File.WriteAllLines(filePath, lines, Encoding.UTF8);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка удаления строки: {ex.Message}");
         }
     }
 }
