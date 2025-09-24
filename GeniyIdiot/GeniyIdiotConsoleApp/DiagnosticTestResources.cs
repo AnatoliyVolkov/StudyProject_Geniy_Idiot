@@ -27,8 +27,8 @@ public static class DiagnosticTestResources
     public static List<int> ShuffleTestQuestions()
     {
         var randomQuestion = new Random();
-        var questionIndexes = Enumerable.Range(0, QuestionsStorage.GetQuestions.Count).ToList();
-        for (var i = questionIndexes.Count - 1; i > 0; i--)
+        var questionIndexes = Enumerable.Range(0, QuestionsStorage.GetQuestions().Count).ToList();
+        for (var i = questionIndexes.Count - 1 ; i > 0 ; i--)
         {
             var j = randomQuestion.Next(i + 1);
             (questionIndexes[i], questionIndexes[j]) = (questionIndexes[j], questionIndexes[i]);
@@ -38,13 +38,12 @@ public static class DiagnosticTestResources
 
     public static bool GetUserConfirm(string name)
     {
-        if (ValidationHelper.CheckUserAnswer().Trim().ToLower() == "да") { return true; }
-        else { return false; }
+        return ValidationHelper.CheckUserAnswer().Trim().ToLower() == "да";
     }
 
     public static string GetDiagnose(int correctAnswer)
     {
-        var result = correctAnswer * 100.0 / QuestionsStorage.GetQuestions.Count;
+        var result = correctAnswer * 100.0 / QuestionsStorage.GetQuestions().Count;
         return result switch
         {
             >= 83.33 => "Гений",

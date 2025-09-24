@@ -20,10 +20,10 @@ public static class AdminWork
                     Console.WriteLine("Авторизация успешна!");
                     return true;
                 }
-                else 
+                else
                 {
                     count++;
-                    Console.WriteLine($"НЕВЕРНО! У вас осталось {attempts-count} попыток.");
+                    Console.WriteLine($"НЕВЕРНО! У вас осталось {attempts - count} попыток.");
                 }
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
@@ -41,13 +41,14 @@ public static class AdminWork
             Console.WriteLine("Вопрос не может быть пустым!");
             return;
         }
+
         Console.WriteLine("Введите ответ на ваш вопрос");
-        var answer = Console.ReadLine();   
-        ValidationHelper.CheckAdminInput(answer);
-        var newQuestion = $"|| {question,-85} || {answer,-15}";
+        var answer = Console.ReadLine();
+        var validatedAnswer = ValidationHelper.CheckAdminInput(answer);
+
+        var newQuestion = $"|| {question,-85} || {validatedAnswer,-15}";
         FileProvider.Append(questionPath, newQuestion);
-        var quest = new Questions (question,int.Parse(answer));
-        QuestionsStorage.GetQuestions.Add(quest);
+
         Console.WriteLine("Вопрос успешно добавлен");
     }
 
@@ -60,19 +61,12 @@ public static class AdminWork
             Console.WriteLine("Некорректный номер вопроса!");
             return;
         }
-      
+
         int fileLineNumber = questionNumber + 2;
-                
-        if (fileLineNumber >= 3 && QuestionsStorage.GetQuestions.Count >= questionNumber)
-        {
-            QuestionsStorage.GetQuestions.RemoveAt(questionNumber - 1); 
-            FileProvider.RemoveLine(questionPath, fileLineNumber);
-            Console.WriteLine("Вопрос успешно удален!");
-        }
-        else
-        {
-            Console.WriteLine("Вопроса с таким номером не существует!");
-        }
+
+        FileProvider.RemoveLine(questionPath, fileLineNumber);
+        Console.WriteLine("Вопрос успешно удален!");
+
     }
 
     public static void AdminMenu(string questionPath)

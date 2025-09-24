@@ -15,7 +15,7 @@ public static class ValidationHelper
                 }
                 if (short.TryParse(userInput, out var answer))
                 {
-                    return answer == QuestionsStorage.GetQuestions[questionIndex].Answer ? 1 : 0;
+                    return answer == QuestionsStorage.GetQuestions()[questionIndex].Answer ? 1 : 0;
                 }
                 if (long.TryParse(userInput, out var _))
                 {

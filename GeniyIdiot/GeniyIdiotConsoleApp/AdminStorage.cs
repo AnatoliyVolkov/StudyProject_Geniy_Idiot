@@ -4,6 +4,6 @@ public class AdminStorage
 {
     public List<Admin> admins = new List<Admin>()
     {
-        new Admin ("admin", 123)
+        new Admin ("qwerty", 123)
     };    
 }

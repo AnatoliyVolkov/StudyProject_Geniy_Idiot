@@ -12,11 +12,11 @@ internal partial class Program
 {
     static void Main(string[] args)
     {
+        ChekFile();
         try
         {
             if (ValidationHelper.CheckLogin())
             {
-                ChekFile();
                 var userNameInfo = UserFIO();
                 Console.WriteLine($"Добро пожаловать {userNameInfo.userName}! Мы приступаем.");
                 var restart = true;
@@ -68,12 +68,12 @@ internal partial class Program
     {
         var countRightAnswers = 0;
         var questionOrder = DiagnosticTestResources.ShuffleTestQuestions();
-        for (var i = 0; i < QuestionsStorage.GetQuestions.Count; i++)
+        for (var i = 0; i < QuestionsStorage.GetQuestions().Count; i++)
         {
             var questionIndex = questionOrder[i];
 
             Console.WriteLine($"\nВопрос номер: {i + 1}");
-            Console.WriteLine(QuestionsStorage.GetQuestions[questionIndex].Question);
+            Console.WriteLine(QuestionsStorage.GetQuestions()[questionIndex].Question);
             countRightAnswers += ValidationHelper.CheckAnswerUserQuestion(userName, questionIndex);
         }
         return countRightAnswers;
@@ -120,4 +120,4 @@ internal partial class Program
         QuestionsStorage.CreaterFirstQuestions(questionPath);
     }
 
- }
+}
