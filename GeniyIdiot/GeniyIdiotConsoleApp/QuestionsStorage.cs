@@ -2,7 +2,7 @@
 
 public static class QuestionsStorage
 {
-    static List<Question> questions = new List<Question>();
+    
     static string directoryPath = Directory.GetCurrentDirectory();
     static string questionPath = Path.Combine(directoryPath, "Question");
     public static List<Question> GetQuestions()
@@ -27,6 +27,7 @@ public static class QuestionsStorage
 
     public static List<Question> GetFromFile()
     {
+        List<Question> questions = new List<Question>();
         List<string> lines = FileProvider.Read(questionPath);
         for (int i = 2 ; i < lines.Count ; i++)
         {
@@ -36,10 +37,10 @@ public static class QuestionsStorage
             try
             {
                 var parts = line.Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length >= 2)
+                if (parts.Length >= 3)
                 {
-                    var questionText = parts[0].Trim();
-                    var answerText = parts[1].Trim();
+                    var questionText = parts[1].Trim();
+                    var answerText = parts[2].Trim();
                     if (int.TryParse(answerText, out int answer))
                     {
                         questions.Add(new Question(questionText, answer));

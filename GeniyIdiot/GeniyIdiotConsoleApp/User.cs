@@ -7,7 +7,7 @@ public static class User
     public static string UserPatronymic { get; set; }
 
     public static string userFullName => $"{UserName} {UserSurname} {UserPatronymic}";
-
+    
     public static void SafeUserData(string name, string surname, string patronymic)
     {
         UserName = name;
@@ -17,8 +17,6 @@ public static class User
 
     public static int RightUserAnswer(int questionIndex)
     {
-        int countRightAnswers = 0;
-        countRightAnswers += ValidationHelper.CheckAnswerUserQuestion(UserName, questionIndex);
-        return countRightAnswers;
+        return ValidationHelper.CheckAnswerUserQuestion(UserName, questionIndex);
     }
 }

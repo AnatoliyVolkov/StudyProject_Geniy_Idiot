@@ -67,14 +67,15 @@ internal partial class Program
     static int RunTest(string userName)
     {
         var countRightAnswers = 0;
+        var questions = QuestionsStorage.GetQuestions();
         var questionOrder = DiagnosticTestResources.ShuffleTestQuestions();
-        for (var i = 0; i < DiagnosticTestResources.questionCount ; i++)
+        for (var i = 0; i < questions.Count ; i++)
         {
             var questionIndex = questionOrder[i];
 
             Console.WriteLine($"\nВопрос номер: {i + 1}");
             Console.WriteLine(QuestionsStorage.GetQuestions()[questionIndex]._Question);
-            User.RightUserAnswer(questionIndex);
+            countRightAnswers += User.RightUserAnswer(questionIndex);
         }
         return countRightAnswers;
     }

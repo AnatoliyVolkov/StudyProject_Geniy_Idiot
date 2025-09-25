@@ -7,8 +7,6 @@ namespace GeniyIdiotApp;
 
 public static class DiagnosticTestResources
 {
-    public static int questionCount = QuestionsStorage.GetQuestions().Count;
-    public static List<int> questionIndexes = Enumerable.Range(0, questionCount).ToList();
     public static List<string> Diagnoses = new List<string>()
 {
     "Кретин",
@@ -28,8 +26,10 @@ public static class DiagnosticTestResources
 
     public static List<int> ShuffleTestQuestions()
     {
+        int questionCount = QuestionsStorage.GetQuestions().Count;
+        List<int> questionIndexes = Enumerable.Range(0, questionCount).ToList();
         var randomQuestion = new Random();
-       
+
         for (var i = questionIndexes.Count - 1 ; i > 0 ; i--)
         {
             var j = randomQuestion.Next(i + 1);
