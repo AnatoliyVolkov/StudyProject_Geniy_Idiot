@@ -98,7 +98,7 @@ public static class ValidationHelper
     public static bool CheckLogin()
     {
         Console.WriteLine("Добро пожаловать в программу оценки гениальности!\n" +
-            "Вы хотите войти как пользователь?");
+            "Вы хотите войти как пользователь? да/нет");
         var answer = CheckUserAnswer();
         if (answer == "да") { return true; }
         return false;

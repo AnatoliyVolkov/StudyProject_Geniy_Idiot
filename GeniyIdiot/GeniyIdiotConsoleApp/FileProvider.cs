@@ -27,7 +27,7 @@ public static class FileProvider
                 if (!string.IsNullOrWhiteSpace(header))
                 {
                     sw.WriteLine(header);
-                    sw.WriteLine(new string('=', header.Length));
+                    sw.WriteLine(new string('=', header.Length-5));
                 }
             }
         }

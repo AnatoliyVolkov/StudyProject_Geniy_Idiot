@@ -68,13 +68,13 @@ internal partial class Program
     {
         var countRightAnswers = 0;
         var questionOrder = DiagnosticTestResources.ShuffleTestQuestions();
-        for (var i = 0; i < QuestionsStorage.GetQuestions().Count; i++)
+        for (var i = 0; i < DiagnosticTestResources.questionCount ; i++)
         {
             var questionIndex = questionOrder[i];
 
             Console.WriteLine($"\nВопрос номер: {i + 1}");
-            Console.WriteLine(QuestionsStorage.GetQuestions()[questionIndex].Question);
-            countRightAnswers += ValidationHelper.CheckAnswerUserQuestion(userName, questionIndex);
+            Console.WriteLine(QuestionsStorage.GetQuestions()[questionIndex]._Question);
+            User.RightUserAnswer(questionIndex);
         }
         return countRightAnswers;
     }
@@ -113,7 +113,7 @@ internal partial class Program
         Directory.CreateDirectory(directoryPath);
 
         string testHeader = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||", "ФИО", "Набранные баллы", "Диагноз");
-        string questionHeader = string.Format("|| {0,-85} || {1,-15}", "Вопрос", "Ответ");
+        string questionHeader = string.Format("{0,-5} || {1,-85} || {2,-15}", "П/П" ,"Вопрос", "Ответ");
 
         FileProvider.Creater(testPath, testHeader);
         FileProvider.Creater(questionPath, questionHeader);

@@ -1,13 +1,13 @@
 ﻿namespace GeniyIdiotApp;
 
-public class Questions
+public class Question
 {
-    public string Question { get; set; }
+    public string _Question { get; set; }
     public int Answer { get; set; }
 
-    public Questions(string question, int answer)
+    public Question(string question, int answer)
     {
-        Question = question;
+        _Question = question;
         Answer = answer;
     }
 }

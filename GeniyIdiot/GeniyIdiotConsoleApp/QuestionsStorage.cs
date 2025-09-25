@@ -2,9 +2,13 @@
 
 public static class QuestionsStorage
 {
-    public static List<Questions> GetQuestions()
+    static List<Question> questions = new List<Question>();
+    static string directoryPath = Directory.GetCurrentDirectory();
+    static string questionPath = Path.Combine(directoryPath, "Question");
+    //static List<string> lines = FileProvider.Read(questionPath);
+    public static List<Question> GetQuestions()
     {
-        return LoadQuestionsFromFile();
+        return GetFromFile();
     }
 
     public static void CreaterFirstQuestions(string questionPath)
@@ -12,22 +16,19 @@ public static class QuestionsStorage
         var lines = FileProvider.Read(questionPath);
         if (lines.Count <= 2)
         {
+            var lin = lines.Count - 2;
             foreach (var question in GetDefaultQuestions())
             {
-                string formatted = $"|| {question.Question,-85} || {question.Answer,-15}";
+                string formatted = $"{lin+1,-5}|| {question._Question,-85} || {question.Answer,-15}";
                 FileProvider.Append(questionPath, formatted);
+                lin++;
             }
         }
     }
 
-    private static List<Questions> LoadQuestionsFromFile()
+    public static List<Question> GetFromFile()
     {
-        var questions = new List<Questions>();
-        var directoryPath = Directory.GetCurrentDirectory();
-        var questionPath = Path.Combine(directoryPath, "Question");
-
-        var lines = FileProvider.Read(questionPath);
-
+        List<string> lines = FileProvider.Read(questionPath);
         for (int i = 2 ; i < lines.Count ; i++)
         {
             var line = lines[i];
@@ -42,7 +43,7 @@ public static class QuestionsStorage
                     var answerText = parts[1].Trim();
                     if (int.TryParse(answerText, out int answer))
                     {
-                        questions.Add(new Questions(questionText, answer));
+                        questions.Add(new Question(questionText, answer));
                     }
                 }
             }
@@ -59,15 +60,61 @@ public static class QuestionsStorage
         return questions;
     }
 
-    private static List<Questions> GetDefaultQuestions()
+    private static List<Question> GetDefaultQuestions()
     {
-        return new List<Questions>()
+        return new List<Question>()
         {
-            new Questions("Сколько будет два плюс два умноженное на два?", 6),
-            new Questions("Бревно нужно распилить на 10 частей. Сколько распилов нужно сделать?", 9),
-            new Questions("На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25),
-            new Questions("Укол делают каждые полчаса. Сколько нужно минут, чтобы сделать три укола?", 60),
-            new Questions("Пять свечей горело, три потухли. Сколько свечей осталось?", 2)
+            new Question("Сколько будет два плюс два умноженное на два?", 6),
+            new Question("Бревно нужно распилить на 10 частей. Сколько распилов нужно сделать?", 9),
+            new Question("На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25),
+            new Question("Укол делают каждые полчаса. Сколько нужно минут, чтобы сделать три укола?", 60),
+            new Question("Пять свечей горело, три потухли. Сколько свечей осталось?", 2)
         };
+    }
+
+    public static void DeleteQuestion(string questionPath)
+    {
+        List<string> lines = FileProvider.Read(questionPath);
+        FileProvider.Show(questionPath);
+        Console.WriteLine("Введите номер строки для удаления:");
+
+        if (!int.TryParse(Console.ReadLine(), out int questionNumber) || questionNumber < 1)
+        {
+            Console.WriteLine("Некорректный номер вопроса!");
+            return;
+        }
+
+        int fileLineNumber = questionNumber + 2;
+        if (fileLineNumber < 1 || fileLineNumber > lines.Count)
+        {
+            Console.WriteLine($"Ошибка: Строка с номером {questionNumber} не существует!");
+            Console.WriteLine($"В файле всего {lines.Count-2} строк(и).");
+            return;
+        }
+
+        FileProvider.RemoveLine(questionPath, fileLineNumber);
+        Console.WriteLine("Вопрос успешно удален!");
+    }
+
+    public static void AddQuestion(string questionPath)
+    {
+        List<string> lines = FileProvider.Read(questionPath);
+        Console.WriteLine("Введите вопрос для добавления");
+        var question = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(question))
+        {
+            Console.WriteLine("Вопрос не может быть пустым!");
+            return;
+        }
+
+        Console.WriteLine("Введите ответ на ваш вопрос");
+        var answer = Console.ReadLine();
+        var validatedAnswer = ValidationHelper.CheckAdminInput(answer);
+        int questionNumber = lines.Count - 1;
+        var newQuestion = $"{questionNumber,-5}|| {question,-85} || {validatedAnswer,-15}";
+        FileProvider.Append(questionPath, newQuestion);
+
+        Console.WriteLine("Вопрос успешно добавлен");
+        FileProvider.Show(questionPath);
     }
 }

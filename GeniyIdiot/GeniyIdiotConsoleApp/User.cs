@@ -13,5 +13,12 @@ public static class User
         UserName = name;
         UserSurname = surname;
         UserPatronymic = patronymic;
-    }     
+    }
+
+    public static int RightUserAnswer(int questionIndex)
+    {
+        int countRightAnswers = 0;
+        countRightAnswers += ValidationHelper.CheckAnswerUserQuestion(UserName, questionIndex);
+        return countRightAnswers;
+    }
 }
