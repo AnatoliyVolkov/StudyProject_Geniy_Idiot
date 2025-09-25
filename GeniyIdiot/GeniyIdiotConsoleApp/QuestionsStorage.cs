@@ -5,7 +5,6 @@ public static class QuestionsStorage
     static List<Question> questions = new List<Question>();
     static string directoryPath = Directory.GetCurrentDirectory();
     static string questionPath = Path.Combine(directoryPath, "Question");
-    //static List<string> lines = FileProvider.Read(questionPath);
     public static List<Question> GetQuestions()
     {
         return GetFromFile();
