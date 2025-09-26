@@ -56,38 +56,6 @@ internal partial class Program
         return (lastName, name, patronymicName);
     }
 
-    static int RunTest(string userName)
-    {
-        var countRightAnswers = 0;
-        var questions = QuestionsStorage.GetQuestions();
-        var questionOrder = DiagnosticTestResources.ShuffleTestQuestions();
-        for (var i = 0; i < questions.Count; i++)
-        {
-            var questionIndex = questionOrder[i];
-
-            Console.WriteLine($"\nВопрос номер: {i + 1}");
-            Console.WriteLine(QuestionsStorage.GetQuestions()[questionIndex]._Question);
-            countRightAnswers += User.RightAnswer(questionIndex);
-        }
-        return countRightAnswers;
-    }
-
-    static void ShowResults(string userName, int answer)
-    {
-        var diagnostic = DiagnosticTestResources.GetDiagnose(answer);
-        var testPath = Path.Combine(Directory.GetCurrentDirectory(), "test_results");
-
-        string line = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
-            User.userFullName,
-            answer.ToString(),
-            diagnostic);
-
-        FileProvider.Append(testPath, line);
-        UserResultStorage.LoadFromFile(testPath);
-        Console.WriteLine($"\n{userName}, вы ответили верно на {answer} вопросов.");
-        Console.WriteLine($"Ваш результат: {diagnostic}");
-    }
-
     public static void ShowAllResult()
     {
         Console.WriteLine($"Хотите посмотреть все результаты тестирования? (да/нет)");
@@ -113,4 +81,35 @@ internal partial class Program
         QuestionsStorage.CreaterFirst(questionPath);
     }
 
+    static int RunTest(string userName)
+    {
+        var countRightAnswers = 0;
+        var questions = QuestionsStorage.GetQuestions();
+        var questionOrder = DiagnosticTestResources.ShuffleTestQuestions();
+        for (var i = 0 ; i < questions.Count ; i++)
+        {
+            var questionIndex = questionOrder[i];
+
+            Console.WriteLine($"\nВопрос номер: {i + 1}");
+            Console.WriteLine(QuestionsStorage.GetQuestions()[questionIndex]._Question);
+            countRightAnswers += User.RightAnswer(questionIndex);
+        }
+        return countRightAnswers;
+    }
+
+    static void ShowResults(string userName, int answer)
+    {
+        var diagnostic = DiagnosticTestResources.GetDiagnose(answer);
+        var testPath = Path.Combine(Directory.GetCurrentDirectory(), "test_results");
+
+        string line = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
+            User.userFullName,
+            answer.ToString(),
+            diagnostic);
+
+        FileProvider.Append(testPath, line);
+        UserResultStorage.LoadFromFile(testPath);
+        Console.WriteLine($"\n{userName}, вы ответили верно на {answer} вопросов.");
+        Console.WriteLine($"Ваш результат: {diagnostic}");
+    }
 }

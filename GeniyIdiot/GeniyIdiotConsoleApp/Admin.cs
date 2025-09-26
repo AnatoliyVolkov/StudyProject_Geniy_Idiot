@@ -2,20 +2,20 @@
 
 public class Admin
 {
-    public string Name { get; }
+    public string Login { get; }
     public int Password { get; }
 
     public Admin(string name, int password)
     {
-        Name = name;
+        Login = name;
         Password = password;
     }
 
-    public static bool CheckAdmin(string name, int password)
+    public static bool CheckAdmin(string login, int password)
     {
         var adminStorage = new AdminStorage();
         return adminStorage.admins.Any(admin =>
-            admin.Name == name && admin.Password == password);
+            admin.Login == login.ToLower() && admin.Password == password);
     }
 
 }

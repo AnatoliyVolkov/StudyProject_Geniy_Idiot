@@ -2,7 +2,7 @@
 
 public static class UserResultStorage
 {
-    static readonly List<UserResul> userResult = new List<UserResul>();
+    static readonly List<UserTestResult> userResult = new List<UserTestResult>();
 
     public static void LoadFromFile(string filePath)
     {
@@ -23,7 +23,7 @@ public static class UserResultStorage
 
                     if (int.TryParse(answerText, out int answer))
                     {
-                        userResult.Add(new UserResul(fio, answer, diagnostic));
+                        userResult.Add(new UserTestResult(fio, answer, diagnostic));
                     }
                 }
             }
