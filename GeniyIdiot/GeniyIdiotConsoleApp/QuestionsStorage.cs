@@ -2,7 +2,7 @@
 
 public static class QuestionsStorage
 {
-    
+
     static string directoryPath = Directory.GetCurrentDirectory();
     static string questionPath = Path.Combine(directoryPath, "Question");
     public static List<Question> GetQuestions()
@@ -18,7 +18,7 @@ public static class QuestionsStorage
             var lin = lines.Count - 2;
             foreach (var question in GetDefault())
             {
-                string formatted = $"{lin+1,-5}|| {question._Question,-85} || {question.Answer,-15}";
+                string formatted = $"{lin + 1,-5}|| {question._Question,-85} || {question.Answer,-15}";
                 FileProvider.Append(questionPath, formatted);
                 lin++;
             }
@@ -29,7 +29,7 @@ public static class QuestionsStorage
     {
         List<Question> questions = new List<Question>();
         List<string> lines = FileProvider.Read(questionPath);
-        for (int i = 2 ; i < lines.Count ; i++)
+        for (int i = 2; i < lines.Count; i++)
         {
             var line = lines[i];
             if (string.IsNullOrWhiteSpace(line)) continue;
@@ -88,7 +88,7 @@ public static class QuestionsStorage
         if (fileLineNumber < 1 || fileLineNumber > lines.Count)
         {
             Console.WriteLine($"Ошибка: Строка с номером {questionNumber} не существует!");
-            Console.WriteLine($"В файле всего {lines.Count-2} строк(и).");
+            Console.WriteLine($"В файле всего {lines.Count - 2} строк(и).");
             return;
         }
 

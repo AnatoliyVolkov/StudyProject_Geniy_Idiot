@@ -2,10 +2,10 @@
 
 public class Admin
 {
-    public string Name { get; } 
-    public int Password { get; } 
+    public string Name { get; }
+    public int Password { get; }
 
-    public Admin(string name, int password) 
+    public Admin(string name, int password)
     {
         Name = name;
         Password = password;

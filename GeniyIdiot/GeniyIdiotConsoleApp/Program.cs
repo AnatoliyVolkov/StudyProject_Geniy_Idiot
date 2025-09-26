@@ -61,7 +61,7 @@ internal partial class Program
         var countRightAnswers = 0;
         var questions = QuestionsStorage.GetQuestions();
         var questionOrder = DiagnosticTestResources.ShuffleTestQuestions();
-        for (var i = 0; i < questions.Count ; i++)
+        for (var i = 0; i < questions.Count; i++)
         {
             var questionIndex = questionOrder[i];
 
@@ -106,7 +106,7 @@ internal partial class Program
         Directory.CreateDirectory(directoryPath);
 
         string testHeader = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||", "ФИО", "Набранные баллы", "Диагноз");
-        string questionHeader = string.Format("{0,-5} || {1,-85} || {2,-15}", "П/П" ,"Вопрос", "Ответ");
+        string questionHeader = string.Format("{0,-5} || {1,-85} || {2,-15}", "П/П", "Вопрос", "Ответ");
 
         FileProvider.Creater(testPath, testHeader);
         FileProvider.Creater(questionPath, questionHeader);

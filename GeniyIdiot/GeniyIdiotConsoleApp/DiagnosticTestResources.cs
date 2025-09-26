@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using static System.Net.Mime.MediaTypeNames;
-
-namespace GeniyIdiotApp;
+﻿namespace GeniyIdiotApp;
 
 public static class DiagnosticTestResources
 {
@@ -30,7 +25,7 @@ public static class DiagnosticTestResources
         List<int> questionIndexes = Enumerable.Range(0, questionCount).ToList();
         var randomQuestion = new Random();
 
-        for (var i = questionIndexes.Count - 1 ; i > 0 ; i--)
+        for (var i = questionIndexes.Count - 1; i > 0; i--)
         {
             var j = randomQuestion.Next(i + 1);
             (questionIndexes[i], questionIndexes[j]) = (questionIndexes[j], questionIndexes[i]);

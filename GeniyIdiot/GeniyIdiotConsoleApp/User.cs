@@ -7,7 +7,7 @@ public static class User
     public static string UserPatronymic { get; set; }
 
     public static string userFullName => $"{UserName} {UserSurname} {UserPatronymic}";
-    
+
     public static void SafeData(string name, string surname, string patronymic)
     {
         UserName = name;

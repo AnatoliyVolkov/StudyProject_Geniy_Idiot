@@ -32,7 +32,7 @@ public static class AdminService
         ValidationHelper.CheckLogin();
         return false;
     }
-              
+
     public static void Menu(string questionPath)
     {
         while (true)
