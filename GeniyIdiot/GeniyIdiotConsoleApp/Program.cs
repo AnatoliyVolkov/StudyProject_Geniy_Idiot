@@ -34,12 +34,12 @@ internal partial class Program
             }
             else
             {
-                if (AdminWork.TryLoginAdmin())
+                if (AdminService.TryLogin())
                 {
                     var dir = Directory.GetCurrentDirectory();
                     var questionPath = Path.Combine(dir, "Question");
 
-                    AdminWork.AdminMenu(questionPath);
+                    AdminService.Menu(questionPath);
                 }
                 else
                 {
@@ -60,7 +60,7 @@ internal partial class Program
         var name = ValidationHelper.GetUserName();
         Console.WriteLine("Пожалуйста введите свое отчество.");
         var patronymicName = ValidationHelper.GetUserName();
-        User.SafeUserData(name, lastName, patronymicName);
+        User.SafeData(name, lastName, patronymicName);
         return (lastName, name, patronymicName);
     }
 
@@ -75,7 +75,7 @@ internal partial class Program
 
             Console.WriteLine($"\nВопрос номер: {i + 1}");
             Console.WriteLine(QuestionsStorage.GetQuestions()[questionIndex]._Question);
-            countRightAnswers += User.RightUserAnswer(questionIndex);
+            countRightAnswers += User.RightAnswer(questionIndex);
         }
         return countRightAnswers;
     }
@@ -91,7 +91,7 @@ internal partial class Program
             diagnostic);
 
         FileProvider.Append(testPath, line);
-
+        UserResultStorage.LoadFromFile(testPath);
         Console.WriteLine($"\n{userName}, вы ответили верно на {answer} вопросов.");
         Console.WriteLine($"Ваш результат: {diagnostic}");
     }
@@ -118,7 +118,7 @@ internal partial class Program
 
         FileProvider.Creater(testPath, testHeader);
         FileProvider.Creater(questionPath, questionHeader);
-        QuestionsStorage.CreaterFirstQuestions(questionPath);
+        QuestionsStorage.CreaterFirst(questionPath);
     }
 
 }

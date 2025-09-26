@@ -104,27 +104,29 @@ public static class ValidationHelper
         return false;
     }
 
-    public static int CheckAdminInput(string input)
+    public static int CheckAdminInput()
     {
         while (true)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(input))
+                var userInput = Console.ReadLine();
+                if (string.IsNullOrEmpty(userInput))
                 {
-                    throw new Exception($"Ответ не может быть пустым!");
+                    throw new Exception($"Вы дали ответ пустой строкой.\n Вам нужно ввести число не длинее 6 знаков.");
                 }
-
-                if (!int.TryParse(input, out int answer))
+                if (short.TryParse(userInput, out var answer))
                 {
-                    throw new Exception($"Некорректный формат ответа! Введите целое число.");
+                    return answer;
                 }
-
-                if (answer < -9999 || answer > 9999)
+                if (long.TryParse(userInput, out var _))
                 {
-                    throw new Exception($"Ответ должен быть в пределах от -9999 до 9999.");
+                    throw new Exception($"Вы ввели слишком большое число, Вам нужно ввести число не длинее 6 знаков.");
                 }
-                else { return int.Parse(input); }
+                else
+                {
+                    throw new Exception($"Вы ввели букву, Вам нужно ввести число не длинее 6 знаков.");
+                }
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }

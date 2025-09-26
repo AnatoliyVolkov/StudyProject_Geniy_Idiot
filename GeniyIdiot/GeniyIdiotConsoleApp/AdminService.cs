@@ -1,8 +1,8 @@
 ﻿namespace GeniyIdiotApp;
 
-public static class AdminWork
+public static class AdminService
 {
-    public static bool TryLoginAdmin(int attempts = 3)
+    public static bool TryLogin(int attempts = 3)
     {
         int count = 0;
         while (count < attempts)
@@ -11,9 +11,9 @@ public static class AdminWork
             {
                 Console.WriteLine("Вы продолжаете как администратор.");
                 Console.WriteLine("Введите логин:");
-                var login = Console.ReadLine();
+                var login = ValidationHelper.CheckUsernameEntry(Console.ReadLine());
                 Console.WriteLine("Введите пароль:");
-                var password = int.Parse(Console.ReadLine());
+                var password = ValidationHelper.CheckAdminInput();
 
                 if (Admin.CheckAdmin(login, password))
                 {
@@ -28,11 +28,12 @@ public static class AdminWork
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
-        Console.WriteLine("Превышено максимальное количество попыток. Возврат в главное меню.");
+        Console.WriteLine("Превышено максимальное количество попыток. \n За вами выехал наряд ФСБ, собирайте вещи. \n Пока он едет пройдите наш тест.");
+        ValidationHelper.CheckLogin();
         return false;
     }
               
-    public static void AdminMenu(string questionPath)
+    public static void Menu(string questionPath)
     {
         while (true)
         {
@@ -41,16 +42,18 @@ public static class AdminWork
             Console.WriteLine("2. Добавить вопрос");
             Console.WriteLine("3. Удалить вопрос");
             Console.WriteLine("4. Просмотреть результаты");
-            Console.WriteLine("5. Выйти");
-            Console.Write("Выберите действие (1-5): ");
+            Console.WriteLine("5. Выйти из программы");
+            Console.WriteLine("6. Выйти в главное меню");
+            Console.Write("Выберите действие (1-6): ");
 
             switch (Console.ReadLine())
             {
                 case "1": FileProvider.Show(questionPath); break;
-                case "2": QuestionsStorage.AddQuestion(questionPath); break;
-                case "3": QuestionsStorage.DeleteQuestion(questionPath); break;
+                case "2": QuestionsStorage.Add(questionPath); break;
+                case "3": QuestionsStorage.Delete(questionPath); break;
                 case "4": FileProvider.Show("test_results"); break;
                 case "5": Console.WriteLine("Выход из режима администратора."); return;
+                case "6": ValidationHelper.CheckLogin(); return;
                 default: Console.WriteLine("Неверный выбор!"); break;
             }
 

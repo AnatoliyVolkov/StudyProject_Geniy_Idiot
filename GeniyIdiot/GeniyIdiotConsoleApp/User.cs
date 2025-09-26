@@ -8,14 +8,14 @@ public static class User
 
     public static string userFullName => $"{UserName} {UserSurname} {UserPatronymic}";
     
-    public static void SafeUserData(string name, string surname, string patronymic)
+    public static void SafeData(string name, string surname, string patronymic)
     {
         UserName = name;
         UserSurname = surname;
         UserPatronymic = patronymic;
     }
 
-    public static int RightUserAnswer(int questionIndex)
+    public static int RightAnswer(int questionIndex)
     {
         return ValidationHelper.CheckAnswerUserQuestion(UserName, questionIndex);
     }

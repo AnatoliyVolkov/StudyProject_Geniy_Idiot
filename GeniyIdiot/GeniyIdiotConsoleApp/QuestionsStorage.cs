@@ -10,13 +10,13 @@ public static class QuestionsStorage
         return GetFromFile();
     }
 
-    public static void CreaterFirstQuestions(string questionPath)
+    public static void CreaterFirst(string questionPath)
     {
         var lines = FileProvider.Read(questionPath);
         if (lines.Count <= 2)
         {
             var lin = lines.Count - 2;
-            foreach (var question in GetDefaultQuestions())
+            foreach (var question in GetDefault())
             {
                 string formatted = $"{lin+1,-5}|| {question._Question,-85} || {question.Answer,-15}";
                 FileProvider.Append(questionPath, formatted);
@@ -55,12 +55,12 @@ public static class QuestionsStorage
 
         if (questions.Count == 0)
         {
-            questions.AddRange(GetDefaultQuestions());
+            questions.AddRange(GetDefault());
         }
         return questions;
     }
 
-    private static List<Question> GetDefaultQuestions()
+    private static List<Question> GetDefault()
     {
         return new List<Question>()
         {
@@ -72,7 +72,7 @@ public static class QuestionsStorage
         };
     }
 
-    public static void DeleteQuestion(string questionPath)
+    public static void Delete(string questionPath)
     {
         List<string> lines = FileProvider.Read(questionPath);
         FileProvider.Show(questionPath);
@@ -96,7 +96,7 @@ public static class QuestionsStorage
         Console.WriteLine("Вопрос успешно удален!");
     }
 
-    public static void AddQuestion(string questionPath)
+    public static void Add(string questionPath)
     {
         List<string> lines = FileProvider.Read(questionPath);
         Console.WriteLine("Введите вопрос для добавления");
@@ -108,8 +108,7 @@ public static class QuestionsStorage
         }
 
         Console.WriteLine("Введите ответ на ваш вопрос");
-        var answer = Console.ReadLine();
-        var validatedAnswer = ValidationHelper.CheckAdminInput(answer);
+        var validatedAnswer = ValidationHelper.CheckAdminInput();
         int questionNumber = lines.Count - 1;
         var newQuestion = $"{questionNumber,-5}|| {question,-85} || {validatedAnswer,-15}";
         FileProvider.Append(questionPath, newQuestion);
