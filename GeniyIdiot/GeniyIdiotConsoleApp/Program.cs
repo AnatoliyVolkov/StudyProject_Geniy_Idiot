@@ -5,42 +5,45 @@ internal partial class Program
     static void Main(string[] args)
     {
         ChekFile();
-        try
+        while (true)
         {
-            if (ValidationHelper.CheckLogin())
+            try
             {
-                var userNameInfo = UserFIO();
-                Console.WriteLine($"Добро пожаловать {userNameInfo.userName}! Мы приступаем.");
-                var restart = true;
-
-                while (restart)
+                if (ValidationHelper.CheckLogin())
                 {
-                    var score = RunTest(userNameInfo.userName);
-                    ShowResults(userNameInfo.userName, score);
-                    Console.WriteLine($"\n{userNameInfo.userName}, хотите пройти тест еще раз? (да/нет)");
-                    restart = DiagnosticTestResources.GetUserConfirm(userNameInfo.userName);
-                }
+                    var userNameInfo = UserFIO();
+                    Console.WriteLine($"Добро пожаловать {userNameInfo.userName}! Мы приступаем.");
+                    var restart = true;
 
-                ShowAllResult();
-                Console.WriteLine($"\nСпасибо {userNameInfo.userName}, что прошли наш тест. Всего хорошего.");
-            }
-            else
-            {
-                if (AdminService.TryLogin())
-                {
-                    var dir = Directory.GetCurrentDirectory();
-                    var questionPath = Path.Combine(dir, "Question");
+                    while (restart)
+                    {
+                        var score = RunTest(userNameInfo.userName);
+                        ShowResults(userNameInfo.userName, score);
+                        Console.WriteLine($"\n{userNameInfo.userName}, хотите пройти тест еще раз? (да/нет)");
+                        restart = DiagnosticTestResources.GetUserConfirm(userNameInfo.userName);
+                    }
 
-                    AdminService.Menu(questionPath);
+                    ShowAllResult();
+                    Console.WriteLine($"\nСпасибо {userNameInfo.userName}, что прошли наш тест. Всего хорошего.");
                 }
                 else
                 {
-                    Console.WriteLine("Не удалось войти в режим администратора. Завершение работы.");
-                    return;
+                    if (AdminService.TryLogin())
+                    {
+                        var dir = Directory.GetCurrentDirectory();
+                        var questionPath = Path.Combine(dir, "Question");
+
+                        AdminService.Menu(questionPath);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Не удалось войти в режим администратора. Завершение работы.");
+                        return;
+                    }
                 }
             }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
-        catch (Exception ex) { Console.WriteLine(ex.Message); }
     }
 
     public static (string userLastName, string userName, string userPatronymic) UserFIO()

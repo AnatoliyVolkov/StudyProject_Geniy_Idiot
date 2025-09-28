@@ -29,7 +29,6 @@ public static class AdminService
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
         Console.WriteLine("Превышено максимальное количество попыток. \n За вами выехал наряд ФСБ, собирайте вещи. \n Пока он едет пройдите наш тест.");
-        ValidationHelper.CheckLogin();
         return false;
     }
 
@@ -52,8 +51,10 @@ public static class AdminService
                 case "2": QuestionsStorage.Add(questionPath); break;
                 case "3": QuestionsStorage.Delete(questionPath); break;
                 case "4": FileProvider.Show("test_results"); break;
-                case "5": Console.WriteLine("Выход из режима администратора."); return;
-                case "6": ValidationHelper.CheckLogin(); return;
+                case "5": Console.WriteLine("Выход из режима администратора.");
+                    Environment.Exit(0); 
+                    break;
+                case "6": return;
                 default: Console.WriteLine("Неверный выбор!"); break;
             }
 
