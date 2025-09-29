@@ -1,4 +1,4 @@
-﻿namespace GeniyIdiotApp;
+﻿namespace GeniyIdiotClassLibrary;
 
 public static class QuestionsStorage
 {
@@ -18,7 +18,7 @@ public static class QuestionsStorage
             var lin = lines.Count - 2;
             foreach (var question in GetDefault())
             {
-                string formatted = $"{lin + 1,-5}|| {question._Question,-85} || {question.Answer,-15}";
+                var formatted = $"{lin + 1,-5}|| {question._Question,-85} || {question.Answer,-15}";
                 FileProvider.Append(questionPath, formatted);
                 lin++;
             }
@@ -28,7 +28,7 @@ public static class QuestionsStorage
     public static List<Question> GetFromFile()
     {
         List<Question> questions = new List<Question>();
-        List<string> lines = FileProvider.Read(questionPath);
+        var lines = FileProvider.Read(questionPath);
         for (int i = 2 ; i < lines.Count ; i++)
         {
             var line = lines[i];

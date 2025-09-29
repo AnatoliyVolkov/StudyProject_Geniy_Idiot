@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace GeniyIdiotApp;
+namespace GeniyIdiotClassLibrary;
 
 public class AdminStorage
 {

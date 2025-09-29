@@ -1,4 +1,4 @@
-﻿namespace GeniyIdiotApp;
+﻿namespace GeniyIdiotClassLibrary;
 
 public static class ValidationHelper
 {

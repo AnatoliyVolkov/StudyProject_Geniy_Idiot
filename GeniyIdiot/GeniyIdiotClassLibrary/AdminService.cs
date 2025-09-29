@@ -1,4 +1,4 @@
-﻿namespace GeniyIdiotApp;
+﻿namespace GeniyIdiotClassLibrary;
 
 public static class AdminService
 {
@@ -31,7 +31,7 @@ public static class AdminService
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
         Console.WriteLine("Превышено максимальное количество попыток. \n За вами выехал наряд ФСБ, собирайте вещи. \n Пока он едет пройдите наш тест.");
-        Program.GetStart();
+        Test.GetStart();
         return false;
     }
 
@@ -87,7 +87,7 @@ public static class AdminService
                     Console.WriteLine("Выход из режима администратора.");
                     Environment.Exit(0);
                     return;
-                case "7": Program.GetStart(); return;
+                case "7": Test.GetStart(); return;
                 default: Console.WriteLine("Неверный выбор!"); break;
             }
 

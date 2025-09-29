@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace GeniyIdiotApp;
+namespace GeniyIdiotClassLibrary;
 
 public static class FileProvider
 {
