@@ -29,6 +29,7 @@ public static class AdminService
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
         Console.WriteLine("Превышено максимальное количество попыток. \n За вами выехал наряд ФСБ, собирайте вещи. \n Пока он едет пройдите наш тест.");
+        Program.GetStart();
         return false;
     }
 
@@ -54,7 +55,7 @@ public static class AdminService
                 case "5": Console.WriteLine("Выход из режима администратора.");
                     Environment.Exit(0); 
                     break;
-                case "6": return;
+                case "6":Program.GetStart(); break;
                 default: Console.WriteLine("Неверный выбор!"); break;
             }
 

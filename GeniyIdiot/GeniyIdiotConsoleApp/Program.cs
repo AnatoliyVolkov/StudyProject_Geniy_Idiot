@@ -2,48 +2,10 @@
 
 internal partial class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
         ChekFile();
-        while (true)
-        {
-            try
-            {
-                if (ValidationHelper.CheckLogin())
-                {
-                    var userNameInfo = UserFIO();
-                    Console.WriteLine($"Добро пожаловать {userNameInfo.userName}! Мы приступаем.");
-                    var restart = true;
-
-                    while (restart)
-                    {
-                        var score = RunTest(userNameInfo.userName);
-                        ShowResults(userNameInfo.userName, score);
-                        Console.WriteLine($"\n{userNameInfo.userName}, хотите пройти тест еще раз? (да/нет)");
-                        restart = DiagnosticTestResources.GetUserConfirm(userNameInfo.userName);
-                    }
-
-                    ShowAllResult();
-                    Console.WriteLine($"\nСпасибо {userNameInfo.userName}, что прошли наш тест. Всего хорошего.");
-                }
-                else
-                {
-                    if (AdminService.TryLogin())
-                    {
-                        var dir = Directory.GetCurrentDirectory();
-                        var questionPath = Path.Combine(dir, "Question");
-
-                        AdminService.Menu(questionPath);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Не удалось войти в режим администратора. Завершение работы.");
-                        return;
-                    }
-                }
-            }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
-        }
+        GetStart();
     }
 
     public static (string userLastName, string userName, string userPatronymic) UserFIO()
@@ -89,7 +51,7 @@ internal partial class Program
         var countRightAnswers = 0;
         var questions = QuestionsStorage.GetQuestions();
         var questionOrder = DiagnosticTestResources.ShuffleTestQuestions();
-        for (var i = 0 ; i < questions.Count ; i++)
+        for (var i = 0; i < questions.Count; i++)
         {
             var questionIndex = questionOrder[i];
 
@@ -114,5 +76,45 @@ internal partial class Program
         UserResultStorage.LoadFromFile(testPath);
         Console.WriteLine($"\n{userName}, вы ответили верно на {answer} вопросов.");
         Console.WriteLine($"Ваш результат: {diagnostic}");
+    }
+
+    public static void GetStart()
+    {
+
+        try
+        {
+            if (ValidationHelper.CheckLogin())
+            {
+                var userNameInfo = UserFIO();
+                Console.WriteLine($"Добро пожаловать {userNameInfo.userName}! Мы приступаем.");
+                var restart = true;
+
+                while (restart)
+                {
+                    var score = RunTest(userNameInfo.userName);
+                    ShowResults(userNameInfo.userName, score);
+                    Console.WriteLine($"\n{userNameInfo.userName}, хотите пройти тест еще раз? (да/нет)");
+                    restart = DiagnosticTestResources.GetUserConfirm(userNameInfo.userName);
+                }
+
+                ShowAllResult();
+                Console.WriteLine($"\nСпасибо {userNameInfo.userName}, что прошли наш тест. Всего хорошего.");
+            }
+            else
+            {
+                if (AdminService.TryLogin())
+                {
+                    var dir = Directory.GetCurrentDirectory();
+                    var questionPath = Path.Combine(dir, "Question");
+
+                    AdminService.Menu(questionPath);
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
+        catch (Exception ex) { Console.WriteLine(ex.Message); }
     }
 }
