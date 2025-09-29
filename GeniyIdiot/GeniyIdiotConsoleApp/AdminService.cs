@@ -2,6 +2,8 @@
 
 public static class AdminService
 {
+    private static string adminFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Admin");
+
     public static bool TryLogin(int attempts = 3)
     {
         int count = 0;
@@ -12,7 +14,7 @@ public static class AdminService
                 Console.WriteLine("Вы продолжаете как администратор.");
                 Console.WriteLine("Введите логин:");
                 var login = ValidationHelper.CheckUsernameEntry(Console.ReadLine());
-                Console.WriteLine("Введите пароль:");
+                Console.WriteLine("Введите пароль (только цифры):");
                 var password = ValidationHelper.CheckAdminInput();
 
                 if (Admin.CheckAdmin(login, password))
@@ -33,6 +35,33 @@ public static class AdminService
         return false;
     }
 
+    public static void RegisterAdmin()
+    {
+        try
+        {
+            var adminStorage = new AdminStorage();
+
+            Console.WriteLine("Добавление нового администратора");
+            Console.WriteLine("Введите логин:");
+            var login = ValidationHelper.CheckUsernameEntry(Console.ReadLine());
+            Console.WriteLine("Введите пароль (только цифры):");
+            var password = ValidationHelper.CheckAdminInput();
+
+            if (adminStorage.admins.Any(admin => admin.Login == login.ToLower()))
+            {
+                Console.WriteLine("Администратор с таким логином уже существует!");
+                return;
+            }
+
+            adminStorage.AddAdmin(login.ToLower(), password);
+            Console.WriteLine("Новый администратор успешно зарегистрирован!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка при регистрации: {ex.Message}");
+        }
+    }
+
     public static void Menu(string questionPath)
     {
         while (true)
@@ -42,9 +71,10 @@ public static class AdminService
             Console.WriteLine("2. Добавить вопрос");
             Console.WriteLine("3. Удалить вопрос");
             Console.WriteLine("4. Просмотреть результаты");
-            Console.WriteLine("5. Выйти из программы");
-            Console.WriteLine("6. Выйти в главное меню");
-            Console.Write("Выберите действие (1-6): ");
+            Console.WriteLine("5. Зарегистрировать нового администратора");
+            Console.WriteLine("6. Выйти из программы");
+            Console.WriteLine("7. Выйти в главное меню");
+            Console.Write("Выберите действие (1-7): ");
 
             switch (Console.ReadLine())
             {
@@ -52,10 +82,12 @@ public static class AdminService
                 case "2": QuestionsStorage.Add(questionPath); break;
                 case "3": QuestionsStorage.Delete(questionPath); break;
                 case "4": FileProvider.Show("test_results"); break;
-                case "5": Console.WriteLine("Выход из режима администратора.");
-                    Environment.Exit(0); 
-                    break;
-                case "6":Program.GetStart(); break;
+                case "5": RegisterAdmin(); break;
+                case "6":
+                    Console.WriteLine("Выход из режима администратора.");
+                    Environment.Exit(0);
+                    return;
+                case "7": Program.GetStart(); return;
                 default: Console.WriteLine("Неверный выбор!"); break;
             }
 
