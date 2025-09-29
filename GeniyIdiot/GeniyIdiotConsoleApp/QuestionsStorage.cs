@@ -97,7 +97,7 @@ public static class QuestionsStorage
 
         Console.WriteLine("Введите ответ на ваш вопрос");
         var validatedAnswer = ValidationHelper.CheckAdminInput();
-        int questionNumber = lines.Count - 1;
+        var questionNumber = lines.Count - 1;
         var newQuestion = $"{questionNumber,-5}|| {question,-85} || {validatedAnswer,-15}";
         FileProvider.Append(questionPath, newQuestion);
 

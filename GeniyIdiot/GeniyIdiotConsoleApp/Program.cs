@@ -78,8 +78,8 @@ internal partial class Program
         var questionPath = Path.Combine(directoryPath, "Question");
         Directory.CreateDirectory(directoryPath);
 
-        string testHeader = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||", "ФИО", "Набранные баллы", "Диагноз");
-        string questionHeader = string.Format("{0,-5} || {1,-85} || {2,-15}", "П/П", "Вопрос", "Ответ");
+        var testHeader = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||", "ФИО", "Набранные баллы", "Диагноз");
+        var questionHeader = string.Format("{0,-5} || {1,-85} || {2,-15}", "П/П", "Вопрос", "Ответ");
      
         FileProvider.Creater(testPath, testHeader);
         FileProvider.Creater(questionPath, questionHeader);
@@ -107,7 +107,7 @@ internal partial class Program
         var diagnostic = DiagnosticTestResources.GetDiagnose(answer);
         var testPath = Path.Combine(Directory.GetCurrentDirectory(), "test_results");
 
-        string line = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
+        var line = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
             User.userFullName,
             answer.ToString(),
             diagnostic);

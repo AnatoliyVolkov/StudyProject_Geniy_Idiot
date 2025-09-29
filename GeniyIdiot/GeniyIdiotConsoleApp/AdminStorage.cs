@@ -31,8 +31,8 @@ public class AdminStorage
     {
         try
         {
-            string header = string.Format("{0,-45} || {1,-30}", "Логин", "Пароль");
-            string separator = new string('=', header.Length);
+            var header = string.Format("{0,-45} || {1,-30}", "Логин", "Пароль");
+            var separator = new string('=', header.Length);
 
             using var sw = new StreamWriter(adminFilePath, false, Encoding.UTF8);
             sw.WriteLine(header);
@@ -40,7 +40,7 @@ public class AdminStorage
 
             foreach (var admin in admins)
             {
-                string line = string.Format("{0,-45} || {1,-30}", admin.Login, admin.Password.ToString());
+                var line = string.Format("{0,-45} || {1,-30}", admin.Login, admin.Password.ToString());
                 sw.WriteLine(line);
             }
         }

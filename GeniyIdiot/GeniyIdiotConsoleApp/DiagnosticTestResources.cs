@@ -21,8 +21,8 @@ public static class DiagnosticTestResources
 
     public static List<int> ShuffleTestQuestions()
     {
-        int questionCount = QuestionsStorage.GetQuestions().Count;
-        List<int> questionIndexes = Enumerable.Range(0, questionCount).ToList();
+        var questionCount = QuestionsStorage.GetQuestions().Count;
+        var questionIndexes = Enumerable.Range(0, questionCount).ToList();
         var randomQuestion = new Random();
 
         for (var i = questionIndexes.Count - 1; i > 0; i--)
