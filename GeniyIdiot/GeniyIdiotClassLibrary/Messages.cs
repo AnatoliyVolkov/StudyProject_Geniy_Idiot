@@ -1,4 +1,5 @@
-﻿namespace GeniyIdiotClassLibrary
+﻿
+namespace GeniyIdiotClassLibrary
 {
     public static class Messages
     {
@@ -21,6 +22,7 @@
             "6. Выйти из программы\n" +
             "7. Выйти в главное меню";
         public static string ChooseAction = "Выберите действие (1-7):";
+        public static string ExitAdministrator = "Выход из режима администратора.";
         public static string InvalidChoice = "Неверный выбор!";
         public static string PressEnter = "\nНажмите Enter для продолжения...";
 
@@ -56,6 +58,7 @@
         public static string NumbersNotAllowed = "Нельзя вводить числа, будьте внимательней";
         public static string SingleWord = "Можно вводить только одно слово без пробелов, будьте внимательней";
         public static string InvalidChars = "Были введены не допустимые символы, будьте внимательней";
+        public static string NextTry = "Повторите попытку ввода еще раз.";
         public static string EmptyAnswer = "Вы дали ответ пустой строкой.\n Пожалуйста дайте ответ Да или Нет.";
         public static string NumberAnswer = "Вы дали ответ числом.\n Пожалуйста дайте ответ Да или Нет.";
         public static string InvalidAnswer = "Вы дали не корректный ответ.\n Пожалуйста дайте ответ Да или Нет.";
