@@ -11,26 +11,26 @@ public static class AdminService
         {
             try
             {
-                Console.WriteLine("Вы продолжаете как администратор.");
-                Console.WriteLine("Введите логин:");
+                Console.WriteLine(Messages.ContinueAsAdmin);
+                Console.WriteLine(Messages.EnterLogin);
                 var login = ValidationHelper.CheckUsernameEntry(Console.ReadLine());
-                Console.WriteLine("Введите пароль (только цифры):");
+                Console.WriteLine(Messages.EnterPassword);
                 var password = ValidationHelper.CheckAdminInput();
 
                 if (Admin.CheckAdmin(login, password))
                 {
-                    Console.WriteLine("Авторизация успешна!");
+                    Console.WriteLine(Messages.AuthSuccess);
                     return true;
                 }
                 else
                 {
                     count++;
-                    Console.WriteLine($"НЕВЕРНО! У вас осталось {attempts - count} попыток.");
+                    Console.WriteLine(string.Format(Messages.AuthFailed, attempts - count));
                 }
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
-        Console.WriteLine("Превышено максимальное количество попыток. \n За вами выехал наряд ФСБ, собирайте вещи. \n Пока он едет пройдите наш тест.");
+        Console.WriteLine(Messages.MaxAttempts);
         Test.GetStart();
         return false;
     }
@@ -41,24 +41,24 @@ public static class AdminService
         {
             var adminStorage = new AdminStorage();
 
-            Console.WriteLine("Добавление нового администратора");
-            Console.WriteLine("Введите логин:");
+            Console.WriteLine(Messages.RegisterAdmin);
+            Console.WriteLine(Messages.EnterLogin);
             var login = ValidationHelper.CheckUsernameEntry(Console.ReadLine());
-            Console.WriteLine("Введите пароль (только цифры):");
+            Console.WriteLine(Messages.EnterPassword);
             var password = ValidationHelper.CheckAdminInput();
 
             if (adminStorage.admins.Any(admin => admin.Login == login.ToLower()))
             {
-                Console.WriteLine("Администратор с таким логином уже существует!");
+                Console.WriteLine(Messages.AdminExists);
                 return;
             }
 
             adminStorage.AddAdmin(login.ToLower(), password);
-            Console.WriteLine("Новый администратор успешно зарегистрирован!");
+            Console.WriteLine(Messages.AdminRegistered);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ошибка при регистрации: {ex.Message}");
+            Console.WriteLine(string.Format(Messages.RegisterError, ex.Message));
         }
     }
 
@@ -66,15 +66,7 @@ public static class AdminService
     {
         while (true)
         {
-            Console.WriteLine("РЕЖИМ АДМИНИСТРАТОРА");
-            Console.WriteLine("1. Просмотреть вопросы");
-            Console.WriteLine("2. Добавить вопрос");
-            Console.WriteLine("3. Удалить вопрос");
-            Console.WriteLine("4. Просмотреть результаты");
-            Console.WriteLine("5. Зарегистрировать нового администратора");
-            Console.WriteLine("6. Выйти из программы");
-            Console.WriteLine("7. Выйти в главное меню");
-            Console.Write("Выберите действие (1-7): ");
+            Console.WriteLine(Messages.AdminMenu);
 
             switch (Console.ReadLine())
             {
@@ -84,14 +76,14 @@ public static class AdminService
                 case "4": FileProvider.Show("test_results"); break;
                 case "5": RegisterAdmin(); break;
                 case "6":
-                    Console.WriteLine("Выход из режима администратора.");
+                    Console.WriteLine(Messages.ExitAdministrator);
                     Environment.Exit(0);
                     return;
                 case "7": Test.GetStart(); return;
-                default: Console.WriteLine("Неверный выбор!"); break;
+                default: Console.WriteLine(Messages.InvalidChoice); break;
             }
 
-            Console.WriteLine("\nНажмите Enter для продолжения...");
+            Console.WriteLine(Messages.PressEnter);
             Console.ReadLine();
         }
     }

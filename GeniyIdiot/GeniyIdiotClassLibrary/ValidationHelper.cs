@@ -11,7 +11,7 @@ public static class ValidationHelper
                 var userInput = Console.ReadLine();
                 if (string.IsNullOrEmpty(userInput))
                 {
-                    throw new Exception($"Вы дали ответ пустой строкой.\n Вам нужно ввести число не длинее 6 знаков.");
+                    throw new Exception(Messages.EmptyNumber);
                 }
                 if (short.TryParse(userInput, out var answer))
                 {
@@ -19,11 +19,11 @@ public static class ValidationHelper
                 }
                 if (long.TryParse(userInput, out var _))
                 {
-                    throw new Exception($"{userName}, вы ввели слишком большое число, Вам нужно ввести число не длинее 6 знаков.");
+                    throw new Exception(Messages.TooBigNumber);
                 }
                 else
                 {
-                    throw new Exception($"{userName}, вы ввели букву, Вам нужно ввести число не длинее 6 знаков.");
+                    throw new Exception(Messages.LetterInput);
                 }
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
@@ -35,19 +35,19 @@ public static class ValidationHelper
 
         if (string.IsNullOrEmpty(name))
         {
-            throw new Exception("Нельзя оставлять поле пустым, будьте внимательней");
+            throw new Exception(Messages.EmptyField);
         }
         if (short.TryParse(name, out _))
         {
-            throw new Exception("Нельзя вводить числа, будьте внимательней");
+            throw new Exception(Messages.NumbersNotAllowed);
         }
         if (name.Contains(" "))
         {
-            throw new Exception("Можно вводить только одно слово без пробелов, будьте внимательней");
+            throw new Exception(Messages.SingleWord);
         }
         if (name.Any(c => DiagnosticTestResources.InvalidChars.Contains(c)))
         {
-            throw new Exception("Были введены не допустимые символы, будьте внимательней");
+            throw new Exception(Messages.InvalidChars);
         }
         else
         {
@@ -64,15 +64,15 @@ public static class ValidationHelper
                 var answer = Console.ReadLine();
                 if (string.IsNullOrEmpty(answer))
                 {
-                    throw new Exception($"Вы дали ответ пустой строкой.\n Пожалуйста дайте ответ Да или Нет.");
+                    throw new Exception(Messages.EmptyAnswer);
                 }
                 if (long.TryParse(answer, out _))
                 {
-                    throw new Exception($"Вы дали ответ числом.\n Пожалуйста дайте ответ Да или Нет.");
+                    throw new Exception(Messages.NumberAnswer);
                 }
                 if (answer.Trim().ToLower() == "нет" || answer.Trim().ToLower() == "да")
                 { return answer; }
-                else { throw new Exception($"Вы дали не корректный ответ.\n Пожалуйста дайте ответ Да или Нет."); }
+                else { throw new Exception(Messages.InvalidAnswer); }
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
@@ -90,15 +90,15 @@ public static class ValidationHelper
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                Console.WriteLine("Повторите попытку ввода еще раз.");
+                Console.WriteLine(Messages.NextTry);
             }
         }
     }
 
     public static bool CheckLogin()
     {
-        Console.WriteLine("Добро пожаловать в программу оценки гениальности!\n" +
-            "Вы хотите войти как пользователь? да/нет");
+        Console.WriteLine(Messages.Welcome);
+        Console.WriteLine(Messages.ChooseRole);
         var answer = CheckUserAnswer();
         if (answer == "да") { return true; }
         return false;
@@ -113,7 +113,7 @@ public static class ValidationHelper
                 var userInput = Console.ReadLine();
                 if (string.IsNullOrEmpty(userInput))
                 {
-                    throw new Exception($"Вы дали ответ пустой строкой.\n Вам нужно ввести число не длинее 6 знаков.");
+                    throw new Exception(Messages.EmptyNumber);
                 }
                 if (short.TryParse(userInput, out var answer))
                 {
@@ -121,11 +121,11 @@ public static class ValidationHelper
                 }
                 if (long.TryParse(userInput, out var _))
                 {
-                    throw new Exception($"Вы ввели слишком большое число, Вам нужно ввести число не длинее 6 знаков.");
+                    throw new Exception(Messages.TooBigNumber);
                 }
                 else
                 {
-                    throw new Exception($"Вы ввели букву, Вам нужно ввести число не длинее 6 знаков.");
+                    throw new Exception(Messages.LetterInput);
                 }
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
