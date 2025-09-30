@@ -1,11 +1,16 @@
-﻿namespace GeniyIdiotApp;
+﻿
+using GeniyIdiotConsoleApp;
+
+namespace GeniyIdiotApp;
 
 internal partial class Program
 {
     static void Main()
     {
-        Test.ChekFile();
-        Test.GetStart();
+        var app = new Services();
+        app.Run();
     }
-       
 }
+
+
+

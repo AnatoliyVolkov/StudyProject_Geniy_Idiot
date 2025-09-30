@@ -1,134 +1,126 @@
-﻿namespace GeniyIdiotClassLibrary;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GeniyIdiotClassLibrary;
 
 public static class ValidationHelper
 {
-    public static int CheckAnswerUserQuestion(string userName, int questionIndex)
+    public static ValidationResult<int> CheckAnswerUserQuestion(string userInput, string userName, int questionIndex, string questionPath)
     {
-        while (true)
+        try
         {
-            try
+            if (string.IsNullOrEmpty(userInput))
+                return ValidationResult<int>.Fail(Messages.EmptyNumber);
+
+            if (short.TryParse(userInput, out var answer))
             {
-                var userInput = Console.ReadLine();
-                if (string.IsNullOrEmpty(userInput))
-                {
-                    throw new Exception($"Вы дали ответ пустой строкой.\n Вам нужно ввести число не длинее 6 знаков.");
-                }
-                if (short.TryParse(userInput, out var answer))
-                {
-                    return answer == QuestionsStorage.GetQuestions()[questionIndex].Answer ? 1 : 0;
-                }
-                if (long.TryParse(userInput, out var _))
-                {
-                    throw new Exception($"{userName}, вы ввели слишком большое число, Вам нужно ввести число не длинее 6 знаков.");
-                }
-                else
-                {
-                    throw new Exception($"{userName}, вы ввели букву, Вам нужно ввести число не длинее 6 знаков.");
-                }
+                bool isCorrect = answer == QuestionsStorage.GetQuestions(questionPath)[questionIndex].Answer;
+                return ValidationResult<int>.Success(isCorrect ? 1 : 0);
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+            if (long.TryParse(userInput, out _))
+                return ValidationResult<int>.Fail(string.Format(Messages.TooBigNumber, userName));
+
+            return ValidationResult<int>.Fail(string.Format(Messages.LetterInput, userName));
+        }
+        catch (Exception ex)
+        {
+            return ValidationResult<int>.Fail(ex.Message);
         }
     }
 
-    public static string CheckUsernameEntry(string name)
-    {
 
-        if (string.IsNullOrEmpty(name))
+    public static ValidationResult<string> CheckUsernameEntry(string name)
+    {
+        try
         {
-            throw new Exception("Нельзя оставлять поле пустым, будьте внимательней");
+            if (string.IsNullOrEmpty(name))
+                return ValidationResult<string>.Fail(Messages.EmptyField);
+
+            if (short.TryParse(name, out _))
+                return ValidationResult<string>.Fail(Messages.NumbersNotAllowed);
+
+            if (name.Contains(" "))
+                return ValidationResult<string>.Fail(Messages.SingleWord);
+
+            if (name.Any(c => DiagnosticTestResources.InvalidChars.Contains(c)))
+                return ValidationResult<string>.Fail(Messages.InvalidChars);
+
+            string formattedName = name.Substring(0, 1).ToUpper() + name.Substring(1).ToLower();
+            return ValidationResult<string>.Success(formattedName);
         }
-        if (short.TryParse(name, out _))
+        catch (Exception ex)
         {
-            throw new Exception("Нельзя вводить числа, будьте внимательней");
-        }
-        if (name.Contains(" "))
-        {
-            throw new Exception("Можно вводить только одно слово без пробелов, будьте внимательней");
-        }
-        if (name.Any(c => DiagnosticTestResources.InvalidChars.Contains(c)))
-        {
-            throw new Exception("Были введены не допустимые символы, будьте внимательней");
-        }
-        else
-        {
-            return name.Substring(0, 1).ToUpper() + name.Substring(1).ToLower();
+            return ValidationResult<string>.Fail(ex.Message);
         }
     }
 
-    public static string CheckUserAnswer()
+    public static ValidationResult<string> CheckUserAnswer(string input)
     {
-        while (true)
+        try
         {
-            try
-            {
-                var answer = Console.ReadLine();
-                if (string.IsNullOrEmpty(answer))
-                {
-                    throw new Exception($"Вы дали ответ пустой строкой.\n Пожалуйста дайте ответ Да или Нет.");
-                }
-                if (long.TryParse(answer, out _))
-                {
-                    throw new Exception($"Вы дали ответ числом.\n Пожалуйста дайте ответ Да или Нет.");
-                }
-                if (answer.Trim().ToLower() == "нет" || answer.Trim().ToLower() == "да")
-                { return answer; }
-                else { throw new Exception($"Вы дали не корректный ответ.\n Пожалуйста дайте ответ Да или Нет."); }
-            }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            if (string.IsNullOrEmpty(input))
+                return ValidationResult<string>.Fail(Messages.EmptyAnswer);
+
+            if (long.TryParse(input, out _))
+                return ValidationResult<string>.Fail(Messages.NumberAnswer);
+
+            string normalizedInput = input.Trim().ToLower();
+
+            if (normalizedInput == "нет" || normalizedInput == "да")
+                return ValidationResult<string>.Success(normalizedInput);
+
+            return ValidationResult<string>.Fail(Messages.InvalidAnswer);
         }
+        catch (Exception ex)
+        {
+            return ValidationResult<string>.Fail(ex.Message);
+        }   
     }
 
-    public static string GetUserName()
+    //public static ValidationResult GetUserName(string input)
+    //{
+    //    while (true)
+    //    {
+    //        try
+    //        {
+    //            var name = input;
+    //            return CheckUsernameEntry(name);
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Console.WriteLine(ex.Message);
+    //            Console.WriteLine("Повторите попытку ввода еще раз.");
+    //        }
+    //    }
+    //}
+
+    //public static bool CheckLogin()
+    //{
+    //    Console.WriteLine("Добро пожаловать в программу оценки гениальности!\n" +
+    //        "Вы хотите войти как пользователь? да/нет");
+    //    var answer = CheckUserAnswer();
+    //    if (answer == "да") { return true; }
+    //    return false;
+    //}
+
+    public static ValidationResult<int> CheckAdminInput(string userInput)
     {
-        while (true)
+        try
         {
-            try
-            {
-                var name = Console.ReadLine();
-                return ValidationHelper.CheckUsernameEntry(name);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("Повторите попытку ввода еще раз.");
-            }
+            if (string.IsNullOrEmpty(userInput))
+                return ValidationResult<int>.Fail(Messages.EmptyNumber);
+
+            if (short.TryParse(userInput, out var answer))
+                return ValidationResult<int>.Success(answer);
+
+            if (long.TryParse(userInput, out _))
+                return ValidationResult<int>.Fail(Messages.TooBigNumber);
+
+            return ValidationResult<int>.Fail(Messages.LetterInput);
         }
-    }
-
-    public static bool CheckLogin()
-    {
-        Console.WriteLine("Добро пожаловать в программу оценки гениальности!\n" +
-            "Вы хотите войти как пользователь? да/нет");
-        var answer = CheckUserAnswer();
-        if (answer == "да") { return true; }
-        return false;
-    }
-
-    public static int CheckAdminInput()
-    {
-        while (true)
+        catch (Exception ex)
         {
-            try
-            {
-                var userInput = Console.ReadLine();
-                if (string.IsNullOrEmpty(userInput))
-                {
-                    throw new Exception($"Вы дали ответ пустой строкой.\n Вам нужно ввести число не длинее 6 знаков.");
-                }
-                if (short.TryParse(userInput, out var answer))
-                {
-                    return answer;
-                }
-                if (long.TryParse(userInput, out var _))
-                {
-                    throw new Exception($"Вы ввели слишком большое число, Вам нужно ввести число не длинее 6 знаков.");
-                }
-                else
-                {
-                    throw new Exception($"Вы ввели букву, Вам нужно ввести число не длинее 6 знаков.");
-                }
-            }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            return ValidationResult<int>.Fail(ex.Message);
         }
     }
 }

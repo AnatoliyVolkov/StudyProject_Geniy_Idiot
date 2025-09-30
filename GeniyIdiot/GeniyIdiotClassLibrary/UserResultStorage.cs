@@ -2,18 +2,20 @@
 
 public static class UserResultStorage
 {
-    static readonly List<User> userResult = new List<User>();
+    //static readonly List<User> userResult = new List<User>();
 
-    public static void LoadFromFile(string filePath)
+    public static List<User> LoadFromFile(string filePath)
     {
-        userResult.Clear();
-        var lines = FileProvider.Read(filePath);
-        for (int i = 2; i < lines.Count; i++)
+        try
         {
-            var line = lines[i];
-            if (string.IsNullOrWhiteSpace(line)) continue;
-            try
+            var userResults = new List<User>();
+            var lines = FileProvider.Read(filePath);
+
+            for (int i = 2 ; i < lines.Count ; i++)
             {
+                var line = lines[i];
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
                 var parts = line.Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length >= 3)
                 {
@@ -23,15 +25,32 @@ public static class UserResultStorage
 
                     if (int.TryParse(answerText, out int answer))
                     {
-                        userResult.Add(new User(fio, answer, diagnostic));
+                        userResults.Add(new User(fio, answer, diagnostic));
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при чтении результата: {ex.Message}");
-            }
+            return userResults;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Ошибка загрузки результатов: {ex.Message}");
         }
     }
 
+    public static void SaveResult(string filePath, string userFullName, int answer, string diagnostic)
+    {
+        try
+        {
+            var line = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
+                userFullName,
+                answer.ToString(),
+                diagnostic);
+
+            FileProvider.Append(filePath, line);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Ошибка сохранения результата: {ex.Message}");
+        }
+    }
 }

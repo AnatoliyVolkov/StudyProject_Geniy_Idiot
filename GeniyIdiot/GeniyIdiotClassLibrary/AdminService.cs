@@ -2,97 +2,118 @@
 
 public static class AdminService
 {
-    private static string adminFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Admin");
-
-    public static bool TryLogin(int attempts = 3)
+    public static (bool success, string message) TryLogin(
+        Func<(string login, string password)> getUserDate, string adminFilePath, int maxAttempts = 3)
     {
-        int count = 0;
-        while (count < attempts)
+        for (int i = 0 ; i < maxAttempts ; i++)
         {
-            try
-            {
-                Console.WriteLine("Вы продолжаете как администратор.");
-                Console.WriteLine("Введите логин:");
-                var login = ValidationHelper.CheckUsernameEntry(Console.ReadLine());
-                Console.WriteLine("Введите пароль (только цифры):");
-                var password = ValidationHelper.CheckAdminInput();
+            var (login, password) = getUserDate();
 
-                if (Admin.CheckAdmin(login, password))
-                {
-                    Console.WriteLine("Авторизация успешна!");
-                    return true;
-                }
-                else
-                {
-                    count++;
-                    Console.WriteLine($"НЕВЕРНО! У вас осталось {attempts - count} попыток.");
-                }
-            }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
-        }
-        Console.WriteLine("Превышено максимальное количество попыток. \n За вами выехал наряд ФСБ, собирайте вещи. \n Пока он едет пройдите наш тест.");
-        Test.GetStart();
-        return false;
+            var loginValidation = ValidationHelper.CheckUsernameEntry(login);
+            if (!loginValidation._Success)
+                return (false, loginValidation.ErrorMessage);
+
+            var passwordValidation = ValidationHelper.CheckAdminInput(password);
+            if (!passwordValidation._Success)
+                return (false, passwordValidation.ErrorMessage);
+
+            if (Admin.CheckAdmin(loginValidation.Value, passwordValidation.Value.ToString(), adminFilePath))
+                return (true, Messages.AuthSuccess);
+            int attemptsLeft = maxAttempts - i - 1;
+            if (attemptsLeft > 0)
+                return (false, string.Format(Messages.AuthFailed, attemptsLeft));
+    }
+        return (false, Messages.MaxAttempts);
     }
 
-    public static void RegisterAdmin()
+    public static (bool success, string message) RegisterAdmin(Func<(string login, string password)> getCredentials, string adminFilePath)
     {
         try
         {
-            var adminStorage = new AdminStorage();
+            var adminStorage = new AdminStorage(adminFilePath);
+            var (login, password) = getCredentials();
 
-            Console.WriteLine("Добавление нового администратора");
-            Console.WriteLine("Введите логин:");
-            var login = ValidationHelper.CheckUsernameEntry(Console.ReadLine());
-            Console.WriteLine("Введите пароль (только цифры):");
-            var password = ValidationHelper.CheckAdminInput();
+            var loginValidation = ValidationHelper.CheckUsernameEntry(login);
+            if (!loginValidation._Success)
+                return (false, loginValidation.ErrorMessage);
 
-            if (adminStorage.admins.Any(admin => admin.Login == login.ToLower()))
-            {
-                Console.WriteLine("Администратор с таким логином уже существует!");
-                return;
-            }
+            var passwordValidation = ValidationHelper.CheckAdminInput(password);
+            if (!passwordValidation._Success)
+                return (false, passwordValidation.ErrorMessage);
 
-            adminStorage.AddAdmin(login.ToLower(), password);
-            Console.WriteLine("Новый администратор успешно зарегистрирован!");
+            string validLogin = loginValidation.Value;
+            int validPassword = passwordValidation.Value;
+
+            if (adminStorage.admins.Any(admin => admin.Login == validLogin.ToLower()))
+                return (false, Messages.AdminExists);
+
+            adminStorage.AddAdmin(validLogin.ToLower(), validPassword);
+            return (true, Messages.AdminRegistered);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ошибка при регистрации: {ex.Message}");
+            return (false, string.Format(Messages.RegisterError, ex.Message));
         }
     }
 
-    public static void Menu(string questionPath)
+    public static (bool success, string message) GetMenu(string choice, string questionPath)
     {
-        while (true)
+        switch (choice?.Trim())
         {
-            Console.WriteLine("РЕЖИМ АДМИНИСТРАТОРА");
-            Console.WriteLine("1. Просмотреть вопросы");
-            Console.WriteLine("2. Добавить вопрос");
-            Console.WriteLine("3. Удалить вопрос");
-            Console.WriteLine("4. Просмотреть результаты");
-            Console.WriteLine("5. Зарегистрировать нового администратора");
-            Console.WriteLine("6. Выйти из программы");
-            Console.WriteLine("7. Выйти в главное меню");
-            Console.Write("Выберите действие (1-7): ");
+            case "1":
+                var questions = FileProvider.Read(questionPath);
+                return (true, string.Join("\n", questions));
+            case "2":
+                return (true, Messages.EnterQuestion);
+            case "3":
+                return (true, Messages.EnterLineNumber);
+            case "4":
+                var results = FileProvider.Read("test_results");
+                return (true, string.Join("\n", results));
+            case "5":
+                return (true, Messages.RegisterAdmin);
+            case "6":
+                return (true, Messages.ExitAdministrator);
+            case "7":
+                return (true, "exit_to_main");
+            default:
+                return (false, Messages.InvalidChoice);
+        }
+    }
 
-            switch (Console.ReadLine())
-            {
-                case "1": FileProvider.Show(questionPath); break;
-                case "2": QuestionsStorage.Add(questionPath); break;
-                case "3": QuestionsStorage.Delete(questionPath); break;
-                case "4": FileProvider.Show("test_results"); break;
-                case "5": RegisterAdmin(); break;
-                case "6":
-                    Console.WriteLine("Выход из режима администратора.");
-                    Environment.Exit(0);
-                    return;
-                case "7": Test.GetStart(); return;
-                default: Console.WriteLine("Неверный выбор!"); break;
-            }
+    public static (bool success, string message) AddQuestion(Func<(string question, string answer)> getQuestionData, string questionPath)
+    {
+        try
+        {
+            var (question, answerInput) = getQuestionData();
 
-            Console.WriteLine("\nНажмите Enter для продолжения...");
-            Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(question))
+                return (false, Messages.QuestionEmpty);
+
+            var answerValidation = ValidationHelper.CheckAdminInput(answerInput);
+            if (!answerValidation._Success)
+                return (false, answerValidation.ErrorMessage);
+
+            QuestionsStorage.Add(question, answerValidation.Value, questionPath);
+            return (true, Messages.QuestionAdded);
+        }
+        catch (Exception ex)
+        {
+            return (false, ex.Message);
+        }
+    }
+
+    public static (bool success, string message) DeleteQuestion(Func<int> getLineNumber, string questionPath)
+    {
+        try
+        {
+            int lineNumber = getLineNumber();
+            QuestionsStorage.Delete(lineNumber, questionPath);
+            return (true, Messages.QuestionDeleted);
+        }
+        catch (Exception ex)
+        {
+            return (false, ex.Message);
         }
     }
 }

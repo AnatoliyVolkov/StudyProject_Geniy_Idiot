@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Data;
+using System.Text;
 
 namespace GeniyIdiotClassLibrary;
 
@@ -12,12 +13,11 @@ public static class FileProvider
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ошибка при проверке файла {filePath}: {ex.Message}");
-            return false;
+            throw new Exception($"Ошибка при проверке файла {filePath}: {ex.Message}");
         }
     }
 
-    public static void Creater(string filePath, string header)
+    public static void Create(string filePath, string header)
     {
         try
         {
@@ -27,13 +27,13 @@ public static class FileProvider
                 if (!string.IsNullOrWhiteSpace(header))
                 {
                     sw.WriteLine(header);
-                    sw.WriteLine(new string('=', header.Length - 5));
+                    sw.WriteLine(new string('=', header.Length));
                 }
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ошибка при создании файла {filePath}: {ex.Message}");
+            throw new Exception($"Ошибка при создании файла {filePath}: {ex.Message}");
         }
     }
 
@@ -46,7 +46,7 @@ public static class FileProvider
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ошибка при записи данных в файл {filePath}: {ex.Message}");
+            throw new Exception($"Ошибка при записи в файл {filePath}: {ex.Message}");
         }
     }
 
@@ -59,24 +59,10 @@ public static class FileProvider
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ошибка чтения файла {filePath}: {ex.Message}");
-            return new List<string>();
+            throw new Exception($"Ошибка чтения файла {filePath}: {ex.Message}");
         }
     }
 
-    public static void Show(string filePath)
-    {
-        if (!File.Exists(filePath))
-        {
-            Console.WriteLine($"Файл не найден: {filePath}");
-            return;
-        }
-        Console.WriteLine($"\n======\n");
-        foreach (var line in Read(filePath))
-        {
-            Console.WriteLine(line);
-        }
-    }
 
     public static void RemoveLine(string filePath, int lineNumber)
     {
@@ -91,7 +77,8 @@ public static class FileProvider
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ошибка удаления строки: {ex.Message}");
+            throw new Exception($"Ошибка удаления строки: {ex.Message}");
         }
     }
-}
+
+  }
