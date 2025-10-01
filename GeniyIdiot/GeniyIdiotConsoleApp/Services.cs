@@ -70,36 +70,40 @@ public class Services
         Console.WriteLine(string.Format(Messages.Thanks, User.UserName));
     }
 
-    private void RunAdminMode()
+    public void RunAdminMode()
     {
-        bool success = false;
-        var attempts = 3;
-        for (int i = 0 ; i < attempts ; i++)
+        int maxAttempts = 3;
+
+        for (int i = 0; i < maxAttempts; i++)
         {
+
             var authResult = _adminMenu.TryLogin();
-            
+            int attemptsLeft = maxAttempts - i - 1;
+
+            Console.WriteLine(authResult.message);
 
             if (authResult.success)
             {
-                Console.WriteLine(authResult.message);
                 _adminMenu.ShowAdminMenu(StartApp);
                 return;
             }
+
+            bool canContinue = attemptsLeft > 0 &&
+                              !authResult.message.Contains("Нельзя вводить числа") &&
+                              !authResult.message.Contains("Нельзя оставлять поле пустым") &&
+                              !authResult.message.Contains("не допустимые символы");
+
+            if (canContinue)
+            {
+                Console.WriteLine($"У вас осталось {attemptsLeft} попыток.");
+            }
             else
             {
-                Console.WriteLine(authResult.message);
-                if (authResult.message == Messages.MaxAttempts)
-                {
-                    Console.WriteLine("\nВозврат в главное меню...");
-                    StartApp();
-                    return;
-                }
+                Console.WriteLine(Messages.MaxAttempts);
+                Console.WriteLine("\nВозврат в главное меню...");
+                StartApp();
+                return;
             }
-            
         }
-        Console.WriteLine(Messages.MaxAttempts);
-        Console.WriteLine("\nВозврат в главное меню...");
-        StartApp();
-        
     }
 }

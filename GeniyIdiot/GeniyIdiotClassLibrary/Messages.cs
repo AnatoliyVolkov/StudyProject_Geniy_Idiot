@@ -34,7 +34,6 @@ namespace GeniyIdiotClassLibrary
         public static string RetakeTest = "{0}, хотите пройти тест еще раз? (да/нет)";
         public static string ViewAllResults = "Хотите посмотреть все результаты тестирования? (да/нет)";
         public static string Thanks = "Спасибо {0}, что прошли наш тест. Всего хорошего.";
-        public static string ExitAdministrator = "Выход из режима администратора";
 
         public static string TestResult = "{0}, вы ответили верно на {1} вопросов.";
         public static string DiagnosisResult = "Ваш результат: {0}";
@@ -62,8 +61,8 @@ namespace GeniyIdiotClassLibrary
         public static string EmptyAnswer = "Вы дали ответ пустой строкой.\n Пожалуйста дайте ответ Да или Нет.";
         public static string NumberAnswer = "Вы дали ответ числом.\n Пожалуйста дайте ответ Да или Нет.";
         public static string InvalidAnswer = "Вы дали не корректный ответ.\n Пожалуйста дайте ответ Да или Нет.";
-        public static string TooBigNumber = "{0}, вы ввели слишком большое число, Вам нужно ввести число не длинее 6 знаков.";
-        public static string LetterInput = "{0}, вы ввели букву, Вам нужно ввести число не длинее 6 знаков.";
+        public static string TooBigNumber = "Вы ввели слишком большое число, Вам нужно ввести число не длинее 6 знаков.";
+        public static string LetterInput = "Вы ввели букву, Вам нужно ввести число не длинее 6 знаков.";
         public static string EmptyNumber = "Вы дали ответ пустой строкой.\n Вам нужно ввести число не длинее 6 знаков.";
 
         public static string FileNotFound = "Файл не найден: {0}";

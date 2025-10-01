@@ -3,27 +3,22 @@
 public static class AdminService
 {
     public static (bool success, string message) TryLogin(
-        Func<(string login, string password)> getUserDate, string adminFilePath, int maxAttempts = 3)
+    Func<(string login, string password)> getUserData, string adminFilePath)
     {
-        for (int i = 0 ; i < maxAttempts ; i++)
-        {
-            var (login, password) = getUserDate();
+        var (login, password) = getUserData();
 
-            var loginValidation = ValidationHelper.CheckUsernameEntry(login);
-            if (!loginValidation._Success)
-                return (false, loginValidation.ErrorMessage);
+        var loginValidation = ValidationHelper.CheckUsernameEntry(login);
+        if (!loginValidation._Success)
+            return (false, loginValidation.ErrorMessage);
 
-            var passwordValidation = ValidationHelper.CheckAdminInput(password);
-            if (!passwordValidation._Success)
-                return (false, passwordValidation.ErrorMessage);
+        var passwordValidation = ValidationHelper.CheckAdminInput(password);
+        if (!passwordValidation._Success)
+            return (false, passwordValidation.ErrorMessage);
 
-            if (Admin.CheckAdmin(loginValidation.Value, passwordValidation.Value.ToString(), adminFilePath))
-                return (true, Messages.AuthSuccess);
-            int attemptsLeft = maxAttempts - i - 1;
-            if (attemptsLeft > 0)
-                return (false, string.Format(Messages.AuthFailed, attemptsLeft));
-    }
-        return (false, Messages.MaxAttempts);
+        if (Admin.CheckAdmin(loginValidation.Value, passwordValidation.Value.ToString(), adminFilePath))
+            return (true, Messages.AuthSuccess);
+
+        return (false, "НЕВЕРНО!");
     }
 
     public static (bool success, string message) RegisterAdmin(Func<(string login, string password)> getCredentials, string adminFilePath)

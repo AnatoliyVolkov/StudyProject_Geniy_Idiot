@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeniyIdiotConsoleApp", "Gen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeniyIdiotClassLibrary", "GeniyIdiotClassLibrary\GeniyIdiotClassLibrary.csproj", "{A70072E8-DFCD-448C-B6FD-A4010B20E7F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeniyIdiotWinForms", "GeniyIdiotWinForms\GeniyIdiotWinForms.csproj", "{15B08416-895C-433C-B250-51D8A30CF081}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{A70072E8-DFCD-448C-B6FD-A4010B20E7F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A70072E8-DFCD-448C-B6FD-A4010B20E7F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A70072E8-DFCD-448C-B6FD-A4010B20E7F6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{15B08416-895C-433C-B250-51D8A30CF081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15B08416-895C-433C-B250-51D8A30CF081}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{15B08416-895C-433C-B250-51D8A30CF081}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{15B08416-895C-433C-B250-51D8A30CF081}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -19,14 +19,23 @@ public class TestService
         var questions = QuestionsStorage.GetQuestions(_questionPath);
         var questionOrder = DiagnosticTestResources.ShuffleTestQuestions(questions.Count);
 
-        for (var i = 0 ; i < questions.Count ; i++)
+        for (var i = 0; i < questions.Count; i++)
         {
             var questionIndex = questionOrder[i];
             Console.WriteLine($"\nВопрос номер: {i + 1}");
             Console.WriteLine(questions[questionIndex]._Question);
 
             var userInput = Console.ReadLine();
-            countRightAnswers += User.RightAnswer(userInput, User.UserName, questionIndex, _questionPath);
+            var answerResult = User.RightAnswerSafe(userInput, User.UserName, questionIndex, _questionPath);
+            if (answerResult.success)
+            {
+                countRightAnswers += answerResult.result;
+            }
+            else
+            {
+                Console.WriteLine(answerResult.error);
+                i--; 
+            }
         }
         return countRightAnswers;
     }
@@ -52,9 +61,19 @@ public class TestService
             try
             {
                 var results = UserResultStorage.LoadFromFile(_testPath);
+                var lines = FileProvider.Read(_testPath);
+                if (lines.Count >= 2)
+                {
+                    Console.WriteLine(lines[0]);
+                    Console.WriteLine(lines[1]);
+                }
                 foreach (var result in results)
                 {
-                    Console.WriteLine(result);
+                    var formattedResult = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
+                    result.FullName,
+                    result.Score.ToString(),
+                    result.Diagnosis);
+                    Console.WriteLine(formattedResult);
                 }
             }
             catch (Exception ex)

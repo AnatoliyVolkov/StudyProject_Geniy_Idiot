@@ -3,7 +3,7 @@ using GeniyIdiotConsoleApp;
 
 namespace GeniyIdiotApp;
 
-internal partial class Program
+public partial class Program
 {
     static void Main()
     {

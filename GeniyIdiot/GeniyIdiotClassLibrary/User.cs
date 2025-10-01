@@ -36,4 +36,13 @@ public  class User
             throw new Exception(result.ErrorMessage);
     }
 
+    public static (bool success, int result, string error) RightAnswerSafe(string userInput, string userName, int questionIndex, string questionsPath)
+    {
+        var validationResult = ValidationHelper.CheckAnswerUserQuestion(userInput, userName, questionIndex, questionsPath);
+        if (validationResult._Success)
+            return (true, validationResult.Value, null);
+        else
+            return (false, 0, validationResult.ErrorMessage);
+    }
+
 }
