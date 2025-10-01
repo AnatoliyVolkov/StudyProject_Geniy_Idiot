@@ -2,7 +2,6 @@
 
 public static class UserResultStorage
 {
-    //static readonly List<User> userResult = new List<User>();
 
     public static List<User> LoadFromFile(string filePath)
     {

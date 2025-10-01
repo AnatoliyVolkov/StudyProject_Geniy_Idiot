@@ -32,11 +32,6 @@ public static class DiagnosticTestResources
         return questionIndexes;
     }
 
-    //public static bool GetUserConfirm(string name)
-    //{
-    //    return ValidationHelper.CheckUserAnswer().Trim().ToLower() == "да";
-    //}
-
     public static string GetDiagnose(int correctAnswer, int questions)
     {
         var result = correctAnswer * 100.0 / questions;
