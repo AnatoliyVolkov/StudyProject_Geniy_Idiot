@@ -4,6 +4,7 @@ namespace GeniyIdiotClassLibrary;
 
 public class AdminStorage
 {
+    public static string AdminFilePath { get; set; } = "Admin";
     public List<Admin> admins = new List<Admin>();
     private string adminFilePath ;
 

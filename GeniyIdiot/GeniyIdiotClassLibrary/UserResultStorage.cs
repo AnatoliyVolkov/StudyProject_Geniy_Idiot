@@ -2,6 +2,7 @@
 
 public static class UserResultStorage
 {
+    public static string ResultsFilePath { get; set; } = "test_results.txt";
 
     public static List<User> LoadFromFile(string filePath)
     {
@@ -40,10 +41,7 @@ public static class UserResultStorage
     {
         try
         {
-            var line = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
-                userFullName,
-                answer.ToString(),
-                diagnostic);
+            var line = userFullName + "||" + answer.ToString() + "||" + diagnostic;
 
             FileProvider.Append(filePath, line);
         }

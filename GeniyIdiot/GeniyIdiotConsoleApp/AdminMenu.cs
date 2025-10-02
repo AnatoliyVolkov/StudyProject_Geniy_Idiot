@@ -119,9 +119,11 @@ public class AdminMenu
         try
         {
             var questions = FileProvider.Read(_questionPath);
+            
             foreach (var question in questions)
-            {
-                Console.WriteLine(question);
+            {   var _question = question.Split(" || ");
+
+                Console.WriteLine(string.Format("{0,-5} || {1,-85} || {2,-15}", _question[0], _question[1], _question[2]));
             }
         }
         catch (Exception ex)

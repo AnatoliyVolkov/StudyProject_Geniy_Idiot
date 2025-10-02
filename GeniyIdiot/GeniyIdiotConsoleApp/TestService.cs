@@ -15,29 +15,25 @@ public class TestService
 
     public int RunTest(User user)
     {
-        var countRightAnswers = 0;
-        var questions = QuestionsStorage.GetQuestions(_questionPath);
-        var questionOrder = DiagnosticTestResources.ShuffleTestQuestions(questions.Count);
+        var testEngine = new TestEngine(_questionPath);
+        var questionOrder = testEngine.shuffledQuestionIndexes;
 
-        for (var i = 0; i < questions.Count; i++)
+        for (var i = 0 ; i < testEngine._Question.Count ; i++)
         {
-            var questionIndex = questionOrder[i];
             Console.WriteLine($"\nВопрос номер: {i + 1}");
-            Console.WriteLine(questions[questionIndex]._Question);
+            var currentQuestionIndex = questionOrder[i];
+            Console.WriteLine(testEngine._Question[currentQuestionIndex]._Question);
 
             var userInput = Console.ReadLine();
-            var answerResult = User.RightAnswerSafe(userInput, User.UserName, questionIndex, _questionPath);
-            if (answerResult.success)
-            {
-                countRightAnswers += answerResult.result;
-            }
-            else
+            var answerResult = testEngine.ProcessAnswer(userInput);
+
+            if (!answerResult.success)
             {
                 Console.WriteLine(answerResult.error);
-                i--; 
+                i--;
             }
         }
-        return countRightAnswers;
+        return testEngine.CorrectAnswersCount; 
     }
 
     public void ShowResults(User user, int score)
@@ -83,3 +79,9 @@ public class TestService
         }
     }
 }
+
+
+// var line = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
+  //   userFullName,
+ //    answer.ToString(),
+//     diagnostic);

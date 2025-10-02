@@ -5,120 +5,60 @@ namespace GeniyIdiotWinForm
 {
     public class UserTestService
     {
-        private UserTestSession _session;
-
+        private TestEngine _testEngine;
+        private int _currentUserInfoStep = 0;
+        private string[] _userInfoSteps =
+    {
+        Messages.EnterLastName,
+        Messages.EnterFirstName,
+        Messages.EnterPatronymic
+    };
         public UserTestService()
         {
-            _session = new UserTestSession();
+            _testEngine = new TestEngine(QuestionsStorage.QuestionsFilePath);
         }
 
-        public (bool success, string errorMessage) ProcessNextStep(string userInput)
+        public (bool success, string errorMessage) ProcessUserInfo(string userInput)
         {
-            if (_session.CurrentStep < _session.UserInfoSteps.Length)
+            var validationResult = ValidationHelper.CheckUsernameEntry(userInput);
+            if (!validationResult._Success)
+                return (false, validationResult.ErrorMessage);
+
+            switch (_currentUserInfoStep)
             {
-                var validationResult = ValidationHelper.CheckUsernameEntry(userInput);
-                if (!validationResult._Success)
-                {
-                    return (false, validationResult.ErrorMessage + "\n" + Messages.NextTry);
-                }
-
-                switch (_session.CurrentStep)
-                {
-                    case 0:
-                        User.UserSurname = validationResult.Value;
-                        break;
-                    case 1:
-                        User.UserName = validationResult.Value;
-                        break;
-                    case 2:
-                        User.UserPatronymic = validationResult.Value;
-                        break;
-                }
-
-                _session.CurrentStep++;
-
-                if (_session.CurrentStep >= _session.UserInfoSteps.Length)
-                {
-                    StartTest();
-                }
-
-                return (true, null);
+                case 0: User.UserSurname = validationResult.Value; break;
+                case 1: User.UserName = validationResult.Value; break;
+                case 2: User.UserPatronymic = validationResult.Value; break;
             }
 
-            return (false, "Неизвестное состояние");
+            _currentUserInfoStep++;
+            return (true, null);
         }
 
         public (bool success, string errorMessage) ProcessAnswer(string userAnswer)
         {
-            if (string.IsNullOrEmpty(userAnswer))
+            var answerResult = _testEngine.ProcessAnswer(userAnswer);
+            if (answerResult.success && answerResult.testFinished)
             {
-                return (false, Messages.EmptyNumber);
+                SaveTestResults();
             }
-
-            if (_session.CurrentQuestionIndex >= _session.ShuffledQuestionIndexes.Count)
-            {
-                return (false, "Тест уже завершен");
-            }
-
-            var questionIndex = _session.ShuffledQuestionIndexes[_session.CurrentQuestionIndex];
-            var validationResult = User.RightAnswerSafe(userAnswer, User.UserName, questionIndex, "questions.txt");
-
-            if (validationResult.success)
-            {
-                if (validationResult.result == 1)
-                {
-                    _session.CorrectAnswersCount++;
-                }
-
-                _session.CurrentQuestionIndex++;
-
-                if (_session.CurrentQuestionIndex >= _session.ShuffledQuestionIndexes.Count)
-                {
-                    FinishTest();
-                }
-
-                return (true, null);
-            }
-            else
-            {
-                return (false, validationResult.error);
-            }
-        }
-
-        private void StartTest()
-        {
-            _session.IsTestStarted = true;
-            _session.Questions = QuestionsStorage.GetQuestions("questions.txt");
-            _session.ShuffledQuestionIndexes = DiagnosticTestResources.ShuffleTestQuestions(_session.Questions.Count);
-        }
-
-        private void FinishTest()
-        {
-            var diagnose = DiagnosticTestResources.GetDiagnose(_session.CorrectAnswersCount, _session.Questions.Count);
-
-            string resultsPath = "test_results.txt";
-            UserResultStorage.SaveResult(resultsPath, User.userFullName, _session.CorrectAnswersCount, diagnose);
-
-            _session.IsTestFinished = true;
-            _session.FinalDiagnose = diagnose;
+            return (answerResult.success, answerResult.error);
         }
 
         public State GetState()
         {
             var state = new State();
 
-            if (!_session.IsTestStarted && !_session.IsTestFinished)
+            if (_currentUserInfoStep < _userInfoSteps.Length)
             {
-                
                 state.Message = Messages.WelcomeTest;
-                state.InputPrompt = _session.UserInfoSteps[_session.CurrentStep];
+                state.InputPrompt = _userInfoSteps[_currentUserInfoStep];
                 state.ShowNextButton = true;
                 state.ShowInputTextBox = true;
                 state.ClearInput = true;
             }
-            else if (_session.IsTestStarted && !_session.IsTestFinished)
+            else if (!_testEngine.IsTestFinished)
             {
-                
                 state.Message = string.Format(Messages.WelcomeUser, User.UserName);
                 state.InputPrompt = "Введите ответ на вопрос:";
                 state.ShowSubmitButton = true;
@@ -126,35 +66,55 @@ namespace GeniyIdiotWinForm
                 state.ShowQuestionLabel = true;
                 state.ClearInput = true;
 
-                if (_session.CurrentQuestionIndex < _session.ShuffledQuestionIndexes.Count)
-                {
-                    var questionIndex = _session.ShuffledQuestionIndexes[_session.CurrentQuestionIndex];
-                    var question = _session.Questions[questionIndex];
-                    state.QuestionText = $"Вопрос {_session.CurrentQuestionIndex + 1} из {_session.Questions.Count}\n\n{question._Question}";
-                    state.ProgressText = $"Прогресс: {_session.CurrentQuestionIndex + 1}/{_session.Questions.Count}";
-                }
+                var questionIndex = _testEngine.shuffledQuestionIndexes[_testEngine.CurrentQuestionIndex];
+                var question = _testEngine._Question[questionIndex];
+                state.QuestionText = $"Вопрос {_testEngine.CurrentQuestionIndex + 1} из {_testEngine._Question.Count}\n\n{question._Question}";
             }
-            else if (_session.IsTestFinished)
+            else
             {
-               
                 state.Message = string.Format(Messages.Thanks, User.UserName);
-                state.QuestionText = string.Format(Messages.TestResult, User.UserName, _session.CorrectAnswersCount);
-                state.InputPrompt = string.Format(Messages.DiagnosisResult, _session.FinalDiagnose);
+                state.QuestionText = string.Format(Messages.TestResult, User.UserName, _testEngine.CorrectAnswersCount);
+                state.InputPrompt = string.Format(Messages.DiagnosisResult,
+                    DiagnosticTestResources.GetDiagnose(_testEngine.CorrectAnswersCount, _testEngine._Question.Count));
                 state.ShowRestartButton = true;
                 state.ShowExitButton = true;
                 state.ShowInputTextBox = false;
-                state.ShowQuestionLabel = true;
             }
 
             return state;
         }
 
-        public string GetUserName() => User.UserName;
+        private void SaveTestResults()
+        {
+            try
+            {
+                string resultsPath = UserResultStorage.ResultsFilePath;
+                var diagnose = DiagnosticTestResources.GetDiagnose(_testEngine.CorrectAnswersCount, _testEngine._Question.Count);
+                UserResultStorage.SaveResult(resultsPath, User.userFullName, _testEngine.CorrectAnswersCount, diagnose);
+            }
+            catch (Exception ex)
+            { throw new Exception($"Ошибка сохранения результатов теста"); }
+        }
 
         public void RestartTest()
         {
-            _session = new UserTestSession();
-            StartTest();
+            _testEngine = new TestEngine(QuestionsStorage.QuestionsFilePath);
+            _currentUserInfoStep = 0;
+        }
+
+        private void UserForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var result = MessageBox.Show(
+                "Вы действительно хотите выйти?",
+                "Подтверждение выхода",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

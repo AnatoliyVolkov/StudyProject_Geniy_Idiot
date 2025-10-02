@@ -6,194 +6,78 @@ namespace GeniyIdiotWinForm
 {
     public partial class UserForm : Form
     {
-        private int currentStep = 0;
-        private int currentQuestionIndex = 0;
-        private int correctAnswersCount = 0;
-        private List<Question> questions;
-        private List<int> shuffledQuestionIndexes;
-
-        private readonly string[] userInfoSteps =
-        {
-            Messages.EnterLastName,
-            Messages.EnterFirstName,
-            Messages.EnterPatronymic
-        };
+        private UserTestService _userTestService;
 
         public UserForm()
         {
             InitializeComponent();
+            this.FormClosing += UserForm_FormClosing;
         }
 
         private void UserForm_Load(object sender, EventArgs e)
         {
-            infoUserLabel.Text = Messages.WelcomeTest;
-            InitializeTest();
-            UpdateUserInfoStep();
+            _userTestService = new UserTestService();
+            UpdateFormFromState();
         }
 
-        private void InitializeTest()
-        {
-            string questionsPath = "questions.txt";
-            QuestionsStorage.CreateFirst(questionsPath);
-            questions = QuestionsStorage.GetQuestions(questionsPath);
-            shuffledQuestionIndexes = DiagnosticTestResources.ShuffleTestQuestions(questions.Count);
-        }
-
-        private void UpdateUserInfoStep()
-        {
-            if (currentStep < userInfoSteps.Length)
-            {
-                infoUserInputLabel.Text = userInfoSteps[currentStep];
-                userInputTextBox.Text = "";
-                userInputTextBox.Focus();
-
-                nextButton.Visible = true;
-                submitAnswerButton.Visible = false;
-                userInputTextBox.Visible = true;
-                questionLabel.Visible = false;
-
-                restartAppButton.Visible = false;
-                restartTestButton.Visible = false;
-                exitButton.Visible = false;
-                viewResultsButton.Visible = false;
-            }
-            else
-            {
-                StartTest();
-            }
-        }
-
-        private void StartTest()
-        {
-            infoUserLabel.Text = string.Format(Messages.WelcomeUser, User.UserName);
-            infoUserInputLabel.Text = "Введите ответ на вопрос:";
-
-            nextButton.Visible = false;
-            submitAnswerButton.Visible = true;
-            userInputTextBox.Visible = true;
-            questionLabel.Visible = true;
-            userInputTextBox.Text = "";
-            userInputTextBox.Focus();
-
-            // Скрываем кнопки управления
-            restartAppButton.Visible = false;
-            restartTestButton.Visible = false;
-            exitButton.Visible = false;
-            viewResultsButton.Visible = false;
-
-            ShowCurrentQuestion();
-        }
-
-        private void ShowCurrentQuestion()
-        {
-            if (currentQuestionIndex < shuffledQuestionIndexes.Count)
-            {
-                var questionIndex = shuffledQuestionIndexes[currentQuestionIndex];
-                var question = questions[questionIndex];
-
-                questionLabel.Text = $"Вопрос {currentQuestionIndex + 1} из {questions.Count}\n\n{question._Question}";
-            }
-            else
-            {
-                FinishTest();
-            }
-        }
 
         private void nextButton_Click(object sender, EventArgs e)
         {
             var input = userInputTextBox.Text.Trim();
 
-            var validationResult = ValidationHelper.CheckUsernameEntry(input);
-            if (!validationResult._Success)
+            var result = _userTestService.ProcessUserInfo(input);
+
+            if (result.success)
             {
-                MessageBox.Show(validationResult.ErrorMessage + "\n" + Messages.NextTry,
-                              "Ошибка ввода", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                UpdateFormFromState();
+            }
+            else
+            {
+                MessageBox.Show(result.errorMessage, "Ошибка ввода",
+                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 userInputTextBox.Focus();
-                return;
             }
+        }
 
-            switch (currentStep)
-            {
-                case 0:
-                    User.UserSurname = validationResult.Value;
-                    break;
-                case 1:
-                    User.UserName = validationResult.Value;
-                    break;
-                case 2:
-                    User.UserPatronymic = validationResult.Value;
-                    break;
-            }
+        private void UpdateFormFromState()
+        {
+            var state = _userTestService.GetState();
+            infoUserLabel.Text = state.Message;
+            infoUserInputLabel.Text = state.InputPrompt;
+            questionLabel.Text = state.QuestionText;
+            nextButton.Visible = state.ShowNextButton;
+            submitAnswerButton.Visible = state.ShowSubmitButton;
+            userInputTextBox.Visible = state.ShowInputTextBox;
+            questionLabel.Visible = state.ShowQuestionLabel;
+            restartAppButton.Visible = state.ShowRestartButton;
+            restartTestButton.Visible = state.ShowRestartButton;
+            exitButton.Visible = state.ShowExitButton;
+            viewResultsButton.Visible = state.ShowExitButton;
 
-            currentStep++;
-            UpdateUserInfoStep();
+            if (state.ClearInput)
+                userInputTextBox.Text = "";
+
+            userInputTextBox.Focus();
         }
 
         private void submitAnswerButton_Click(object sender, EventArgs e)
         {
             var userAnswer = userInputTextBox.Text.Trim();
+            var result = _userTestService.ProcessAnswer(userAnswer);
 
-            if (string.IsNullOrEmpty(userAnswer))
+            if (result.success)
             {
-                MessageBox.Show(Messages.EmptyNumber, "Внимание",
-                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            var questionIndex = shuffledQuestionIndexes[currentQuestionIndex];
-            var validationResult = User.RightAnswerSafe(userAnswer, User.UserName, questionIndex, "questions.txt");
-
-            if (validationResult.success)
-            {
-                if (validationResult.result == 1)
-                {
-                    correctAnswersCount++;
-                }
-
-                currentQuestionIndex++;
-                userInputTextBox.Text = "";
-                userInputTextBox.Focus();
-                ShowCurrentQuestion();
+                UpdateFormFromState();
             }
             else
             {
-                MessageBox.Show(validationResult.error, "Ошибка ввода",
+                MessageBox.Show(result.errorMessage, "Ошибка ввода",
                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 userInputTextBox.Focus();
             }
         }
 
-        private void FinishTest()
-        {
-            var diagnose = DiagnosticTestResources.GetDiagnose(correctAnswersCount, questions.Count);
 
-            string resultsPath = "test_results.txt";
-            UserResultStorage.SaveResult(resultsPath, User.userFullName, correctAnswersCount, diagnose);
-
-            infoUserLabel.Text = string.Format(Messages.Thanks, User.UserName);
-            questionLabel.Text = string.Format(Messages.TestResult, User.UserName, correctAnswersCount);
-            infoUserInputLabel.Text = string.Format(Messages.DiagnosisResult, diagnose);
-
-            userInputTextBox.Visible = false;
-            submitAnswerButton.Visible = false;
-
-            // ПОКАЗЫВАЕМ кнопки управления
-            restartAppButton.Visible = true;
-            restartTestButton.Visible = true;
-            exitButton.Visible = true;
-            viewResultsButton.Visible = true;
-
-            MessageBox.Show(
-                $"Тест завершен!\n\n" +
-                $"{string.Format(Messages.TestResult, User.UserName, correctAnswersCount)}\n" +
-                $"{string.Format(Messages.DiagnosisResult, diagnose)}",
-                "Результаты теста",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
-        }
-
-        // КНОПКИ УПРАВЛЕНИЯ
         private void restartAppButton_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show(
@@ -211,29 +95,8 @@ namespace GeniyIdiotWinForm
 
         private void restartTestButton_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show(
-                "Начать тест заново?",
-                "Новое тестирование",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
-
-            if (result == DialogResult.Yes)
-            {
-                // Сброс теста
-                currentStep = 0;
-                currentQuestionIndex = 0;
-                correctAnswersCount = 0;
-                shuffledQuestionIndexes = DiagnosticTestResources.ShuffleTestQuestions(questions.Count);
-
-                UpdateUserInfoStep();
-
-                // Скрываем кнопки управления
-                restartAppButton.Visible = false;
-                restartTestButton.Visible = false;
-                exitButton.Visible = false;
-                viewResultsButton.Visible = false;
-            }
+            _userTestService.RestartTest();
+            UpdateFormFromState();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
@@ -260,7 +123,7 @@ namespace GeniyIdiotWinForm
         {
             try
             {
-                string resultsPath = "test_results.txt";
+                string resultsPath = UserResultStorage.ResultsFilePath;
 
                 if (!File.Exists(resultsPath))
                 {
@@ -335,6 +198,21 @@ namespace GeniyIdiotWinForm
                 {
                     submitAnswerButton.PerformClick();
                 }
+            }
+        }
+
+        private void UserForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var result = MessageBox.Show(
+                "Вы действительно хотите выйти из приложения?",
+                "Подтверждение выхода",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.No)
+            {
+                e.Cancel = true; // ← ПРАВИЛЬНО
             }
         }
     }

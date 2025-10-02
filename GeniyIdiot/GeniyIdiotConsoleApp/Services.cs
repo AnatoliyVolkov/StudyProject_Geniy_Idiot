@@ -17,9 +17,9 @@ public class Services
     public Services()
     {
         _directoryPath = Directory.GetCurrentDirectory();
-        _questionPath = Path.Combine(_directoryPath, "Question");
-        _testPath = Path.Combine(_directoryPath, "test_results");
-        _adminPath = Path.Combine(_directoryPath, "Admin");
+        _questionPath = Path.Combine(_directoryPath, QuestionsStorage.QuestionsFilePath);
+        _testPath = Path.Combine(_directoryPath, UserResultStorage.ResultsFilePath);
+        _adminPath = Path.Combine(_directoryPath, AdminStorage.AdminFilePath);
 
         _fileService = new File(_directoryPath, _questionPath, _testPath);
         _userService = new UserService();

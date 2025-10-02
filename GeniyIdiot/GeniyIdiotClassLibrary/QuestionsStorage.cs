@@ -4,6 +4,7 @@ namespace GeniyIdiotClassLibrary;
 
 public static class QuestionsStorage
 {
+    public static string QuestionsFilePath { get; set; } = "Question";
     public static List<Question> GetQuestions(string questionPath)
     {
         return GetFromFile(questionPath);
@@ -17,19 +18,15 @@ public static class QuestionsStorage
         if (lines.Count <= 2)
         {
             var defaultQuestions = GetDefault();
-            var testLine = string.Format("{0,-5} || {1,-85} || {2,-15}", "1", "Тестовый вопрос", "0");
-            var header = string.Format("{0,-5} || {1,-85} || {2,-15}", "П/П", "Вопрос", "Ответ");
+            var testLine = "1 || Тестовый вопрос || 0";
+            var header = "П/П || Вопрос || Ответ";
             var separator = new string('=', testLine.Length);
             using var sw = new StreamWriter(questionPath, false, Encoding.UTF8);
             sw.WriteLine(header);
             sw.WriteLine(separator);
             for (int i = 0 ; i < defaultQuestions.Count ; i++)
             {
-                var formatted = string.Format("{0,-5} || {1,-85} || {2,-15}",
-                i + 1,
-                defaultQuestions[i]._Question,
-                defaultQuestions[i].Answer);
-                sw.WriteLine(formatted);
+                var formatted = $"{i + 1 }|| {defaultQuestions[i]._Question} || {defaultQuestions[i].Answer}";
             }
         }
     }
@@ -82,10 +79,7 @@ public static class QuestionsStorage
             var parts = lines[i].Split("||");
             if (parts.Length >= 3)
             {
-                var newQuestion = string.Format("{0,-5} || {1,-85} || {2,-15}",
-                    i - 1,
-                    parts[1].Trim(),
-                    parts[2].Trim());
+                var newQuestion = $"{i - 1} || {parts[1].Trim()} || {parts[2].Trim()}";
                 sw.WriteLine(newQuestion);
             }
         }
@@ -101,10 +95,7 @@ public static class QuestionsStorage
 
         var lines = FileProvider.Read(questionPath);
         var questionNumber = lines.Count - 1;
-        var newQuestion = string.Format("{0,-5} || {1,-85} || {2,-15}",
-         questionNumber,
-         question,
-         answer);
+        var newQuestion = $"{questionNumber} || {question} || {answer}";
 
         FileProvider.Append(questionPath, newQuestion);
     }
