@@ -26,7 +26,7 @@ namespace GeniyIdiotClassLibrary
         public static string InvalidChoice = "Неверный выбор!";
         public static string PressEnter = "\nНажмите Enter для продолжения...";
 
-        public static string WelcomeTest = "Добрый день, вы сейчас будете проходить тест на определение вашей гениальности.\n";
+        public static string WelcomeTest = "Добрый день,\nвы сейчас будете проходить тест на определение\n вашей гениальности.\n";
         public static string EnterLastName = "Пожалуйста введите свою фамилию.";
         public static string EnterFirstName = "Пожалуйста введите свое имя.";
         public static string EnterPatronymic = "Пожалуйста введите свое отчество.";
