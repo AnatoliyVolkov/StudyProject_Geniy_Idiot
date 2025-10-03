@@ -80,17 +80,8 @@ namespace GeniyIdiotWinForm
 
         private void restartAppButton_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show(
-                "Перезапустить приложение? Текущий прогресс будет потерян.",
-                "Перезапуск приложения",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
-
-            if (result == DialogResult.Yes)
-            {
+                this.FormClosing -= UserForm_FormClosing;
                 Application.Restart();
-            }
         }
 
         private void restartTestButton_Click(object sender, EventArgs e)
