@@ -2,9 +2,9 @@ using GeniyIdiotClassLibrary;
 
 namespace GeniyIdiotWinForm
 {
-    public partial class Form1 : Form
+    public partial class StartForm : Form
     {
-        public Form1()
+        public StartForm()
         {
             InitializeComponent();
         }
@@ -12,7 +12,7 @@ namespace GeniyIdiotWinForm
         private void adminStartButton_Click(object sender, EventArgs e)
         {
             AdminForm adminForm = new AdminForm();
-            adminForm.ShowDialog();
+            adminForm.Show();
             this.Hide();
         }
 
@@ -24,8 +24,8 @@ namespace GeniyIdiotWinForm
 
         private void userStartButton_Click(object sender, EventArgs e)
         {
-            UserForm userForm = new UserForm();
-            userForm.ShowDialog();
+            UserForm userForm = new UserForm(this);
+            userForm.Show();
             this.Hide();
         }
 

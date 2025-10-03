@@ -7,10 +7,15 @@ namespace GeniyIdiotWinForm
     public partial class UserForm : Form
     {
         private UserTestService _userTestService;
-
+        private StartForm startForm;
         public UserForm()
         {
             InitializeComponent();
+        }
+        public UserForm(StartForm startForm)
+        {
+            InitializeComponent();
+            this.startForm = startForm;
             this.FormClosing += UserForm_FormClosing;
         }
 
@@ -19,7 +24,6 @@ namespace GeniyIdiotWinForm
             _userTestService = new UserTestService();
             UpdateFormFromState();
         }
-
 
         private void nextButton_Click(object sender, EventArgs e)
         {
@@ -80,8 +84,8 @@ namespace GeniyIdiotWinForm
 
         private void restartAppButton_Click(object sender, EventArgs e)
         {
-                this.FormClosing -= UserForm_FormClosing;
-                Application.Restart();
+            this.FormClosing -= UserForm_FormClosing;
+            Application.Restart();
         }
 
         private void restartTestButton_Click(object sender, EventArgs e)
@@ -181,22 +185,19 @@ namespace GeniyIdiotWinForm
 
         private void UserForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            var result = MessageBox.Show(
-                "Вы действительно хотите выйти из приложения?",
-                "Подтверждение выхода",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
-
-            if (result == DialogResult.No)
+            if (e.CloseReason == CloseReason.UserClosing)
             {
-                e.Cancel = true; 
+                if (e.CloseReason == CloseReason.UserClosing)
+                {
+
+                    Application.Exit();
+                }
             }
         }
 
         private void exitButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
         }
     }
 }
