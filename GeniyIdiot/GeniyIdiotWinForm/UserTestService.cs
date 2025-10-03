@@ -102,19 +102,5 @@ namespace GeniyIdiotWinForm
             _currentUserInfoStep = 0;
         }
 
-        private void UserForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            var result = MessageBox.Show(
-                "Вы действительно хотите выйти?",
-                "Подтверждение выхода",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
-
-            if (result == DialogResult.No)
-            {
-                e.Cancel = true;
-            }
-        }
     }
 }

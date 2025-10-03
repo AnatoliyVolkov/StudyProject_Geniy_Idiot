@@ -99,20 +99,7 @@ namespace GeniyIdiotWinForm
             UpdateFormFromState();
         }
 
-        private void exitButton_Click(object sender, EventArgs e)
-        {
-            var result = MessageBox.Show(
-                "Выйти из приложения?",
-                "Выход",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
 
-            if (result == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-        }
 
         private void viewResultsButton_Click(object sender, EventArgs e)
         {
@@ -212,8 +199,14 @@ namespace GeniyIdiotWinForm
 
             if (result == DialogResult.No)
             {
-                e.Cancel = true; // ← ПРАВИЛЬНО
+                e.Cancel = true; 
             }
+        }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
+

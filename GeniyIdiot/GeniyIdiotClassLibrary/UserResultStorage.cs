@@ -11,7 +11,15 @@ public static class UserResultStorage
             var userResults = new List<User>();
             var lines = FileProvider.Read(filePath);
 
-            for (int i = 2 ; i < lines.Count ; i++)
+            int startIndex = 0;
+            if (lines.Count > 2)
+            {
+                if (lines[0].Contains("ФИО") && lines[1].Contains("="))
+                {
+                    startIndex = 2; 
+                }
+            }
+            for (int i = startIndex; i < lines.Count; i++) 
             {
                 var line = lines[i];
                 if (string.IsNullOrWhiteSpace(line)) continue;
