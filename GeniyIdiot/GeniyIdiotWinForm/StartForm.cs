@@ -11,8 +11,8 @@ namespace GeniyIdiotWinForm
 
         private void adminStartButton_Click(object sender, EventArgs e)
         {
-            AdminForm adminForm = new AdminForm();
-            adminForm.Show();
+            AdminLoginForm loginForm = new AdminLoginForm(this);
+            loginForm.Show();
             this.Hide();
         }
 

@@ -1,5 +1,6 @@
 ﻿using GeniyIdiotClassLibrary;
 using System.IO;
+using static GeniyIdiotWinForm.Program;
 
 
 namespace GeniyIdiotWinForm
@@ -8,6 +9,7 @@ namespace GeniyIdiotWinForm
     {
         private UserTestService _userTestService;
         private StartForm startForm;
+
         public UserForm()
         {
             InitializeComponent();
@@ -189,8 +191,23 @@ namespace GeniyIdiotWinForm
             {
                 if (e.CloseReason == CloseReason.UserClosing)
                 {
-
-                    Application.Exit();
+                    if (AppState.AdminFormHidden)
+                    {
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        var result = MessageBox.Show("Вы уверены, что хотите выйти?", "Подтверждение",
+                                                    MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+                            Environment.Exit(0);
+                        }
+                        else
+                        {
+                            e.Cancel = true; 
+                        }
+                    }
                 }
             }
         }
@@ -199,6 +216,7 @@ namespace GeniyIdiotWinForm
         {
             Application.Exit();
         }
+
     }
 }
 

@@ -77,32 +77,6 @@ public static class ValidationHelper
         }   
     }
 
-    //public static ValidationResult GetUserName(string input)
-    //{
-    //    while (true)
-    //    {
-    //        try
-    //        {
-    //            var name = input;
-    //            return CheckUsernameEntry(name);
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            Console.WriteLine(ex.Message);
-    //            Console.WriteLine("Повторите попытку ввода еще раз.");
-    //        }
-    //    }
-    //}
-
-    //public static bool CheckLogin()
-    //{
-    //    Console.WriteLine("Добро пожаловать в программу оценки гениальности!\n" +
-    //        "Вы хотите войти как пользователь? да/нет");
-    //    var answer = CheckUserAnswer();
-    //    if (answer == "да") { return true; }
-    //    return false;
-    //}
-
     public static ValidationResult<int> CheckAdminInput(string userInput)
     {
         try

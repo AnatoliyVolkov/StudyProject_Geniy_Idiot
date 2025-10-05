@@ -6,7 +6,7 @@ public class AdminStorage
 {
     public static string AdminFilePath { get; set; } = "Admin";
     public List<Admin> admins = new List<Admin>();
-    private string adminFilePath ;
+    private string adminFilePath;
 
     public AdminStorage(string filePath)
     {
@@ -73,7 +73,7 @@ public class AdminStorage
             return;
         }
 
-        for (int i = 2; i < lines.Length; i++)
+        for (int i = 2 ; i < lines.Length ; i++)
         {
             var line = lines[i];
             if (string.IsNullOrWhiteSpace(line)) continue;
@@ -86,10 +86,7 @@ public class AdminStorage
                     var login = parts[0].Trim();
                     var passwordText = parts[1].Trim();
 
-                    if (int.TryParse(passwordText, out int password))
-                    {
-                        admins.Add(new Admin(login, passwordText));
-                    }
+                    admins.Add(new Admin(login, passwordText));
                 }
             }
             catch (Exception ex)

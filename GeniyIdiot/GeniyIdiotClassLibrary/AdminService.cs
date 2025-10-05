@@ -15,7 +15,7 @@ public static class AdminService
         if (!passwordValidation._Success)
             return (false, passwordValidation.ErrorMessage);
 
-        if (Admin.CheckAdmin(loginValidation.Value, passwordValidation.Value.ToString(), adminFilePath))
+        if (Admin.CheckAdmin(loginValidation.Value, password, adminFilePath))
             return (true, Messages.AuthSuccess);
 
         return (false, "НЕВЕРНО!");
@@ -39,7 +39,8 @@ public static class AdminService
             string validLogin = loginValidation.Value;
             int validPassword = passwordValidation.Value;
 
-            if (adminStorage.admins.Any(admin => admin.Login == validLogin.ToLower()))
+            if (adminStorage.admins.Any(admin =>
+                admin.Login.Equals(validLogin.ToLower(), StringComparison.OrdinalIgnoreCase)))
                 return (false, Messages.AdminExists);
 
             adminStorage.AddAdmin(validLogin.ToLower(), validPassword);

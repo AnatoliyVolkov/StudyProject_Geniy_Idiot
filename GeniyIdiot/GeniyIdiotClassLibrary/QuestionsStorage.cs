@@ -15,7 +15,7 @@ public static class QuestionsStorage
     {
         var lines = FileProvider.Read(questionPath);
 
-        if (lines.Count <= 2)
+        if (lines.Count == 0)
         {
             var defaultQuestions = GetDefault();
             var testLine = "1 || Тестовый вопрос || 0";
@@ -27,6 +27,7 @@ public static class QuestionsStorage
             for (int i = 0 ; i < defaultQuestions.Count ; i++)
             {
                 var formatted = $"{i + 1 }|| {defaultQuestions[i]._Question} || {defaultQuestions[i].Answer}";
+                sw.WriteLine(formatted);
             }
         }
     }
@@ -36,10 +37,13 @@ public static class QuestionsStorage
         List<Question> questions = new List<Question>();
         var lines = FileProvider.Read(questionPath);
 
-        for (int i = 2 ; i < lines.Count ; i++)
+        for (int i = 0 ; i < lines.Count ; i++)
         {
             var line = lines[i];
             if (string.IsNullOrWhiteSpace(line)) continue;
+
+            if (line.Contains("П/П") || line.Contains("===") || line.Contains("Вопрос") || line.Contains("Ответ"))
+                continue;
 
             var parts = line.Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length >= 3)
@@ -53,7 +57,6 @@ public static class QuestionsStorage
                 }
             }
         }
-
         if (questions.Count == 0)
         {
             questions.AddRange(GetDefault());
@@ -93,10 +96,10 @@ public static class QuestionsStorage
             throw new Exception(Messages.QuestionEmpty);
         }
 
-        var lines = FileProvider.Read(questionPath);
-        var questionNumber = lines.Count - 1;
-        var newQuestion = $"{questionNumber} || {question} || {answer}";
+        var existingQuestions = GetFromFile(questionPath);
+        var questionNumber = existingQuestions.Count + 1;
 
+        var newQuestion = $" {questionNumber}|| {question} || {answer}"; 
         FileProvider.Append(questionPath, newQuestion);
     }
 

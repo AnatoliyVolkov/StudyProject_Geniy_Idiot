@@ -15,7 +15,8 @@ public class Admin
     {
         var adminStorage = new AdminStorage(adminFilePath);
         return adminStorage.admins.Any(admin =>
-            admin.Login == login.ToLower() && admin.Password == password);
+            admin.Login.Equals(login.ToLower(), StringComparison.OrdinalIgnoreCase) &&
+            admin.Password == password); 
     }
 
 }

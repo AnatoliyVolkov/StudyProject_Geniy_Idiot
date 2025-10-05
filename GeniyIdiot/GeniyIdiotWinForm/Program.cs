@@ -2,6 +2,10 @@ namespace GeniyIdiotWinForm
 {
     internal static class Program
     {
+        public static class AppState
+        {
+            public static bool AdminFormHidden { get; set; }
+        }
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
