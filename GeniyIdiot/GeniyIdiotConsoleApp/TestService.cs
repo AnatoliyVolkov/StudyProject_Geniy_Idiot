@@ -40,9 +40,7 @@ public class TestService
     {
         var questions = QuestionsStorage.GetQuestions(_questionPath);
         var diagnose = DiagnosticTestResources.GetDiagnose(score, questions.Count);
-
         UserResultStorage.SaveResult(_testPath, User.userFullName, score, diagnose);
-
         Console.WriteLine(string.Format(Messages.TestResult, User.UserName, score));
         Console.WriteLine(string.Format(Messages.DiagnosisResult, diagnose));
     }
@@ -50,33 +48,21 @@ public class TestService
     public void ShowAllResults()
     {
         Console.WriteLine(Messages.ViewAllResults);
-
         var userService = new UserService();
         if (userService.GetUserConfirm(""))
         {
             try
             {
-                var results = UserResultStorage.LoadFromFile(_testPath);
+                var lines = FileProvider.Read(_testPath);
 
-                if (results.Count == 0)
+                if (lines.Count <= 2)
                 {
                     Console.WriteLine("Результаты тестирования отсутствуют.");
                     return;
                 }
-
-                // Выводим заголовок таблицы
-                Console.WriteLine(string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
-                    "ФИО", "Набранные баллы", "Диагноз"));
-                Console.WriteLine(new string('=', 85)); // разделитель
-
-                // Выводим результаты
-                foreach (var result in results)
+                foreach (var line in lines)
                 {
-                    var formattedResult = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
-                        result.FullName,
-                        result.Score.ToString(),
-                        result.Diagnosis);
-                    Console.WriteLine(formattedResult);
+                    Console.WriteLine(line);
                 }
             }
             catch (Exception ex)
@@ -86,9 +72,3 @@ public class TestService
         }
     }
 }
-
-
-// var line = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
-  //   userFullName,
- //    answer.ToString(),
-//     diagnostic);

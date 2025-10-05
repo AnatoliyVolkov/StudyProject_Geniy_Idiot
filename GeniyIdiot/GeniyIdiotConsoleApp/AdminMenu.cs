@@ -26,14 +26,10 @@ public class AdminMenu
             Console.WriteLine(Messages.AdminMode);
             Console.WriteLine(Messages.AdminMenu);
             Console.Write(Messages.ChooseAction);
-
             var choice = Console.ReadLine();
             var result = AdminService.GetMenu(choice, _questionPath);
-
             Console.WriteLine(result.message);
-
             if (!result.success) continue;
-
             if (result.message == "exit_to_main")
             {
                 returnToMainMenu();
@@ -75,15 +71,12 @@ public class AdminMenu
     private void AddQuestion()
     {
         string question = Console.ReadLine();
-
         Console.WriteLine(Messages.EnterAnswer);
         string answerInput = Console.ReadLine();
-
         var result = AdminService.AddQuestion(
             () => (question, answerInput),
             _questionPath
         );
-
         Console.WriteLine(result.message);
         if (result.success) 
         {
@@ -136,21 +129,10 @@ public class AdminMenu
 
             foreach (var question in questions)
             {
-                var _question = question.Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
+                if (question.Contains("===") || string.IsNullOrWhiteSpace(question))
+                    continue;
 
-                // Проверяем, что массив содержит достаточно элементов
-                if (_question.Length >= 3)
-                {
-                    Console.WriteLine(string.Format("{0,-5} || {1,-85} || {2,-15}",
-                        _question[0].Trim(),
-                        _question[1].Trim(),
-                        _question[2].Trim()));
-                }
-                else
-                {
-                    // Если формат строки не соответствует ожидаемому, просто выводим её как есть
-                    Console.WriteLine(question);
-                }
+                Console.WriteLine(question);
             }
         }
         catch (Exception ex)

@@ -18,27 +18,7 @@ namespace GeniyIdiotWinForm
         {
             var login = loginTextBox.Text.Trim();
             var password = passwordTextBox.Text.Trim();
-
-            //var loginValidation = ValidationHelper.CheckUsernameEntry(login);
-            //if (!loginValidation._Success)
-            //{
-            //    MessageBox.Show(loginValidation.ErrorMessage, "Ошибка ввода",
-            //                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    loginTextBox.Focus();
-            //    return;
-            //}
-
-            //var passwordValidation = ValidationHelper.CheckAdminInput(password);
-            //if (!passwordValidation._Success)
-            //{
-            //    MessageBox.Show(passwordValidation.ErrorMessage, "Ошибка ввода",
-            //                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    passwordTextBox.Focus();
-            //    return;
-            //}
-
             var result = AdminService.TryLogin(() => (login, password), _adminFilePath);
-
             if (result.success)
             {
                 MessageBox.Show(result.message, "Успех",

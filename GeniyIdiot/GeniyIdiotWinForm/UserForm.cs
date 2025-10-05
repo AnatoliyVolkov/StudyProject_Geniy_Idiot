@@ -9,7 +9,6 @@ namespace GeniyIdiotWinForm
     {
         private UserTestService _userTestService;
         private StartForm startForm;
-
         public UserForm()
         {
             InitializeComponent();
@@ -70,7 +69,6 @@ namespace GeniyIdiotWinForm
         {
             var userAnswer = userInputTextBox.Text.Trim();
             var result = _userTestService.ProcessAnswer(userAnswer);
-
             if (result.success)
             {
                 UpdateFormFromState();
@@ -140,7 +138,6 @@ namespace GeniyIdiotWinForm
                     AllowUserToAddRows = false,
                     RowHeadersVisible = false
                 };
-
                 dataGridView.Columns.Add("FullName", "ФИО");
                 dataGridView.Columns.Add("Score", "Правильные ответы");
                 dataGridView.Columns.Add("Diagnosis", "Диагноз");

@@ -29,7 +29,6 @@ namespace GeniyIdiotWinForm
             this.Hide();
         }
 
-
         private void Form1_FormClosing_1(object sender, FormClosingEventArgs e)
         {
             var result = MessageBox.Show(
@@ -38,7 +37,6 @@ namespace GeniyIdiotWinForm
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
             );
-
             if (result == DialogResult.No)
             {
                 e.Cancel = true;

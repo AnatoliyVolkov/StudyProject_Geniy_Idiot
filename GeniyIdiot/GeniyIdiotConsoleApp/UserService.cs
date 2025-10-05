@@ -8,16 +8,12 @@ namespace GeniyIdiotConsoleApp
         public User GetUserInfo()
         {
             Console.WriteLine(Messages.WelcomeTest);
-
             Console.WriteLine(Messages.EnterLastName);
             string lastName = GetValidUserName();
-
             Console.WriteLine(Messages.EnterFirstName);
             string name = GetValidUserName();
-
             Console.WriteLine(Messages.EnterPatronymic);
             string patronymic = GetValidUserName();
-
             var user = new User($"{name} {lastName} {patronymic}", 0, "");
             User.SafeData(name, lastName, patronymic);
             return user;
@@ -39,7 +35,6 @@ namespace GeniyIdiotConsoleApp
         {
             Console.WriteLine(Messages.Welcome);
             Console.WriteLine(Messages.ChooseRole);
-
             while (true)
             {
                 var input = Console.ReadLine();
@@ -58,7 +53,6 @@ namespace GeniyIdiotConsoleApp
             {
                 var input = Console.ReadLine();
                 var result = ValidationHelper.CheckUserAnswer(input);
-
                 if (result._Success)
                     return result.Value == "да";
                 else

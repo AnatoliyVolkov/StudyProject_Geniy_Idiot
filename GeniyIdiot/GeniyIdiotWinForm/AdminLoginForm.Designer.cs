@@ -36,57 +36,46 @@
             cancelButton = new Button();
             infoLabel = new Label();
             SuspendLayout();
-            //
-            // infoLabel
-            //
-            infoLabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            infoLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            infoLabel.Location = new Point(12, 20);
-            infoLabel.Name = "infoLabel";
-            infoLabel.Size = new Size(460, 30);
-            infoLabel.TabIndex = 0;
-            infoLabel.Text = "Авторизация администратора";
-            infoLabel.TextAlign = ContentAlignment.MiddleCenter;
-            //
+            // 
             // loginLabel
-            //
+            // 
             loginLabel.AutoSize = true;
             loginLabel.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 204);
             loginLabel.Location = new Point(50, 80);
             loginLabel.Name = "loginLabel";
-            loginLabel.Size = new Size(54, 20);
+            loginLabel.Size = new Size(55, 20);
             loginLabel.TabIndex = 1;
             loginLabel.Text = "Логин:";
-            //
+            // 
             // passwordLabel
-            //
+            // 
             passwordLabel.AutoSize = true;
             passwordLabel.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 204);
             passwordLabel.Location = new Point(50, 130);
             passwordLabel.Name = "passwordLabel";
-            passwordLabel.Size = new Size(63, 20);
+            passwordLabel.Size = new Size(65, 20);
             passwordLabel.TabIndex = 2;
             passwordLabel.Text = "Пароль:";
-            //
+            // 
             // loginTextBox
-            //
+            // 
             loginTextBox.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 204);
             loginTextBox.Location = new Point(120, 77);
             loginTextBox.Name = "loginTextBox";
             loginTextBox.Size = new Size(300, 27);
             loginTextBox.TabIndex = 3;
-            //
+            // 
             // passwordTextBox
-            //
+            // 
             passwordTextBox.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 204);
             passwordTextBox.Location = new Point(120, 127);
             passwordTextBox.Name = "passwordTextBox";
             passwordTextBox.PasswordChar = '*';
             passwordTextBox.Size = new Size(300, 27);
             passwordTextBox.TabIndex = 4;
-            //
+            // 
             // loginButton
-            //
+            // 
             loginButton.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 204);
             loginButton.Location = new Point(120, 180);
             loginButton.Name = "loginButton";
@@ -95,9 +84,9 @@
             loginButton.Text = "Войти";
             loginButton.UseVisualStyleBackColor = true;
             loginButton.Click += loginButton_Click;
-            //
+            // 
             // cancelButton
-            //
+            // 
             cancelButton.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 204);
             cancelButton.Location = new Point(260, 180);
             cancelButton.Name = "cancelButton";
@@ -106,9 +95,20 @@
             cancelButton.Text = "Отмена";
             cancelButton.UseVisualStyleBackColor = true;
             cancelButton.Click += cancelButton_Click;
-            //
+            // 
+            // infoLabel
+            // 
+            infoLabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            infoLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            infoLabel.Location = new Point(12, 20);
+            infoLabel.Name = "infoLabel";
+            infoLabel.Size = new Size(460, 30);
+            infoLabel.TabIndex = 0;
+            infoLabel.Text = "Авторизация администратора";
+            infoLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // AdminLoginForm
-            //
+            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(484, 261);
@@ -122,6 +122,7 @@
             Name = "AdminLoginForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Вход для администратора";
+            Load += AdminLoginForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }

@@ -18,14 +18,19 @@ public static class QuestionsStorage
         if (lines.Count == 0 || (lines.Count <= 2 && lines[0].Contains("П/П")))
         {
             var defaultQuestions = GetDefault();
-            var header = "П/П || Вопрос || Ответ";
-            var separator = new string('=', 50);
+            var header = string.Format("{0,-5} || {1,-85} || {2,-15}", "П/П", "Вопрос", "Ответ");
+            var separator = new string('=', 115); 
+
             using var sw = new StreamWriter(questionPath, false, Encoding.UTF8);
             sw.WriteLine(header);
             sw.WriteLine(separator);
+
             for (int i = 0 ; i < defaultQuestions.Count ; i++)
             {
-                var formatted = $"{i + 1} || {defaultQuestions[i]._Question} || {defaultQuestions[i].Answer}";
+                var formatted = string.Format("{0,-5} || {1,-85} || {2,-15}",
+                    i + 1,
+                    defaultQuestions[i]._Question,
+                    defaultQuestions[i].Answer);
                 sw.WriteLine(formatted);
             }
         }
@@ -40,17 +45,12 @@ public static class QuestionsStorage
         {
             var line = lines[i];
             if (string.IsNullOrWhiteSpace(line)) continue;
-
-            // Пропускаем заголовки
             if (line.Contains("П/П") || line.Contains("===") || (line.Contains("Вопрос") && line.Contains("Ответ")))
                 continue;
 
             var parts = line.Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
-
-            // Обрабатываем оба формата: "номер || вопрос || ответ" и "вопрос || ответ"
             if (parts.Length >= 3)
             {
-                // Формат: "номер || вопрос || ответ"
                 var questionText = parts[1]?.Trim();
                 var answerText = parts[2]?.Trim();
 
@@ -61,7 +61,6 @@ public static class QuestionsStorage
             }
             else if (parts.Length == 2)
             {
-                // Формат: "вопрос || ответ" (для консольного приложения)
                 var questionText = parts[0]?.Trim();
                 var answerText = parts[1]?.Trim();
 
@@ -71,12 +70,10 @@ public static class QuestionsStorage
                 }
             }
         }
-
         if (questions.Count == 0)
         {
             questions.AddRange(GetDefault());
         }
-
         return questions;
     }
 
@@ -119,10 +116,7 @@ public static class QuestionsStorage
             {
                 throw new Exception($"Ошибка: Вопроса с номером {lineNumber} не существует! В файле всего {lines.Count} вопросов.");
             }
-
             lines.RemoveAt(lineNumber - 1);
-
-            // Перезаписываем файл с правильной нумерацией
             using var sw = new StreamWriter(questionPath, false, Encoding.UTF8);
             for (int i = 0 ; i < lines.Count ; i++)
             {
@@ -146,19 +140,10 @@ public static class QuestionsStorage
         var existingQuestions = GetFromFile(questionPath);
         var questionNumber = existingQuestions.Count + 1;
 
-        var lines = FileProvider.Read(questionPath);
-        bool hasHeader = lines.Count > 0 && (lines[0].Contains("П/П") || lines[0].Contains("Вопрос"));
+        var newQuestion = string.Format("{0,-5} || {1,-85} || {2,-15}",
+            questionNumber, question, answer);
 
-        if (hasHeader)
-        {
-            var newQuestion = $"{questionNumber} || {question} || {answer}";
-            FileProvider.Append(questionPath, newQuestion);
-        }
-        else
-        {
-            var newQuestion = $"{questionNumber} || {question} || {answer}";
-            FileProvider.Append(questionPath, newQuestion);
-        }
+        FileProvider.Append(questionPath, newQuestion);
     }
 
     private static List<Question> GetDefault()
