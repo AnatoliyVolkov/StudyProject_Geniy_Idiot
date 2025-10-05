@@ -97,11 +97,25 @@ public class AdminMenu
         {
             ShowQuestionsList();
             Console.WriteLine(Messages.EnterLineNumber);
+
+            // Получаем общее количество вопросов для валидации
+            var questions = QuestionsStorage.GetFromFile(_questionPath);
+            var totalQuestions = questions.Count;
+
+            Console.WriteLine($"Всего вопросов: {totalQuestions}");
+
             if (int.TryParse(Console.ReadLine(), out int lineNumber))
             {
-                var result = AdminService.DeleteQuestion(() => lineNumber, _questionPath);
-                Console.WriteLine(result.message);
-
+                // Проверяем, что номер вопроса в допустимом диапазоне
+                if (lineNumber >= 1 && lineNumber <= totalQuestions)
+                {
+                    var result = AdminService.DeleteQuestion(() => lineNumber, _questionPath);
+                    Console.WriteLine(result.message);
+                }
+                else
+                {
+                    Console.WriteLine($"Некорректный номер вопроса! Допустимый диапазон: 1-{totalQuestions}");
+                }
             }
             else
             {
@@ -119,11 +133,24 @@ public class AdminMenu
         try
         {
             var questions = FileProvider.Read(_questionPath);
-            
-            foreach (var question in questions)
-            {   var _question = question.Split(" || ");
 
-                Console.WriteLine(string.Format("{0,-5} || {1,-85} || {2,-15}", _question[0], _question[1], _question[2]));
+            foreach (var question in questions)
+            {
+                var _question = question.Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
+
+                // Проверяем, что массив содержит достаточно элементов
+                if (_question.Length >= 3)
+                {
+                    Console.WriteLine(string.Format("{0,-5} || {1,-85} || {2,-15}",
+                        _question[0].Trim(),
+                        _question[1].Trim(),
+                        _question[2].Trim()));
+                }
+                else
+                {
+                    // Если формат строки не соответствует ожидаемому, просто выводим её как есть
+                    Console.WriteLine(question);
+                }
             }
         }
         catch (Exception ex)

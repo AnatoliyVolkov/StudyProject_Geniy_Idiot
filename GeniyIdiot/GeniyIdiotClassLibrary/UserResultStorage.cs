@@ -2,13 +2,17 @@
 
 public static class UserResultStorage
 {
-    public static string ResultsFilePath { get; set; } = "test_results.txt";
+    public static string ResultsFilePath { get; set; } = "test_results";
 
     public static List<User> LoadFromFile(string filePath)
     {
         try
         {
             var userResults = new List<User>();
+
+            if (!File.Exists(filePath))
+                return userResults;
+
             var lines = FileProvider.Read(filePath);
 
             int startIndex = 0;
@@ -16,10 +20,11 @@ public static class UserResultStorage
             {
                 if (lines[0].Contains("ФИО") && lines[1].Contains("="))
                 {
-                    startIndex = 2; 
+                    startIndex = 2;
                 }
             }
-            for (int i = startIndex; i < lines.Count; i++) 
+
+            for (int i = startIndex ; i < lines.Count ; i++)
             {
                 var line = lines[i];
                 if (string.IsNullOrWhiteSpace(line)) continue;
@@ -50,7 +55,6 @@ public static class UserResultStorage
         try
         {
             var line = userFullName + "||" + answer.ToString() + "||" + diagnostic;
-
             FileProvider.Append(filePath, line);
         }
         catch (Exception ex)

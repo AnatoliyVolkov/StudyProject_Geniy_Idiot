@@ -15,18 +15,17 @@ public static class QuestionsStorage
     {
         var lines = FileProvider.Read(questionPath);
 
-        if (lines.Count == 0)
+        if (lines.Count == 0 || (lines.Count <= 2 && lines[0].Contains("П/П")))
         {
             var defaultQuestions = GetDefault();
-            var testLine = "1 || Тестовый вопрос || 0";
             var header = "П/П || Вопрос || Ответ";
-            var separator = new string('=', testLine.Length);
+            var separator = new string('=', 50);
             using var sw = new StreamWriter(questionPath, false, Encoding.UTF8);
             sw.WriteLine(header);
             sw.WriteLine(separator);
             for (int i = 0 ; i < defaultQuestions.Count ; i++)
             {
-                var formatted = $"{i + 1 }|| {defaultQuestions[i]._Question} || {defaultQuestions[i].Answer}";
+                var formatted = $"{i + 1} || {defaultQuestions[i]._Question} || {defaultQuestions[i].Answer}";
                 sw.WriteLine(formatted);
             }
         }
@@ -42,25 +41,42 @@ public static class QuestionsStorage
             var line = lines[i];
             if (string.IsNullOrWhiteSpace(line)) continue;
 
-            if (line.Contains("П/П") || line.Contains("===") || line.Contains("Вопрос") || line.Contains("Ответ"))
+            // Пропускаем заголовки
+            if (line.Contains("П/П") || line.Contains("===") || (line.Contains("Вопрос") && line.Contains("Ответ")))
                 continue;
 
             var parts = line.Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Обрабатываем оба формата: "номер || вопрос || ответ" и "вопрос || ответ"
             if (parts.Length >= 3)
             {
-                var questionText = parts[1].Trim();
-                var answerText = parts[2].Trim();
+                // Формат: "номер || вопрос || ответ"
+                var questionText = parts[1]?.Trim();
+                var answerText = parts[2]?.Trim();
 
-                if (int.TryParse(answerText, out int answer))
+                if (!string.IsNullOrEmpty(questionText) && int.TryParse(answerText, out int answer))
+                {
+                    questions.Add(new Question(questionText, answer));
+                }
+            }
+            else if (parts.Length == 2)
+            {
+                // Формат: "вопрос || ответ" (для консольного приложения)
+                var questionText = parts[0]?.Trim();
+                var answerText = parts[1]?.Trim();
+
+                if (!string.IsNullOrEmpty(questionText) && int.TryParse(answerText, out int answer))
                 {
                     questions.Add(new Question(questionText, answer));
                 }
             }
         }
+
         if (questions.Count == 0)
         {
             questions.AddRange(GetDefault());
         }
+
         return questions;
     }
 
@@ -68,25 +84,56 @@ public static class QuestionsStorage
     {
         var lines = FileProvider.Read(questionPath);
 
-        int fileLineNumber = lineNumber + 2;
-        if (fileLineNumber < 1 || fileLineNumber > lines.Count)
+        if (lines.Count == 0)
         {
-            throw new Exception($"Ошибка: Строка с номером {lineNumber} не существует! В файле всего {lines.Count - 2} строк(и).");
-        }
-        lines.RemoveAt(fileLineNumber - 1);
-        using var sw = new StreamWriter(questionPath, false, Encoding.UTF8);
-        sw.WriteLine(lines[0]);
-        sw.WriteLine(lines[1]);
-        for (int i = 2 ; i < lines.Count ; i++)
-        {
-            var parts = lines[i].Split("||");
-            if (parts.Length >= 3)
-            {
-                var newQuestion = $"{i - 1} || {parts[1].Trim()} || {parts[2].Trim()}";
-                sw.WriteLine(newQuestion);
-            }
+            throw new Exception("Файл вопросов пуст!");
         }
 
+        bool hasHeader = lines[0].Contains("П/П") || lines[0].Contains("Вопрос");
+
+        if (hasHeader)
+        {
+            int fileLineNumber = lineNumber + 2;
+            if (fileLineNumber < 3 || fileLineNumber > lines.Count)
+            {
+                throw new Exception($"Ошибка: Вопроса с номером {lineNumber} не существует! В файле всего {lines.Count - 2} вопросов.");
+            }
+
+            lines.RemoveAt(fileLineNumber - 1);
+            using var sw = new StreamWriter(questionPath, false, Encoding.UTF8);
+            sw.WriteLine(lines[0]);
+            sw.WriteLine(lines[1]);
+            for (int i = 2 ; i < lines.Count ; i++)
+            {
+                var parts = lines[i].Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length >= 3)
+                {
+                    var newQuestion = $"{i - 1} || {parts[1].Trim()} || {parts[2].Trim()}";
+                    sw.WriteLine(newQuestion);
+                }
+            }
+        }
+        else
+        {
+            if (lineNumber < 1 || lineNumber > lines.Count)
+            {
+                throw new Exception($"Ошибка: Вопроса с номером {lineNumber} не существует! В файле всего {lines.Count} вопросов.");
+            }
+
+            lines.RemoveAt(lineNumber - 1);
+
+            // Перезаписываем файл с правильной нумерацией
+            using var sw = new StreamWriter(questionPath, false, Encoding.UTF8);
+            for (int i = 0 ; i < lines.Count ; i++)
+            {
+                var parts = lines[i].Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length >= 3)
+                {
+                    var newQuestion = $"{i + 1} || {parts[1].Trim()} || {parts[2].Trim()}";
+                    sw.WriteLine(newQuestion);
+                }
+            }
+        }
     }
 
     public static void Add(string question, int answer, string questionPath)
@@ -99,8 +146,19 @@ public static class QuestionsStorage
         var existingQuestions = GetFromFile(questionPath);
         var questionNumber = existingQuestions.Count + 1;
 
-        var newQuestion = $" {questionNumber}|| {question} || {answer}"; 
-        FileProvider.Append(questionPath, newQuestion);
+        var lines = FileProvider.Read(questionPath);
+        bool hasHeader = lines.Count > 0 && (lines[0].Contains("П/П") || lines[0].Contains("Вопрос"));
+
+        if (hasHeader)
+        {
+            var newQuestion = $"{questionNumber} || {question} || {answer}";
+            FileProvider.Append(questionPath, newQuestion);
+        }
+        else
+        {
+            var newQuestion = $"{questionNumber} || {question} || {answer}";
+            FileProvider.Append(questionPath, newQuestion);
+        }
     }
 
     private static List<Question> GetDefault()

@@ -57,24 +57,31 @@ public class TestService
             try
             {
                 var results = UserResultStorage.LoadFromFile(_testPath);
-                var lines = FileProvider.Read(_testPath);
-                if (lines.Count >= 2)
+
+                if (results.Count == 0)
                 {
-                    Console.WriteLine(lines[0]);
-                    Console.WriteLine(lines[1]);
+                    Console.WriteLine("Результаты тестирования отсутствуют.");
+                    return;
                 }
+
+                // Выводим заголовок таблицы
+                Console.WriteLine(string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
+                    "ФИО", "Набранные баллы", "Диагноз"));
+                Console.WriteLine(new string('=', 85)); // разделитель
+
+                // Выводим результаты
                 foreach (var result in results)
                 {
                     var formattedResult = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
-                    result.FullName,
-                    result.Score.ToString(),
-                    result.Diagnosis);
+                        result.FullName,
+                        result.Score.ToString(),
+                        result.Diagnosis);
                     Console.WriteLine(formattedResult);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"Ошибка при загрузке результатов: {ex.Message}");
             }
         }
     }
