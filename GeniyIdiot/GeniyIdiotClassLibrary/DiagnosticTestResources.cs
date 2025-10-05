@@ -1,4 +1,4 @@
-﻿namespace GeniyIdiotApp;
+﻿namespace GeniyIdiotClassLibrary;
 
 public static class DiagnosticTestResources
 {
@@ -19,9 +19,8 @@ public static class DiagnosticTestResources
         ';', '"', '\'', '<', '>', ',', '.', '?', '/', '№',
     };
 
-    public static List<int> ShuffleTestQuestions()
+    public static List<int> ShuffleTestQuestions(int questionCount)
     {
-        var questionCount = QuestionsStorage.GetQuestions().Count;
         var questionIndexes = Enumerable.Range(0, questionCount).ToList();
         var randomQuestion = new Random();
 
@@ -33,14 +32,9 @@ public static class DiagnosticTestResources
         return questionIndexes;
     }
 
-    public static bool GetUserConfirm(string name)
+    public static string GetDiagnose(int correctAnswer, int questions)
     {
-        return ValidationHelper.CheckUserAnswer().Trim().ToLower() == "да";
-    }
-
-    public static string GetDiagnose(int correctAnswer)
-    {
-        var result = correctAnswer * 100.0 / QuestionsStorage.GetQuestions().Count;
+        var result = correctAnswer * 100.0 / questions;
         return result switch
         {
             >= 83.33 => "Гений",
