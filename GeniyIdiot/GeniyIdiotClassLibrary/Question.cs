@@ -1,4 +1,6 @@
-﻿namespace GeniyIdiotClassLibrary;
+﻿using static System.Net.Mime.MediaTypeNames;
+
+namespace GeniyIdiotClassLibrary;
 
 public class Question
 {
@@ -10,4 +12,6 @@ public class Question
         _Question = question;
         Answer = answer;
     }
+    public Question() { }
+    
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace GeniyIdiotClassLibrary;
 
@@ -28,30 +29,36 @@ public static class ValidationHelper
         }
     }
 
+    public static ValidationResult<string> ChekLogin(string log)
+    {
+        if (string.IsNullOrEmpty(log))
+            return ValidationResult<string>.Fail(Messages.EmptyField);
+
+        if (short.TryParse(log, out _))
+            return ValidationResult<string>.Fail(Messages.NumbersNotAllowed);
+
+        if (log.Contains(" "))
+            return ValidationResult<string>.Fail(Messages.SingleWord);
+
+        return ValidationResult<string>.Success(log);
+    }
 
     public static ValidationResult<string> CheckUsernameEntry(string name)
     {
         try
         {
-            if (string.IsNullOrEmpty(name))
-                return ValidationResult<string>.Fail(Messages.EmptyField);
+                if (ChekLogin(name)._Success &&
+                name.Any(c => DiagnosticTestResources.InvalidChars.Contains(c)))
+                    return ValidationResult<string>.Fail(Messages.InvalidChars);
 
-            if (short.TryParse(name, out _))
-                return ValidationResult<string>.Fail(Messages.NumbersNotAllowed);
-
-            if (name.Contains(" "))
-                return ValidationResult<string>.Fail(Messages.SingleWord);
-
-            if (name.Any(c => DiagnosticTestResources.InvalidChars.Contains(c)))
-                return ValidationResult<string>.Fail(Messages.InvalidChars);
-
-            string formattedName = name.Substring(0, 1).ToUpper() + name.Substring(1).ToLower();
-            return ValidationResult<string>.Success(formattedName);
+                string formattedName = name.Substring(0, 1).ToUpper() + name.Substring(1).ToLower();
+                return ValidationResult<string>.Success(formattedName);
         }
         catch (Exception ex)
         {
             return ValidationResult<string>.Fail(ex.Message);
         }
+        
     }
 
     public static ValidationResult<string> CheckUserAnswer(string input)

@@ -19,5 +19,7 @@ namespace GeniyIdiotClassLibrary
 
         public static ValidationResult<T> Fail(string errorMessage)
             => new ValidationResult<T>(false, errorMessage, default(T));
+
+
     }
 }

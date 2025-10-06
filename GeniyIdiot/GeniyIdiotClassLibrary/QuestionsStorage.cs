@@ -1,10 +1,11 @@
 ﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace GeniyIdiotClassLibrary;
 
 public static class QuestionsStorage
 {
-    public static string QuestionsFilePath { get; set; } = "Question";
+    public static string QuestionsFilePath { get; set; } = "Question.json";
     public static List<Question> GetQuestions(string questionPath)
     {
         return GetFromFile(questionPath);
@@ -14,7 +15,6 @@ public static class QuestionsStorage
     public static void CreateFirst(string questionPath)
     {
         var lines = FileProvider.Read(questionPath);
-
         if (lines.Count == 0 || (lines.Count <= 2 && lines[0].Contains("П/П")))
         {
             var defaultQuestions = GetDefault();

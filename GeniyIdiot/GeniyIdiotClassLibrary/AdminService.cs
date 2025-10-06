@@ -1,4 +1,6 @@
-﻿namespace GeniyIdiotClassLibrary;
+﻿using Newtonsoft.Json;
+
+namespace GeniyIdiotClassLibrary;
 
 public static class AdminService
 {
@@ -6,8 +8,8 @@ public static class AdminService
     Func<(string login, string password)> getUserData, string adminFilePath)
     {
         var (login, password) = getUserData();
-
-        var loginValidation = ValidationHelper.CheckUsernameEntry(login);
+       
+        var loginValidation = ValidationHelper.ChekLogin(login);
         if (!loginValidation._Success)
             return (false, loginValidation.ErrorMessage);
 
@@ -39,8 +41,12 @@ public static class AdminService
             string validLogin = loginValidation.Value;
             int validPassword = passwordValidation.Value;
 
-            if (adminStorage.admins.Any(admin =>
-                admin.Login.Equals(validLogin.ToLower(), StringComparison.OrdinalIgnoreCase)))
+            bool adminExists = adminStorage.admins.Any(admin =>
+            admin != null &&
+            !string.IsNullOrEmpty(admin.Login) &&
+            admin.Login.Equals(validLogin, StringComparison.OrdinalIgnoreCase));
+
+            if (adminExists)
                 return (false, Messages.AdminExists);
 
             adminStorage.AddAdmin(validLogin.ToLower(), validPassword);

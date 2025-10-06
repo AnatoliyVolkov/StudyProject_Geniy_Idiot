@@ -400,7 +400,7 @@ namespace GeniyIdiotWinForm
                     return;
                 }
 
-                _tempLogin = loginValidation.Value;
+                _tempLogin = loginValidation.Value.ToLower();
                 adminPromptLabel.Text = Messages.EnterPassword;
                 adminInputTextBox.Text = "";
                 adminInputTextBox.Focus();
