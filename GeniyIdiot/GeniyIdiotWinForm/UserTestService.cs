@@ -101,5 +101,28 @@ namespace GeniyIdiotWinForm
             _testEngine = new TestEngine(QuestionsStorage.QuestionsFilePath);
             _currentUserInfoStep = 0;
         }
+
+        public (bool success, string errorMessage) ProcessAnswer(string userAnswer, bool timeExpired = false)
+        {
+            if (timeExpired && string.IsNullOrEmpty(userAnswer))
+            {
+                // Принудительно переходим к следующему вопросу
+                _testEngine.CurrentQuestionIndex++;
+                if (_testEngine.CurrentQuestionIndex >= _testEngine._Question.Count)
+                {
+                    SaveTestResults();
+                }
+                return (true, null);
+            }
+            else
+            {
+                var answerResult = _testEngine.ProcessAnswer(userAnswer);
+                if (answerResult.success && answerResult.testFinished)
+                {
+                    SaveTestResults();
+                }
+                return (answerResult.success, answerResult.error);
+            }
+        }
     }
 }
