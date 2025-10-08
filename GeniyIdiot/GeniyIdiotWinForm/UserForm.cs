@@ -10,11 +10,6 @@ namespace GeniyIdiotWinForm
         private UserTestService _userTestService;
         private StartForm startForm;
 
-        //public UserForm()
-        //{
-        //    InitializeComponent();
-        //}
-
         public UserForm(StartForm startForm)
         {
             InitializeComponent();
