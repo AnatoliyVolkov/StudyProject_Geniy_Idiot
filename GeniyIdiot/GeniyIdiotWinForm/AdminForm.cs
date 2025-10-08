@@ -12,15 +12,34 @@ namespace GeniyIdiotWinForm
         private string _tempQuestion;
         private string _tempLogin;
 
-        public AdminForm()
-        {
-            InitializeComponent();
-        }
-
         public AdminForm(StartForm startForm)
         {
             InitializeComponent();
             _startForm = startForm;
+            InitializeDataGridView();
+            InitializeFiles();
+        }
+
+        private void InitializeDataGridView()
+        {
+            questionsDataGridView.Columns.Clear();
+
+            questionsDataGridView.Columns.Add("Number", "№");
+            questionsDataGridView.Columns.Add("Question", "Вопрос");
+            questionsDataGridView.Columns.Add("Answer", "Ответ");
+
+            questionsDataGridView.Columns["Number"].Width = 50;
+            questionsDataGridView.Columns["Answer"].Width = 80;
+            questionsDataGridView.Columns["Question"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            questionsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            questionsDataGridView.ReadOnly = true;
+            questionsDataGridView.RowHeadersVisible = false;
+            questionsDataGridView.CellDoubleClick += questionsDataGridView_CellDoubleClick;
+        }
+
+        private void InitializeFiles()
+        {
             try
             {
                 if (!FileProvider.Exists(_questionsPath))
@@ -35,12 +54,48 @@ namespace GeniyIdiotWinForm
 
                 if (!FileProvider.Exists(UserResultStorage.ResultsFilePath))
                 {
-                    FileProvider.Create(UserResultStorage.ResultsFilePath, "ФИО||Правильные ответы||Диагноз");
+                    UserResultStorage.CreateEmptyResultsFile(UserResultStorage.ResultsFilePath);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Ошибка инициализации файлов: {ex.Message}",
+                              "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ShowQuestionsInGridView()
+        {
+            try
+            {
+                var questions = QuestionsStorage.GetQuestions(_questionsPath);
+                questionsDataGridView.Rows.Clear();
+
+                for (int i = 0 ; i < questions.Count ; i++)
+                {
+                    questionsDataGridView.Rows.Add(
+                        i + 1,
+                        questions[i]._Question,
+                        questions[i].Answer
+                    );
+                }
+
+                questionsDataGridView.Visible = true;
+                deleteQuestionButton.Visible = true;
+                backFromQuestionsButton.Visible = true;
+
+                adminListBox.Visible = false;
+                adminInputTextBox.Visible = false;
+                adminActionButton.Visible = false;
+                adminPromptLabel.Visible = false;
+                adminBackButton.Visible = false;
+                adminInfoLabel.Text = $"УПРАВЛЕНИЕ ВОПРОСАМИ (всего: {questions.Count})";
+
+                _currentAction = "view_questions";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке вопросов: {ex.Message}",
                               "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -63,7 +118,6 @@ namespace GeniyIdiotWinForm
                  Messages.AdminMenu.Split('\n')[3].Trim(),
                  Messages.AdminMenu.Split('\n')[4].Trim(),
                  Messages.AdminMenu.Split('\n')[5].Trim(),
-                 Messages.AdminMenu.Split('\n')[6].Trim()
             };
 
             foreach (var item in menuItems)
@@ -77,11 +131,64 @@ namespace GeniyIdiotWinForm
             adminActionButton.Text = "Выполнить";
         }
 
+        private void deleteQuestionButton_Click(object sender, EventArgs e)
+        {
+            DeleteSelectedQuestion();
+        }
+
+        private void DeleteSelectedQuestion()
+        {
+            if (questionsDataGridView.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выберите вопрос для удаления!", "Внимание",
+                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var selectedRow = questionsDataGridView.SelectedRows[0];
+            var questionNumber = (int)selectedRow.Cells["Number"].Value;
+            var questionText = selectedRow.Cells["Question"].Value.ToString();
+
+            var result = MessageBox.Show(
+                $"Вы уверены, что хотите удалить вопрос?\n\n{questionText}",
+                "Подтверждение удаления",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    QuestionsStorage.Delete(questionNumber, _questionsPath);
+
+                    ShowQuestionsInGridView();
+
+                    MessageBox.Show("Вопрос успешно удален!", "Успех",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при удалении вопроса: {ex.Message}",
+                                  "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void backFromQuestionsButton_Click(object sender, EventArgs e)
+        {
+            ResetToMenu();
+        }
+
         private void adminActionButton_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(_currentAction))
             {
                 ProcessMenuSelection();
+            }
+            else if (_currentAction == "back") 
+            {
+                ResetToMenu();
             }
             else
             {
@@ -101,50 +208,30 @@ namespace GeniyIdiotWinForm
             var selectedItem = adminListBox.SelectedItem.ToString();
             var choice = selectedItem.Split('.')[0].Trim();
 
-            var result = AdminService.GetMenu(choice, _questionsPath);
-
-            if (!result.success)
-            {
-                MessageBox.Show(result.message, "Ошибка",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (result.message == "exit_to_main")
-            {
-                ReturnToMainMenu();
-                return;
-            }
-
-            if (result.message == Messages.ExitAdministrator)
-            {
-                Close();
-                return;
-            }
-
-            _currentAction = choice;
-            adminInfoLabel.Text = result.message;
-            adminListBox.Visible = false;
-
             switch (choice)
             {
                 case "1":
-                    ShowQuestions();
+                    ShowQuestionsInGridView();
                     break;
                 case "2":
                     PrepareAddQuestion();
                     break;
                 case "3":
-                    PrepareDeleteQuestion();
-                    break;
-                case "4":
                     ShowResults();
                     break;
-                case "5":
+                case "4":
                     PrepareRegisterAdmin();
                     break;
-                case "6":
+                case "5":
                     Application.Exit();
+                    break;
+                case "6":
+                    ReturnToMainMenu();
+                    break;
+
+                default:
+                    MessageBox.Show(Messages.InvalidChoice, "Ошибка",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
         }
@@ -167,47 +254,9 @@ namespace GeniyIdiotWinForm
                 case "5_password":
                     RegisterAdmin(input);
                     break;
-            }
-        }
-
-        private void ShowQuestions()
-        {
-            try
-            {
-                if (!FileProvider.Exists(_questionsPath))
-                {
-                    QuestionsStorage.CreateFirst(_questionsPath);
-                }
-
-                var questions = QuestionsStorage.GetQuestions(_questionsPath);
-                adminListBox.Items.Clear();
-
-                if (questions.Count == 0)
-                {
-                    adminListBox.Items.Add("Нет доступных вопросов.");
-                }
-                else
-                {
-                    for (int i = 0 ; i < questions.Count ; i++)
-                    {
-                        adminListBox.Items.Add($"{i + 1}. {questions[i]._Question} (Ответ: {questions[i].Answer})");
-                    }
-                }
-
-                adminListBox.Visible = true;
-                adminInputTextBox.Visible = false;
-                adminActionButton.Text = "Назад";
-                adminActionButton.Visible = false;
-                adminPromptLabel.Visible = false;
-                adminPromptLabel.Visible = false;
-                adminInfoLabel.Visible = false;
-                adminPromptLabel.Visible = false;
-                _currentAction = "back";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при загрузке вопросов: {ex.Message}",
-                              "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                case "back":
+                    ResetToMenu();
+                    break;
             }
         }
 
@@ -224,6 +273,11 @@ namespace GeniyIdiotWinForm
                 adminInputTextBox.Visible = true;
                 adminInputTextBox.Text = "";
                 adminActionButton.Text = "Далее";
+
+                adminListBox.Visible = false;
+                adminBackButton.Visible = false;
+                adminInfoLabel.Text = "ДОБАВЛЕНИЕ НОВОГО ВОПРОСА";
+
                 _currentAction = "2_question";
             }
             catch (Exception ex)
@@ -247,6 +301,7 @@ namespace GeniyIdiotWinForm
                 _tempQuestion = input;
                 adminPromptLabel.Text = Messages.EnterAnswer;
                 adminInputTextBox.Text = "";
+                adminActionButton.Text = "Добавить";
                 _currentAction = "2_answer";
             }
             else if (_currentAction == "2_answer")
@@ -260,51 +315,13 @@ namespace GeniyIdiotWinForm
                 {
                     MessageBox.Show(Messages.QuestionAdded, "Успех",
                                   MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ResetToMenu();
+                    ShowQuestionsInGridView();
                 }
                 else
                 {
                     MessageBox.Show(result.message, "Ошибка",
                                   MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            }
-        }
-
-        private void PrepareDeleteQuestion()
-        {
-            try
-            {
-                if (!FileProvider.Exists(_questionsPath))
-                {
-                    QuestionsStorage.CreateFirst(_questionsPath);
-                }
-
-                var questions = QuestionsStorage.GetQuestions(_questionsPath);
-                adminListBox.Items.Clear();
-
-                if (questions.Count == 0)
-                {
-                    adminListBox.Items.Add("Нет вопросов для удаления.");
-                }
-                else
-                {
-                    for (int i = 0 ; i < questions.Count ; i++)
-                    {
-                        adminListBox.Items.Add($"{i + 1}. {questions[i]._Question} (Ответ: {questions[i].Answer})");
-                    }
-                }
-
-                adminListBox.Visible = true;
-                adminPromptLabel.Text = Messages.EnterLineNumber;
-                adminInputTextBox.Visible = true;
-                adminInputTextBox.Text = "";
-                adminActionButton.Text = "Удалить";
-                _currentAction = "3";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при загрузке вопросов: {ex.Message}",
-                              "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -355,11 +372,10 @@ namespace GeniyIdiotWinForm
                 adminListBox.Visible = true;
                 adminInputTextBox.Visible = false;
                 adminActionButton.Text = "Назад";
-                adminActionButton.Visible = false;
+                adminActionButton.Visible = true;
+                adminBackButton.Visible = false;
                 adminPromptLabel.Visible = false;
-                adminPromptLabel.Visible = false;
-                adminInfoLabel.Visible = false;
-                adminPromptLabel.Visible = false;
+                adminInfoLabel.Text = "РЕЗУЛЬТАТЫ ТЕСТИРОВАНИЯ";
                 _currentAction = "back";
             }
             catch (Exception ex)
@@ -384,6 +400,13 @@ namespace GeniyIdiotWinForm
             adminInputTextBox.Visible = true;
             adminInputTextBox.Text = "";
             adminActionButton.Text = "Далее";
+
+            adminListBox.Visible = false;
+            adminBackButton.Visible = false;
+            adminPromptLabel.Visible = true; 
+            adminInfoLabel.Text = "РЕГИСТРАЦИЯ НОВОГО АДМИНИСТРАТОРА";
+            backFromQuestionsButton.Visible = true;
+
             _currentAction = "5_login";
         }
 
@@ -435,11 +458,16 @@ namespace GeniyIdiotWinForm
             _currentAction = null;
             _tempQuestion = null;
             _tempLogin = null;
+
+            questionsDataGridView.Visible = false;
+            deleteQuestionButton.Visible = false;
+            backFromQuestionsButton.Visible = false;
+
             adminActionButton.Visible = true;
             adminPromptLabel.Visible = true;
-            adminPromptLabel.Visible = true;
-            adminInfoLabel.Visible = true; 
-            adminPromptLabel.Visible = true;
+            adminInfoLabel.Visible = true;
+            adminListBox.Visible = true;
+
             InitializeAdminMenu();
         }
 
@@ -495,6 +523,14 @@ namespace GeniyIdiotWinForm
                 {
                     e.Cancel = true;
                 }
+            }
+        }
+
+        private void questionsDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DeleteSelectedQuestion();
             }
         }
     }

@@ -9,10 +9,12 @@ namespace GeniyIdiotWinForm
     {
         private UserTestService _userTestService;
         private StartForm startForm;
-        public UserForm()
-        {
-            InitializeComponent();
-        }
+
+        //public UserForm()
+        //{
+        //    InitializeComponent();
+        //}
+
         public UserForm(StartForm startForm)
         {
             InitializeComponent();
@@ -81,7 +83,6 @@ namespace GeniyIdiotWinForm
             }
         }
 
-
         private void restartAppButton_Click(object sender, EventArgs e)
         {
             this.FormClosing -= UserForm_FormClosing;
@@ -93,8 +94,6 @@ namespace GeniyIdiotWinForm
             _userTestService.RestartTest();
             UpdateFormFromState();
         }
-
-
 
         private void viewResultsButton_Click(object sender, EventArgs e)
         {
@@ -213,7 +212,6 @@ namespace GeniyIdiotWinForm
         {
             Application.Exit();
         }
-
     }
 }
 

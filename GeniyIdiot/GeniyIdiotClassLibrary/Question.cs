@@ -12,6 +12,6 @@ public class Question
         _Question = question;
         Answer = answer;
     }
-    public Question() { }
+   
     
 }

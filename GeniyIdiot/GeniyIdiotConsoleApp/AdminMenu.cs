@@ -27,34 +27,39 @@ public class AdminMenu
             Console.WriteLine(Messages.AdminMenu);
             Console.Write(Messages.ChooseAction);
             var choice = Console.ReadLine();
-            var result = AdminService.GetMenu(choice, _questionPath);
-            Console.WriteLine(result.message);
-            if (!result.success) continue;
-            if (result.message == "exit_to_main")
-            {
-                returnToMainMenu();
-                return;
-            }
-            else if (result.message == Messages.ExitAdministrator)
-            {
-                Environment.Exit(0);
-                return;
-            }
-            else if (result.message == Messages.EnterQuestion)
-            {
-                AddQuestion();
-            }
-            else if (result.message == Messages.EnterLineNumber)
-            {
-                DeleteQuestion();
-            }
-            else if (result.message == Messages.RegisterAdmin)
-            {
-                RegisterAdmin();
-            }
+
+            ProcessAdminChoice(choice, returnToMainMenu);
 
             Console.WriteLine(Messages.PressEnter);
             Console.ReadLine();
+        }
+    }
+
+    private void ProcessAdminChoice(string choice, Action returnToMainMenu)
+    {
+        switch (choice?.Trim())
+        {
+            case "1":
+                ShowQuestionsList();
+                break;
+            case "2":
+                AddQuestion();
+                break;
+            case "3":
+                TestService.PrintResultsAsTable(UserResultStorage.LoadFromFile(UserResultStorage.ResultsFilePath));
+                break;
+            case "4":
+                RegisterAdmin();
+                break;
+            case "5":
+                Environment.Exit(0);
+                break;
+            case "6":
+                returnToMainMenu();
+                break;
+            default:
+                Console.WriteLine(Messages.InvalidChoice);
+                break;
         }
     }
 
@@ -70,69 +75,63 @@ public class AdminMenu
 
     private void AddQuestion()
     {
+        Console.WriteLine(Messages.EnterQuestion);
         string question = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(question))
+        {
+            Console.WriteLine(Messages.QuestionEmpty);
+            return;
+        }
+
         Console.WriteLine(Messages.EnterAnswer);
         string answerInput = Console.ReadLine();
+
         var result = AdminService.AddQuestion(
             () => (question, answerInput),
             _questionPath
         );
+
         Console.WriteLine(result.message);
-        if (result.success) 
-        {
-            ShowQuestionsList();
-        }
-    }
-
-    private void DeleteQuestion()
-    {
-        try
-        {
-            ShowQuestionsList();
-            Console.WriteLine(Messages.EnterLineNumber);
-
-            // Получаем общее количество вопросов для валидации
-            var questions = QuestionsStorage.GetFromFile(_questionPath);
-            var totalQuestions = questions.Count;
-
-            Console.WriteLine($"Всего вопросов: {totalQuestions}");
-
-            if (int.TryParse(Console.ReadLine(), out int lineNumber))
-            {
-                // Проверяем, что номер вопроса в допустимом диапазоне
-                if (lineNumber >= 1 && lineNumber <= totalQuestions)
-                {
-                    var result = AdminService.DeleteQuestion(() => lineNumber, _questionPath);
-                    Console.WriteLine(result.message);
-                }
-                else
-                {
-                    Console.WriteLine($"Некорректный номер вопроса! Допустимый диапазон: 1-{totalQuestions}");
-                }
-            }
-            else
-            {
-                Console.WriteLine(Messages.InvalidQuestionNumber);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
     }
 
     private void ShowQuestionsList()
     {
         try
         {
-            var questions = FileProvider.Read(_questionPath);
+            var questions = QuestionsStorage.GetQuestions(_questionPath);
 
-            foreach (var question in questions)
+            if (questions.Count == 0)
             {
-                if (question.Contains("===") || string.IsNullOrWhiteSpace(question))
-                    continue;
+                Console.WriteLine("Нет доступных вопросов.");
+                return;
+            }
 
-                Console.WriteLine(question);
+            Console.WriteLine("СПИСОК ВОПРОСОВ:");
+            Console.WriteLine("==================");
+
+            for (int i = 0 ; i < questions.Count ; i++)
+            {
+                Console.WriteLine($"{i + 1}. {questions[i]._Question} (Ответ: {questions[i].Answer})");
+            }
+
+            Console.WriteLine("Введите номер вопроса для удаления:");
+
+            if (int.TryParse(Console.ReadLine(), out int questionNumber))
+            {
+                if (questionNumber >= 1 && questionNumber <= questions.Count)
+                {
+                    QuestionsStorage.Delete(questionNumber, _questionPath);
+                    Console.WriteLine($"Вопрос номер {questionNumber} успешно удален!");
+                }
+                else
+                {
+                    Console.WriteLine($"Некорректный номер вопроса! Допустимый диапазон: 1-{questions.Count}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Некорректный ввод! Введите число.");
             }
         }
         catch (Exception ex)
@@ -143,6 +142,7 @@ public class AdminMenu
 
     private void RegisterAdmin()
     {
+        Console.WriteLine(Messages.RegisterAdmin);
         var result = AdminService.RegisterAdmin(GetAdminCredentials, _adminPath);
         Console.WriteLine(result.message);
     }

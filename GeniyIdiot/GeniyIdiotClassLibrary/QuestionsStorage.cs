@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Newtonsoft.Json;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace GeniyIdiotClassLibrary;
@@ -6,144 +7,79 @@ namespace GeniyIdiotClassLibrary;
 public static class QuestionsStorage
 {
     public static string QuestionsFilePath { get; set; } = "Question.json";
-    public static List<Question> GetQuestions(string questionPath)
+    public static List<Question> GetQuestions(string questionsFilePath)
     {
-        return GetFromFile(questionPath);
+        return GetFromJsonFile(questionsFilePath);
     }
 
-
-    public static void CreateFirst(string questionPath)
+    public static void CreateFirst(string questionsFilePath)
     {
-        var lines = FileProvider.Read(questionPath);
-        if (lines.Count == 0 || (lines.Count <= 2 && lines[0].Contains("П/П")))
-        {
-            var defaultQuestions = GetDefault();
-            var header = string.Format("{0,-5} || {1,-85} || {2,-15}", "П/П", "Вопрос", "Ответ");
-            var separator = new string('=', 115); 
-
-            using var sw = new StreamWriter(questionPath, false, Encoding.UTF8);
-            sw.WriteLine(header);
-            sw.WriteLine(separator);
-
-            for (int i = 0 ; i < defaultQuestions.Count ; i++)
-            {
-                var formatted = string.Format("{0,-5} || {1,-85} || {2,-15}",
-                    i + 1,
-                    defaultQuestions[i]._Question,
-                    defaultQuestions[i].Answer);
-                sw.WriteLine(formatted);
-            }
-        }
+        var defaultQuestions = GetDefault();
+        SaveToJsonFile(defaultQuestions, questionsFilePath);
     }
 
-    public static List<Question> GetFromFile(string questionPath)
+    public static List<Question> GetFromJsonFile(string filePath)
     {
-        List<Question> questions = new List<Question>();
-        var lines = FileProvider.Read(questionPath);
-
-        for (int i = 0 ; i < lines.Count ; i++)
+        try
         {
-            var line = lines[i];
-            if (string.IsNullOrWhiteSpace(line)) continue;
-            if (line.Contains("П/П") || line.Contains("===") || (line.Contains("Вопрос") && line.Contains("Ответ")))
-                continue;
-
-            var parts = line.Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length >= 3)
+            if (!FileProvider.Exists(filePath))
             {
-                var questionText = parts[1]?.Trim();
-                var answerText = parts[2]?.Trim();
-
-                if (!string.IsNullOrEmpty(questionText) && int.TryParse(answerText, out int answer))
-                {
-                    questions.Add(new Question(questionText, answer));
-                }
+                CreateFirst(filePath);
+                return GetDefault();
             }
-            else if (parts.Length == 2)
+
+            var lines = FileProvider.Read(filePath);
+            if (lines.Count == 0)
             {
-                var questionText = parts[0]?.Trim();
-                var answerText = parts[1]?.Trim();
-
-                if (!string.IsNullOrEmpty(questionText) && int.TryParse(answerText, out int answer))
-                {
-                    questions.Add(new Question(questionText, answer));
-                }
+                return GetDefault();
             }
+
+            var json = string.Join("", lines);
+            var questions = JsonConvert.DeserializeObject<List<Question>>(json);
+            return questions ?? GetDefault();
         }
-        if (questions.Count == 0)
+        catch (Exception ex)
         {
-            questions.AddRange(GetDefault());
-        }
-        return questions;
-    }
-
-    public static void Delete(int lineNumber, string questionPath)
-    {
-        var lines = FileProvider.Read(questionPath);
-
-        if (lines.Count == 0)
-        {
-            throw new Exception("Файл вопросов пуст!");
-        }
-
-        bool hasHeader = lines[0].Contains("П/П") || lines[0].Contains("Вопрос");
-
-        if (hasHeader)
-        {
-            int fileLineNumber = lineNumber + 2;
-            if (fileLineNumber < 3 || fileLineNumber > lines.Count)
-            {
-                throw new Exception($"Ошибка: Вопроса с номером {lineNumber} не существует! В файле всего {lines.Count - 2} вопросов.");
-            }
-
-            lines.RemoveAt(fileLineNumber - 1);
-            using var sw = new StreamWriter(questionPath, false, Encoding.UTF8);
-            sw.WriteLine(lines[0]);
-            sw.WriteLine(lines[1]);
-            for (int i = 2 ; i < lines.Count ; i++)
-            {
-                var parts = lines[i].Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length >= 3)
-                {
-                    var newQuestion = $"{i - 1} || {parts[1].Trim()} || {parts[2].Trim()}";
-                    sw.WriteLine(newQuestion);
-                }
-            }
-        }
-        else
-        {
-            if (lineNumber < 1 || lineNumber > lines.Count)
-            {
-                throw new Exception($"Ошибка: Вопроса с номером {lineNumber} не существует! В файле всего {lines.Count} вопросов.");
-            }
-            lines.RemoveAt(lineNumber - 1);
-            using var sw = new StreamWriter(questionPath, false, Encoding.UTF8);
-            for (int i = 0 ; i < lines.Count ; i++)
-            {
-                var parts = lines[i].Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length >= 3)
-                {
-                    var newQuestion = $"{i + 1} || {parts[1].Trim()} || {parts[2].Trim()}";
-                    sw.WriteLine(newQuestion);
-                }
-            }
+            throw new Exception($"Ошибка чтения вопросов из JSON: {ex.Message}");
         }
     }
 
-    public static void Add(string question, int answer, string questionPath)
+    private static void SaveToJsonFile(List<Question> questions, string filePath)
     {
-        if (string.IsNullOrWhiteSpace(question))
+        try
+        {
+            var json = JsonConvert.SerializeObject(questions, Formatting.Indented);
+            using var sw = new StreamWriter(filePath, false, Encoding.UTF8);
+            sw.Write(json);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Ошибка сохранения вопросов в JSON: {ex.Message}");
+        }
+    }
+
+    public static void Delete(int questionNumber, string questionsFilePath)
+    {
+        var questions = GetFromJsonFile(questionsFilePath);
+
+        if (questionNumber < 1 || questionNumber > questions.Count)
+        {
+            throw new Exception($"Ошибка: Вопроса с номером {questionNumber} не существует! В файле всего {questions.Count} вопросов.");
+        }
+        questions.RemoveAt(questionNumber - 1);
+        SaveToJsonFile(questions, questionsFilePath);
+    }
+
+    public static void Add(string questionText, int answer, string questionsFilePath)
+    {
+        if (string.IsNullOrWhiteSpace(questionText))
         {
             throw new Exception(Messages.QuestionEmpty);
         }
 
-        var existingQuestions = GetFromFile(questionPath);
-        var questionNumber = existingQuestions.Count + 1;
-
-        var newQuestion = string.Format("{0,-5} || {1,-85} || {2,-15}",
-            questionNumber, question, answer);
-
-        FileProvider.Append(questionPath, newQuestion);
+        var questions = GetFromJsonFile(questionsFilePath);
+        questions.Add(new Question(questionText, answer));
+        SaveToJsonFile(questions, questionsFilePath);
     }
 
     private static List<Question> GetDefault()

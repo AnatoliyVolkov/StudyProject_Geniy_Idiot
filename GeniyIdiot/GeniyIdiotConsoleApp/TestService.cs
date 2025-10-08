@@ -33,19 +33,26 @@ public class TestService
                 i--;
             }
         }
-        return testEngine.CorrectAnswersCount; 
+        return testEngine.CorrectAnswersCount;
     }
 
     public void ShowResults(User user, int score)
     {
-        var questions = QuestionsStorage.GetQuestions(_questionPath);
-        var diagnose = DiagnosticTestResources.GetDiagnose(score, questions.Count);
-        UserResultStorage.SaveResult(_testPath, User.userFullName, score, diagnose);
-        Console.WriteLine(string.Format(Messages.TestResult, User.UserName, score));
-        Console.WriteLine(string.Format(Messages.DiagnosisResult, diagnose));
+        try
+        {
+            var questions = QuestionsStorage.GetQuestions(_questionPath);
+            var diagnose = DiagnosticTestResources.GetDiagnose(score, questions.Count);
+            UserResultStorage.SaveResult(_testPath, User.userFullName, score, diagnose);
+            Console.WriteLine(string.Format(Messages.TestResult, User.UserName, score));
+            Console.WriteLine(string.Format(Messages.DiagnosisResult, diagnose));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка при сохранении результатов: {ex.Message}");
+        }
     }
 
-    public void ShowAllResults()
+    public static void ShowAllResults()
     {
         Console.WriteLine(Messages.ViewAllResults);
         var userService = new UserService();
@@ -53,22 +60,33 @@ public class TestService
         {
             try
             {
-                var lines = FileProvider.Read(_testPath);
+                var results = UserResultStorage.LoadFromFile(UserResultStorage.ResultsFilePath);
 
-                if (lines.Count <= 2)
+                if (results.Count == 0)
                 {
-                    Console.WriteLine("Результаты тестирования отсутствуют.");
+                    Console.WriteLine("Результатов тестирования отсутствуют.");
                     return;
                 }
-                foreach (var line in lines)
-                {
-                    Console.WriteLine(line);
-                }
+
+                PrintResultsAsTable(results);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Ошибка при загрузке результатов: {ex.Message}");
+                Console.WriteLine("Файл результатов поврежден. Будет создан новый файл.");
+                UserResultStorage.CreateEmptyResultsFile(UserResultStorage.ResultsFilePath);
             }
+        }
+    }
+
+    public static void PrintResultsAsTable(List<User> results)
+    {
+        Console.WriteLine("|| {0,-25} || {1,-20} || {2,-25} ||", "ФОИ","Правильных ответов", "Результаты теста");
+        Console.WriteLine(new string('=', 95));
+
+        foreach (var result in results)
+        {
+            Console.WriteLine($"|| {result.FullName,-25} || {result.Score,-20} || {result.Diagnosis,-25} ||");
         }
     }
 }

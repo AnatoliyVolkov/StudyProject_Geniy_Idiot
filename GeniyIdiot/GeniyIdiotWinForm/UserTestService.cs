@@ -101,6 +101,5 @@ namespace GeniyIdiotWinForm
             _testEngine = new TestEngine(QuestionsStorage.QuestionsFilePath);
             _currentUserInfoStep = 0;
         }
-
     }
 }

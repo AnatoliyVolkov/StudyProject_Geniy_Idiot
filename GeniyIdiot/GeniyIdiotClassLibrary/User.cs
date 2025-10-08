@@ -27,15 +27,6 @@ public  class User
         UserPatronymic = patronymic;
     }
 
-    public static int RightAnswer(string userInput, string userName, int questionIndex, string questionsPath)
-    {
-        var result = ValidationHelper.CheckAnswerUserQuestion(userInput, userName, questionIndex, questionsPath);
-        if (result._Success)
-            return result.Value;
-        else
-            throw new Exception(result.ErrorMessage);
-    }
-
     public static (bool success, int result, string error) RightAnswerSafe(string userInput, string userName, int questionIndex, string questionsPath)
     {
         var validationResult = ValidationHelper.CheckAnswerUserQuestion(userInput, userName, questionIndex, questionsPath);

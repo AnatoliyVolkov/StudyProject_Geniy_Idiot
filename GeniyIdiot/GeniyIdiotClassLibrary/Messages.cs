@@ -14,14 +14,13 @@ namespace GeniyIdiotClassLibrary
 
         public static string AdminMode = "РЕЖИМ АДМИНИСТРАТОРА";
         public static string AdminMenu =
-            "1. Просмотреть вопросы\n" +
+            "1. Просмотреть или удалить вопросы\n" +
             "2. Добавить вопрос\n" +
-            "3. Удалить вопрос\n" +
-            "4. Просмотреть результаты\n" +
-            "5. Зарегистрировать нового администратора\n" +
-            "6. Выйти из программы\n" +
-            "7. Выйти в главное меню";
-        public static string ChooseAction = "Выберите действие (1-7):";
+            "3. Просмотреть результаты\n" +
+            "4. Зарегистрировать нового администратора\n" +
+            "5. Выйти из программы\n" +
+            "6. Выйти в главное меню";
+        public static string ChooseAction = "Выберите действие (1-6):";
         public static string ExitAdministrator = "Выход из режима администратора.";
         public static string InvalidChoice = "Неверный выбор!";
         public static string PressEnter = "\nНажмите Enter для продолжения...";

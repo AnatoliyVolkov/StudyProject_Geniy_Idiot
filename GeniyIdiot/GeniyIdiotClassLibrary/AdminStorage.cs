@@ -9,7 +9,6 @@ public class AdminStorage
     public static string AdminFilePath { get; set; } = "Admin.json";
     public List<Admin> admins = new List<Admin>();
     
-
     public AdminStorage(string AdminFilePath)
     {
         LoadFromFile();
@@ -22,12 +21,6 @@ public class AdminStorage
             admins.Add(new Admin(login.ToLower(), password.ToString()));
             SaveToFile();
         }
-    }
-
-    public void RemoveAdmin(string login)
-    {
-        admins.RemoveAll(admin => admin.Login == login);
-        SaveToFile();
     }
 
     public void SaveToFile()
@@ -46,14 +39,12 @@ public class AdminStorage
     private void LoadFromFile()
     {
         admins.Clear();
-
         if (!File.Exists(AdminFilePath))
         {
             admins.Add(new Admin("q", "1"));
             SaveToFile();
             return;
         }
-
         try
         {
             var json = File.ReadAllText(AdminFilePath);
@@ -65,7 +56,6 @@ public class AdminStorage
             }
             var adminJson = JsonConvert.DeserializeObject<List<Admin>>(json);
                 admins.AddRange(adminJson);
-            
         }
         catch (Exception ex) { throw new Exception($"Ошибка при чтении администраторов из JSON: {ex.Message}"); }
     }

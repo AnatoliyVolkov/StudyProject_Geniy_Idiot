@@ -4,7 +4,6 @@ namespace GeniyIdiotClassLibrary;
 
 public class Admin
 {
-
     public string Login { get; } 
 
     public string Password { get; } 
@@ -15,8 +14,6 @@ public class Admin
         Password = password;
     }
 
-   
-    
     public static bool CheckAdmin(string login, string password, string adminFilePath)
     {
         if (!File.Exists(adminFilePath))
@@ -32,6 +29,4 @@ public class Admin
             admin.Login.Equals(login, StringComparison.OrdinalIgnoreCase) &&
             admin.Password == password);
     }
-
-
 }
