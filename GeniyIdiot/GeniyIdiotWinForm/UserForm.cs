@@ -59,16 +59,10 @@ namespace GeniyIdiotWinForm
 
         private void OnTimeExpired()
         {
-            if (InvokeRequired)
-            {
-                Invoke(new Action(OnTimeExpired));
-                return;
-            }
-
             MessageBox.Show("Время вышло! Ответ не засчитан.", "Время истекло",
-                          MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                   MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-            var result = _userTestService.ProcessAnswer("");
+            var result = _userTestService.ProcessAnswer("", true);
             if (result.success)
             {
                 UpdateFormFromState();
@@ -114,6 +108,7 @@ namespace GeniyIdiotWinForm
 
             if (state.ClearInput)
                 userInputTextBox.Text = "";
+            timerLable.Visible = state.ShowQuestionLabel && state.ShowSubmitButton && state.ShowInputTextBox;
 
             userInputTextBox.Focus();
         }
@@ -121,11 +116,12 @@ namespace GeniyIdiotWinForm
         private void submitAnswerButton_Click(object sender, EventArgs e)
         {
             var userAnswer = userInputTextBox.Text.Trim();
-            _timerService.Stop();
+            
 
-            var result = _userTestService.ProcessAnswer(userAnswer);
+            var result = _userTestService.ProcessAnswer(userAnswer, false);
             if (result.success)
             {
+                _timerService.Stop();
                 UpdateFormFromState();
                 StartTimerIfQuestion();
             }
@@ -134,6 +130,7 @@ namespace GeniyIdiotWinForm
                 MessageBox.Show(result.errorMessage, "Ошибка ввода",
                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 userInputTextBox.Focus();
+                userInputTextBox.SelectAll();
             }
         }
 
