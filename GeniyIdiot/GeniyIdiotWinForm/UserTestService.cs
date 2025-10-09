@@ -104,15 +104,18 @@ namespace GeniyIdiotWinForm
 
         public (bool success, string errorMessage) ProcessAnswer(string userAnswer, bool timeExpired = false)
         {
-            if (timeExpired && string.IsNullOrEmpty(userAnswer))
+            if (timeExpired)
             {
-                // Принудительно переходим к следующему вопросу
                 _testEngine.CurrentQuestionIndex++;
                 if (_testEngine.CurrentQuestionIndex >= _testEngine._Question.Count)
                 {
                     SaveTestResults();
+                    return (true, null);
                 }
-                return (true, null);
+                else
+                {
+                    return (true, null);
+                }
             }
             else
             {
