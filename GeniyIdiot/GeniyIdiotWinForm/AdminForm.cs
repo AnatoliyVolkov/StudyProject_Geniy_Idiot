@@ -6,11 +6,33 @@ namespace GeniyIdiotWinForm
     public partial class AdminForm : Form
     {
         private StartForm _startForm;
-        private string _currentAction;
+        private AdminAction _currentAction;
         private string _questionsPath = QuestionsStorage.QuestionsFilePath;
         private string _adminFilePath = AdminStorage.AdminFilePath;
         private string _tempQuestion;
         private string _tempLogin;
+
+        public enum AdminAction
+        {
+            None,
+            ViewQuestions,
+            AddQuestionText,
+            AddQuestionAnswer,
+            ViewResults,
+            RegisterAdminLogin,
+            RegisterAdminPassword,
+            Back
+        }
+
+        public enum MenuChoice
+        {
+            ViewQuestions = 1,
+            AddQuestion = 2,
+            ViewResults = 3,
+            RegisterAdmin = 4,
+            Exit = 5,
+            MainMenu = 6
+        }
 
         public AdminForm(StartForm startForm)
         {
@@ -23,15 +45,12 @@ namespace GeniyIdiotWinForm
         private void InitializeDataGridView()
         {
             questionsDataGridView.Columns.Clear();
-
             questionsDataGridView.Columns.Add("Number", "№");
             questionsDataGridView.Columns.Add("Question", "Вопрос");
             questionsDataGridView.Columns.Add("Answer", "Ответ");
-
             questionsDataGridView.Columns["Number"].Width = 50;
             questionsDataGridView.Columns["Answer"].Width = 80;
             questionsDataGridView.Columns["Question"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
             questionsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             questionsDataGridView.ReadOnly = true;
             questionsDataGridView.RowHeadersVisible = false;
@@ -91,7 +110,7 @@ namespace GeniyIdiotWinForm
                 adminBackButton.Visible = false;
                 adminInfoLabel.Text = $"УПРАВЛЕНИЕ ВОПРОСАМИ (всего: {questions.Count})";
 
-                _currentAction = "view_questions";
+                _currentAction = AdminAction.ViewQuestions;
             }
             catch (Exception ex)
             {
@@ -99,7 +118,6 @@ namespace GeniyIdiotWinForm
                               "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void AdminForm_Load(object sender, EventArgs e)
         {
             InitializeAdminMenu();
@@ -129,6 +147,7 @@ namespace GeniyIdiotWinForm
             adminListBox.Visible = true;
             adminPromptLabel.Visible = true;
             adminActionButton.Text = "Выполнить";
+            _currentAction = AdminAction.None;
         }
 
         private void deleteQuestionButton_Click(object sender, EventArgs e)
@@ -182,11 +201,11 @@ namespace GeniyIdiotWinForm
 
         private void adminActionButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_currentAction))
+            if (_currentAction == AdminAction.None)
             {
                 ProcessMenuSelection();
             }
-            else if (_currentAction == "back") 
+            else if (_currentAction == AdminAction.Back)
             {
                 ResetToMenu();
             }
@@ -208,31 +227,34 @@ namespace GeniyIdiotWinForm
             var selectedItem = adminListBox.SelectedItem.ToString();
             var choice = selectedItem.Split('.')[0].Trim();
 
-            switch (choice)
+            if (Enum.TryParse<MenuChoice>(choice, out var menuChoice))
             {
-                case "1":
-                    ShowQuestionsInGridView();
-                    break;
-                case "2":
-                    PrepareAddQuestion();
-                    break;
-                case "3":
-                    ShowResults();
-                    break;
-                case "4":
-                    PrepareRegisterAdmin();
-                    break;
-                case "5":
-                    Application.Exit();
-                    break;
-                case "6":
-                    ReturnToMainMenu();
-                    break;
-
-                default:
-                    MessageBox.Show(Messages.InvalidChoice, "Ошибка",
-                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
+                switch (menuChoice)
+                {
+                    case MenuChoice.ViewQuestions:
+                        ShowQuestionsInGridView();
+                        break;
+                    case MenuChoice.AddQuestion:
+                        PrepareAddQuestion();
+                        break;
+                    case MenuChoice.ViewResults:
+                        ShowResults();
+                        break;
+                    case MenuChoice.RegisterAdmin:
+                        PrepareRegisterAdmin();
+                        break;
+                    case MenuChoice.Exit:
+                        Application.Exit();
+                        break;
+                    case MenuChoice.MainMenu:
+                        ReturnToMainMenu();
+                        break;
+                }
+            }
+            else
+            {
+                MessageBox.Show(Messages.InvalidChoice, "Ошибка",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -241,20 +263,15 @@ namespace GeniyIdiotWinForm
             var input = adminInputTextBox.Text.Trim();
             switch (_currentAction)
             {
-                case "2":
-                case "2_question":
-                case "2_answer":
+                case AdminAction.AddQuestionText:
+                case AdminAction.AddQuestionAnswer:
                     AddQuestion(input);
                     break;
-                case "3":
-                    DeleteQuestion(input);
-                    break;
-                case "5":
-                case "5_login":
-                case "5_password":
+                case AdminAction.RegisterAdminLogin:
+                case AdminAction.RegisterAdminPassword:
                     RegisterAdmin(input);
                     break;
-                case "back":
+                case AdminAction.Back:
                     ResetToMenu();
                     break;
             }
@@ -278,7 +295,7 @@ namespace GeniyIdiotWinForm
                 adminBackButton.Visible = false;
                 adminInfoLabel.Text = "ДОБАВЛЕНИЕ НОВОГО ВОПРОСА";
 
-                _currentAction = "2_question";
+                _currentAction = AdminAction.AddQuestionText;
             }
             catch (Exception ex)
             {
@@ -286,10 +303,9 @@ namespace GeniyIdiotWinForm
                               "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void AddQuestion(string input)
         {
-            if (_currentAction == "2_question")
+            if (_currentAction == AdminAction.AddQuestionText)
             {
                 if (string.IsNullOrWhiteSpace(input))
                 {
@@ -302,9 +318,9 @@ namespace GeniyIdiotWinForm
                 adminPromptLabel.Text = Messages.EnterAnswer;
                 adminInputTextBox.Text = "";
                 adminActionButton.Text = "Добавить";
-                _currentAction = "2_answer";
+                _currentAction = AdminAction.AddQuestionAnswer;
             }
-            else if (_currentAction == "2_answer")
+            else if (_currentAction == AdminAction.AddQuestionAnswer)
             {
                 var result = AdminService.AddQuestion(
                     () => (_tempQuestion, input),
@@ -322,31 +338,6 @@ namespace GeniyIdiotWinForm
                     MessageBox.Show(result.message, "Ошибка",
                                   MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            }
-        }
-
-        private void DeleteQuestion(string input)
-        {
-            if (int.TryParse(input, out int lineNumber))
-            {
-                var result = AdminService.DeleteQuestion(() => lineNumber, _questionsPath);
-
-                if (result.success)
-                {
-                    MessageBox.Show(Messages.QuestionDeleted, "Успех",
-                                  MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ResetToMenu();
-                }
-                else
-                {
-                    MessageBox.Show(result.message, "Ошибка",
-                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show(Messages.InvalidQuestionNumber, "Ошибка",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -376,7 +367,7 @@ namespace GeniyIdiotWinForm
                 adminBackButton.Visible = false;
                 adminPromptLabel.Visible = false;
                 adminInfoLabel.Text = "РЕЗУЛЬТАТЫ ТЕСТИРОВАНИЯ";
-                _currentAction = "back";
+                _currentAction = AdminAction.Back;
             }
             catch (Exception ex)
             {
@@ -403,18 +394,18 @@ namespace GeniyIdiotWinForm
 
             adminListBox.Visible = false;
             adminBackButton.Visible = false;
-            adminPromptLabel.Visible = true; 
+            adminPromptLabel.Visible = true;
             adminInfoLabel.Text = "РЕГИСТРАЦИЯ НОВОГО АДМИНИСТРАТОРА";
             backFromQuestionsButton.Visible = true;
 
-            _currentAction = "5_login";
+            _currentAction = AdminAction.RegisterAdminLogin;
         }
 
         private void RegisterAdmin(string input)
         {
-            if (_currentAction == "5_login")
+            if (_currentAction == AdminAction.RegisterAdminLogin)
             {
-                var loginValidation = ValidationHelper.CheckUsernameEntry(input);
+                var loginValidation = ValidationHelper.ChekLogin(input);
                 if (!loginValidation._Success)
                 {
                     MessageBox.Show(loginValidation.ErrorMessage, "Ошибка ввода",
@@ -428,10 +419,10 @@ namespace GeniyIdiotWinForm
                 adminInputTextBox.Text = "";
                 adminInputTextBox.Focus();
                 adminActionButton.Text = "Зарегистрировать";
-                _currentAction = "5_password";
+                _currentAction = AdminAction.RegisterAdminPassword;
                 Refresh();
             }
-            else if (_currentAction == "5_password")
+            else if (_currentAction == AdminAction.RegisterAdminPassword)
             {
                 var result = AdminService.RegisterAdmin(
                     () => (_tempLogin, input),
@@ -455,7 +446,7 @@ namespace GeniyIdiotWinForm
 
         private void ResetToMenu()
         {
-            _currentAction = null;
+            _currentAction = AdminAction.None;
             _tempQuestion = null;
             _tempLogin = null;
 
@@ -473,7 +464,7 @@ namespace GeniyIdiotWinForm
 
         private void adminBackButton_Click(object sender, EventArgs e)
         {
-            if (_currentAction == "back")
+            if (_currentAction == AdminAction.Back)
             {
                 ResetToMenu();
             }
