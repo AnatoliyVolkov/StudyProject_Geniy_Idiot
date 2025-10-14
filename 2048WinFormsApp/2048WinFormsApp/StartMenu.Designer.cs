@@ -64,6 +64,7 @@
             button2.TabIndex = 2;
             button2.Text = "Правила игры";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // button3
             // 
@@ -73,6 +74,7 @@
             button3.TabIndex = 3;
             button3.Text = "Выход";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // button4
             // 
@@ -83,7 +85,7 @@
             button4.Text = "Таблица лидеров";
             button4.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // StartMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -93,7 +95,7 @@
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(label1);
-            Name = "Form1";
+            Name = "StartMenu";
             Text = "Form1";
             ResumeLayout(false);
         }
