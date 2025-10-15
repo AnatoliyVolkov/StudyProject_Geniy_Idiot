@@ -1,21 +1,40 @@
 using System.Drawing;
 using System.Security.Policy;
+using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace _2048WinFormsApp
 {
     public partial class Map : Form
     {
+        private string userName;
         private Label[,] mapSaze;
-        private int mapSize { get; }
+        private int mapSize;
         private int count = 0;
         private static Random random = new Random();
+        private Label userNameLabel;
+        private Label bestScoreLabel;
 
-        public Map(int size)
+        public Map(int size, string name)
         {
             InitializeComponent();
             mapSize = size;
+            userName = name;
+            CreateUserInfoControls();
         }
+
+        private void CreateUserInfoControls()
+        {
+            userNameLabel = new Label();
+            userNameLabel.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            userNameLabel.ForeColor = Color.DarkBlue;
+            userNameLabel.Location = new Point(20, 10);
+            userNameLabel.Size = new Size(300, 25);
+            userNameLabel.Text = $"Игрок: {userName}";
+            Controls.Add(userNameLabel);
+        }
+
 
         private void Map_Load(object sender, EventArgs e)
         {
@@ -32,9 +51,9 @@ namespace _2048WinFormsApp
         private void InitMap(int size)
         {
             mapSaze = new Label[size, size];
-            for (int i = 0; i < mapSize; i++)
+            for (int i = 0 ; i < mapSize ; i++)
             {
-                for (int j = 0; j < size; j++)
+                for (int j = 0 ; j < size ; j++)
                 {
                     var newLabel = CreateLabel(i, j);
                     Controls.Add(newLabel);
@@ -47,11 +66,11 @@ namespace _2048WinFormsApp
         {
             var label = new Label();
             label.Font = new Font("Segoe UI", 18F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
-            label.BackColor = Color.Gray; 
+            label.BackColor = Color.Gray;
             label.ForeColor = Color.Black;
-            int row = 40 + indexColumn * 86;
-            int column = 70 + indexRow * 86;
-            label.Location = new Point(row, column);
+            int x = 40 + indexColumn * 86;
+            int y = 70 + indexRow * 86;
+            label.Location = new Point(x, y);
             label.Size = new Size(80, 80);
             label.TextAlign = ContentAlignment.MiddleCenter;
             return label;
@@ -69,7 +88,7 @@ namespace _2048WinFormsApp
                 if (mapSaze[indexRow, indexColumn].Text == string.Empty)
                 {
                     mapSaze[indexRow, indexColumn].Text = number;
-                    UpdateCellColor(mapSaze[indexRow, indexColumn]); 
+                    UpdateCellColor(mapSaze[indexRow, indexColumn]);
                     break;
                 }
                 labelEmpty--;
@@ -80,72 +99,21 @@ namespace _2048WinFormsApp
         {
             if (e.KeyCode == Keys.Left)
             {
-                for (int row = 0; row < mapSize; row++)
+                for (int row = 0 ; row < mapSize ; row++)
                 {
-                    for (int colomn = 0; colomn < mapSize; colomn++)
+                    for (int column = 0 ; column < mapSize ; column++)
                     {
-                        if (mapSaze[row, colomn].Text != string.Empty)
+                        if (mapSaze[row, column].Text != string.Empty)
                         {
-                            for (int k = colomn + 1; k < mapSize; k++)
+                            for (int k = column + 1 ; k < mapSize ; k++)
                             {
                                 if (mapSaze[row, k].Text != string.Empty)
                                 {
-                                    if (mapSaze[row, colomn].Text == mapSaze[row, k].Text)
+                                    if (mapSaze[row, column].Text == mapSaze[row, k].Text)
                                     {
-                                        var number = int.Parse(mapSaze[row, colomn].Text);
-                                        mapSaze[row, colomn].Text = (number * 2).ToString();
-                                        UpdateCellColor(mapSaze[row, colomn]);
-                                        count += (number * 2);
-                                        mapSaze[row, k].Text = string.Empty;
-                                        UpdateCellColor(mapSaze[row, k]); 
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                for (int row = 0; row < mapSize; row++)
-                {
-                    for (int colomn = 0; colomn < mapSize; colomn++)
-                    {
-                        if (mapSaze[row, colomn].Text == string.Empty)
-                        {
-                            for (int k = colomn + 1; k < mapSize; k++)
-                            {
-                                if (mapSaze[row, k].Text != string.Empty)
-                                {
-                                    mapSaze[row, colomn].Text = mapSaze[row, k].Text;
-                                    mapSaze[row, colomn].BackColor = mapSaze[row, k].BackColor;
-                                    mapSaze[row, colomn].ForeColor = mapSaze[row, k].ForeColor;
-
-                                    mapSaze[row, k].Text = string.Empty;
-                                    UpdateCellColor(mapSaze[row, k]); 
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (e.KeyCode == Keys.Right)
-            {
-                for (int row = 0; row < mapSize; row++)
-                {
-                    for (int colomn = mapSize - 1; colomn >= 0; colomn--)
-                    {
-                        if (mapSaze[row, colomn].Text != string.Empty)
-                        {
-                            for (int k = colomn - 1; k >= 0; k--)
-                            {
-                                if (mapSaze[row, k].Text != string.Empty)
-                                {
-                                    if (mapSaze[row, colomn].Text == mapSaze[row, k].Text)
-                                    {
-                                        var number = int.Parse(mapSaze[row, colomn].Text);
-                                        mapSaze[row, colomn].Text = (number * 2).ToString();
-                                        UpdateCellColor(mapSaze[row, colomn]);
+                                        var number = int.Parse(mapSaze[row, column].Text);
+                                        mapSaze[row, column].Text = (number * 2).ToString();
+                                        UpdateCellColor(mapSaze[row, column]);
                                         count += (number * 2);
                                         mapSaze[row, k].Text = string.Empty;
                                         UpdateCellColor(mapSaze[row, k]);
@@ -156,19 +124,70 @@ namespace _2048WinFormsApp
                         }
                     }
                 }
-                for (int row = 0; row < mapSize; row++)
+                for (int row = 0 ; row < mapSize ; row++)
                 {
-                    for (int colomn = mapSize - 1; colomn >= 0; colomn--)
+                    for (int column = 0 ; column < mapSize ; column++)
                     {
-                        if (mapSaze[row, colomn].Text == string.Empty)
+                        if (mapSaze[row, column].Text == string.Empty)
                         {
-                            for (int k = colomn - 1; k >= 0; k--)
+                            for (int k = column + 1 ; k < mapSize ; k++)
                             {
                                 if (mapSaze[row, k].Text != string.Empty)
                                 {
-                                    mapSaze[row, colomn].Text = mapSaze[row, k].Text;
-                                    mapSaze[row, colomn].BackColor = mapSaze[row, k].BackColor;
-                                    mapSaze[row, colomn].ForeColor = mapSaze[row, k].ForeColor;
+                                    mapSaze[row, column].Text = mapSaze[row, k].Text;
+                                    mapSaze[row, column].BackColor = mapSaze[row, k].BackColor;
+                                    mapSaze[row, column].ForeColor = mapSaze[row, k].ForeColor;
+
+                                    mapSaze[row, k].Text = string.Empty;
+                                    UpdateCellColor(mapSaze[row, k]);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (e.KeyCode == Keys.Right)
+            {
+                for (int row = 0 ; row < mapSize ; row++)
+                {
+                    for (int column = mapSize - 1 ; column >= 0 ; column--)
+                    {
+                        if (mapSaze[row, column].Text != string.Empty)
+                        {
+                            for (int k = column - 1 ; k >= 0 ; k--)
+                            {
+                                if (mapSaze[row, k].Text != string.Empty)
+                                {
+                                    if (mapSaze[row, column].Text == mapSaze[row, k].Text)
+                                    {
+                                        var number = int.Parse(mapSaze[row, column].Text);
+                                        mapSaze[row, column].Text = (number * 2).ToString();
+                                        UpdateCellColor(mapSaze[row, column]);
+                                        count += (number * 2);
+                                        mapSaze[row, k].Text = string.Empty;
+                                        UpdateCellColor(mapSaze[row, k]);
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                for (int row = 0 ; row < mapSize ; row++)
+                {
+                    for (int column = mapSize - 1 ; column >= 0 ; column--)
+                    {
+                        if (mapSaze[row, column].Text == string.Empty)
+                        {
+                            for (int k = column - 1 ; k >= 0 ; k--)
+                            {
+                                if (mapSaze[row, k].Text != string.Empty)
+                                {
+                                    mapSaze[row, column].Text = mapSaze[row, k].Text;
+                                    mapSaze[row, column].BackColor = mapSaze[row, k].BackColor;
+                                    mapSaze[row, column].ForeColor = mapSaze[row, k].ForeColor;
 
                                     mapSaze[row, k].Text = string.Empty;
                                     UpdateCellColor(mapSaze[row, k]);
@@ -182,24 +201,24 @@ namespace _2048WinFormsApp
 
             if (e.KeyCode == Keys.Up)
             {
-                for (int colomn = 0; colomn < mapSize; colomn++)
+                for (int column = 0 ; column < mapSize ; column++)
                 {
-                    for (int row = 0; row < mapSize; row++)
+                    for (int row = 0 ; row < mapSize ; row++)
                     {
-                        if (mapSaze[row, colomn].Text != string.Empty)
+                        if (mapSaze[row, column].Text != string.Empty)
                         {
-                            for (int k = row + 1; k < mapSize; k++)
+                            for (int k = row + 1 ; k < mapSize ; k++)
                             {
-                                if (mapSaze[k, colomn].Text != string.Empty)
+                                if (mapSaze[k, column].Text != string.Empty)
                                 {
-                                    if (mapSaze[row, colomn].Text == mapSaze[k, colomn].Text)
+                                    if (mapSaze[row, column].Text == mapSaze[k, column].Text)
                                     {
-                                        var number = int.Parse(mapSaze[row, colomn].Text);
-                                        mapSaze[row, colomn].Text = (number * 2).ToString();
-                                        UpdateCellColor(mapSaze[row, colomn]);
+                                        var number = int.Parse(mapSaze[row, column].Text);
+                                        mapSaze[row, column].Text = (number * 2).ToString();
+                                        UpdateCellColor(mapSaze[row, column]);
                                         count += (number * 2);
-                                        mapSaze[k, colomn].Text = string.Empty;
-                                        UpdateCellColor(mapSaze[k, colomn]);
+                                        mapSaze[k, column].Text = string.Empty;
+                                        UpdateCellColor(mapSaze[k, column]);
                                     }
                                     break;
                                 }
@@ -207,22 +226,22 @@ namespace _2048WinFormsApp
                         }
                     }
                 }
-                for (int colomn = 0; colomn < mapSize; colomn++)
+                for (int column = 0 ; column < mapSize ; column++)
                 {
-                    for (int row = 0; row < mapSize; row++)
+                    for (int row = 0 ; row < mapSize ; row++)
                     {
-                        if (mapSaze[row, colomn].Text == string.Empty)
+                        if (mapSaze[row, column].Text == string.Empty)
                         {
-                            for (int k = row + 1; k < mapSize; k++)
+                            for (int k = row + 1 ; k < mapSize ; k++)
                             {
-                                if (mapSaze[k, colomn].Text != string.Empty)
+                                if (mapSaze[k, column].Text != string.Empty)
                                 {
-                                    mapSaze[row, colomn].Text = mapSaze[k, colomn].Text;
-                                    mapSaze[row, colomn].BackColor = mapSaze[k, colomn].BackColor;
-                                    mapSaze[row, colomn].ForeColor = mapSaze[k, colomn].ForeColor;
+                                    mapSaze[row, column].Text = mapSaze[k, column].Text;
+                                    mapSaze[row, column].BackColor = mapSaze[k, column].BackColor;
+                                    mapSaze[row, column].ForeColor = mapSaze[k, column].ForeColor;
 
-                                    mapSaze[k, colomn].Text = string.Empty;
-                                    UpdateCellColor(mapSaze[k, colomn]);
+                                    mapSaze[k, column].Text = string.Empty;
+                                    UpdateCellColor(mapSaze[k, column]);
                                     break;
                                 }
                             }
@@ -233,24 +252,24 @@ namespace _2048WinFormsApp
 
             if (e.KeyCode == Keys.Down)
             {
-                for (int colomn = 0; colomn < mapSize; colomn++)
+                for (int column = 0 ; column < mapSize ; column++)
                 {
-                    for (int row = mapSize - 1; row >= 0; row--)
+                    for (int row = mapSize - 1 ; row >= 0 ; row--)
                     {
-                        if (mapSaze[row, colomn].Text != string.Empty)
+                        if (mapSaze[row, column].Text != string.Empty)
                         {
-                            for (int k = row - 1; k >= 0; k--)
+                            for (int k = row - 1 ; k >= 0 ; k--)
                             {
-                                if (mapSaze[k, colomn].Text != string.Empty)
+                                if (mapSaze[k, column].Text != string.Empty)
                                 {
-                                    if (mapSaze[row, colomn].Text == mapSaze[k, colomn].Text)
+                                    if (mapSaze[row, column].Text == mapSaze[k, column].Text)
                                     {
-                                        var number = int.Parse(mapSaze[row, colomn].Text);
-                                        mapSaze[row, colomn].Text = (number * 2).ToString();
-                                        UpdateCellColor(mapSaze[row, colomn]);
+                                        var number = int.Parse(mapSaze[row, column].Text);
+                                        mapSaze[row, column].Text = (number * 2).ToString();
+                                        UpdateCellColor(mapSaze[row, column]);
                                         count += (number * 2);
-                                        mapSaze[k, colomn].Text = string.Empty;
-                                        UpdateCellColor(mapSaze[k, colomn]);
+                                        mapSaze[k, column].Text = string.Empty;
+                                        UpdateCellColor(mapSaze[k, column]);
                                     }
                                     break;
                                 }
@@ -258,22 +277,22 @@ namespace _2048WinFormsApp
                         }
                     }
                 }
-                for (int colomn = 0; colomn < mapSize; colomn++)
+                for (int column = 0 ; column < mapSize ; column++)
                 {
-                    for (int row = mapSize - 1; row >= 0; row--)
+                    for (int row = mapSize - 1 ; row >= 0 ; row--)
                     {
-                        if (mapSaze[row, colomn].Text == string.Empty)
+                        if (mapSaze[row, column].Text == string.Empty)
                         {
-                            for (int k = row - 1; k >= 0; k--)
+                            for (int k = row - 1 ; k >= 0 ; k--)
                             {
-                                if (mapSaze[k, colomn].Text != string.Empty)
+                                if (mapSaze[k, column].Text != string.Empty)
                                 {
-                                    mapSaze[row, colomn].Text = mapSaze[k, colomn].Text;
-                                    mapSaze[row, colomn].BackColor = mapSaze[k, colomn].BackColor;
-                                    mapSaze[row, colomn].ForeColor = mapSaze[k, colomn].ForeColor;
+                                    mapSaze[row, column].Text = mapSaze[k, column].Text;
+                                    mapSaze[row, column].BackColor = mapSaze[k, column].BackColor;
+                                    mapSaze[row, column].ForeColor = mapSaze[k, column].ForeColor;
 
-                                    mapSaze[k, colomn].Text = string.Empty;
-                                    UpdateCellColor(mapSaze[k, colomn]);
+                                    mapSaze[k, column].Text = string.Empty;
+                                    UpdateCellColor(mapSaze[k, column]);
                                     break;
                                 }
                             }
@@ -284,6 +303,7 @@ namespace _2048WinFormsApp
 
             GenerationNumber();
             ShowScore();
+            CheckGameOver();
         }
 
         private void UpdateCellColor(Control cell)
@@ -365,6 +385,48 @@ namespace _2048WinFormsApp
                 Environment.Exit(0);
             }
             else { e.Cancel = true; }
+        }
+
+        private bool IsGameOver()
+        {
+            for (int i = 0 ; i < mapSize ; i++)
+            {
+                for (int j = 0 ; j < mapSize ; j++)
+                {
+                    if (mapSaze[i, j].Text == string.Empty)
+                        return false;
+                }
+            }
+            for (int i = 0 ; i < mapSize ; i++)
+            {
+                for (int j = 0 ; j < mapSize ; j++)
+                {
+                    var current = mapSaze[i, j].Text;
+                    if (current == string.Empty) continue;
+
+                    if (j < mapSize - 1 && mapSaze[i, j + 1].Text == current)
+                        return false;
+
+                    if (i < mapSize - 1 && mapSaze[i + 1, j].Text == current)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void CheckGameOver()
+        {
+            if (IsGameOver())
+            {
+                var user = new User(userName, count);
+                DataStorage.Save(user);
+
+                MessageBox.Show($"Игра окончена!\nВаш счет: {count}", "Конец игры");
+                var startMenu = new StartMenu();
+                startMenu.Show();
+                this.Hide();
+            }
         }
     }
 }

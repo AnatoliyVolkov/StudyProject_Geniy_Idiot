@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             label1 = new Label();
-            textBox1 = new TextBox();
+            userTextBox = new TextBox();
             label2 = new Label();
             userTextBoxMapSize = new TextBox();
             button1 = new Button();
@@ -45,12 +45,12 @@
             label1.Text = "Введите свое имя";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // textBox1
+            // userTextBox
             // 
-            textBox1.Location = new Point(225, 142);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(355, 23);
-            textBox1.TabIndex = 1;
+            userTextBox.Location = new Point(225, 142);
+            userTextBox.Name = "userTextBox";
+            userTextBox.Size = new Size(355, 23);
+            userTextBox.TabIndex = 1;
             // 
             // label2
             // 
@@ -87,10 +87,11 @@
             Controls.Add(button1);
             Controls.Add(userTextBoxMapSize);
             Controls.Add(label2);
-            Controls.Add(textBox1);
+            Controls.Add(userTextBox);
             Controls.Add(label1);
             Name = "UserInput";
             Text = "UserInput";
+            FormClosing += UserInput_FormClosing;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -102,5 +103,6 @@
         private Label label2;
         private TextBox userTextBoxMapSize;
         private Button button1;
+        private TextBox userTextBox;
     }
 }

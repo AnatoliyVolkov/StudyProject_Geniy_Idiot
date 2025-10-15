@@ -30,7 +30,7 @@
         {
             label1 = new Label();
             button1 = new Button();
-            button2 = new Button();
+            infoGameButton = new Button();
             button3 = new Button();
             button4 = new Button();
             SuspendLayout();
@@ -56,15 +56,15 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
-            // button2
+            // infoGameButton
             // 
-            button2.Location = new Point(43, 324);
-            button2.Name = "button2";
-            button2.Size = new Size(153, 51);
-            button2.TabIndex = 2;
-            button2.Text = "Правила игры";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            infoGameButton.Location = new Point(43, 324);
+            infoGameButton.Name = "infoGameButton";
+            infoGameButton.Size = new Size(153, 51);
+            infoGameButton.TabIndex = 2;
+            infoGameButton.Text = "Правила игры";
+            infoGameButton.UseVisualStyleBackColor = true;
+            infoGameButton.Click += InfoGameButton_Click;
             // 
             // button3
             // 
@@ -84,6 +84,7 @@
             button4.TabIndex = 4;
             button4.Text = "Таблица лидеров";
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // StartMenu
             // 
@@ -92,11 +93,12 @@
             ClientSize = new Size(800, 450);
             Controls.Add(button4);
             Controls.Add(button3);
-            Controls.Add(button2);
+            Controls.Add(infoGameButton);
             Controls.Add(button1);
             Controls.Add(label1);
             Name = "StartMenu";
             Text = "Form1";
+            FormClosing += StartMenu_FormClosing_1;
             ResumeLayout(false);
         }
 
@@ -104,7 +106,7 @@
 
         private Label label1;
         private Button button1;
-        private Button button2;
+        private Button infoGameButton;
         private Button button3;
         private Button button4;
     }
