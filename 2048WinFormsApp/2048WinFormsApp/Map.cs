@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Security.Policy;
+using System.Windows.Forms;
 using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
@@ -30,7 +31,8 @@ namespace _2048WinFormsApp
             userNameLabel.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 204);
             userNameLabel.ForeColor = Color.DarkBlue;
             userNameLabel.Location = new Point(20, 10);
-            userNameLabel.Size = new Size(300, 25);
+            userNameLabel.AutoSize = true;
+            userNameLabel.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             userNameLabel.Text = $"Игрок: {userName}";
             Controls.Add(userNameLabel);
         }
@@ -50,17 +52,31 @@ namespace _2048WinFormsApp
 
         private void InitMap(int size)
         {
+            var panel = new TableLayoutPanel();
+            panel.RowCount = size;
+            panel.ColumnCount = size;
+           panel.AutoSize = true;
+            panel.Location = new Point(100, 100);
+            for (int i = 0 ; i < size ; i++)
+            {
+                panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 76)); 
+                panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 76)); 
+            }
+            panel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+
             mapSaze = new Label[size, size];
             for (int i = 0 ; i < mapSize ; i++)
             {
                 for (int j = 0 ; j < size ; j++)
                 {
                     var newLabel = CreateLabel(i, j);
-                    Controls.Add(newLabel);
+                    panel.Controls.Add(newLabel, j, i);
                     mapSaze[i, j] = newLabel;
                 }
             }
+            Controls.Add(panel);
         }
+
 
         private Label CreateLabel(int indexRow, int indexColumn)
         {
@@ -68,10 +84,7 @@ namespace _2048WinFormsApp
             label.Font = new Font("Segoe UI", 18F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
             label.BackColor = Color.Gray;
             label.ForeColor = Color.Black;
-            int x = 40 + indexColumn * 86;
-            int y = 70 + indexRow * 86;
-            label.Location = new Point(x, y);
-            label.Size = new Size(80, 80);
+            label.Size = new Size(70, 70);
             label.TextAlign = ContentAlignment.MiddleCenter;
             return label;
         }
@@ -428,5 +441,7 @@ namespace _2048WinFormsApp
                 this.Hide();
             }
         }
+
+        
     }
 }
