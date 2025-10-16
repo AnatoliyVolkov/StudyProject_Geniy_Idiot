@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace _2048WinFormsApp
+﻿namespace _2048WinFormsApp
 {
     public partial class ResultsForm : Form
     {
@@ -29,7 +19,6 @@ namespace _2048WinFormsApp
                 var results = DataStorage.ReadAll();
                 resultsDataGridView.Rows.Clear();
 
-                // Сортируем по счету (от большего к меньшему)
                 var sortedResults = results.OrderByDescending(u => u.Score).ToList();
 
                 foreach (var user in sortedResults)

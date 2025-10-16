@@ -1,10 +1,3 @@
-using System.Drawing;
-using System.Security.Policy;
-using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-
 namespace _2048WinFormsApp
 {
     public partial class Map : Form
@@ -15,7 +8,6 @@ namespace _2048WinFormsApp
         private int count = 0;
         private static Random random = new Random();
         private Label userNameLabel;
-        private Label bestScoreLabel;
 
         public Map(int size, string name)
         {

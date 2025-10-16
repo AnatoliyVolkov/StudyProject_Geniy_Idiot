@@ -1,5 +1,4 @@
 ﻿
-
 namespace _2048WinFormsApp
 {
     public partial class UserInput : Form
@@ -8,14 +7,14 @@ namespace _2048WinFormsApp
         {
             InitializeComponent();
         }
-        private string currentUserName = string.Empty;
+
+
         private void button1_Click(object sender, EventArgs e)
         {
             var name = ValidationHelper.CheckUsernameEntry(userTextBox.Text);
             var size = ValidationHelper.CheckMapSize(userTextBoxMapSize.Text);
             if (name != string.Empty && size != string.Empty)
             {
-                currentUserName = name;
                 var mapSize = int.Parse(size);
                 Form gameMap = new Map(mapSize, name);
                 gameMap.Show();
