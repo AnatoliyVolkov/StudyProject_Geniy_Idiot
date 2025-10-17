@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace _2048WinFormsApp
 {
     public partial class Map : Form
@@ -17,6 +19,26 @@ namespace _2048WinFormsApp
             CreateUserInfoControls();
         }
 
+        private  void Map_Load(object sender, EventArgs e)
+        {
+            InitMap(mapSize);
+            GenerationNumber();
+            ShowScore();
+            label2.Text = ShowBestPoint();
+        }
+
+        private string ShowBestPoint()
+        {
+            try
+            {
+                var results = DataStorage.ReadAll();
+                var sortedResults = results.OrderByDescending(u => u.Score).ToList();
+                var line = sortedResults[0].Score.ToString();
+                return line;
+            }
+            catch { return "0"; }
+        }
+
         private void CreateUserInfoControls()
         {
             userNameLabel = new Label();
@@ -29,14 +51,6 @@ namespace _2048WinFormsApp
             Controls.Add(userNameLabel);
         }
 
-
-        private void Map_Load(object sender, EventArgs e)
-        {
-            InitMap(mapSize);
-            GenerationNumber();
-            ShowScore();
-        }
-
         private void ShowScore()
         {
             scoreLabel.Text = count.ToString();
@@ -47,7 +61,7 @@ namespace _2048WinFormsApp
             var panel = new TableLayoutPanel();
             panel.RowCount = size;
             panel.ColumnCount = size;
-           panel.AutoSize = true;
+            panel.AutoSize = true;
             panel.Location = new Point(100, 100);
             for (int i = 0 ; i < size ; i++)
             {
@@ -72,12 +86,19 @@ namespace _2048WinFormsApp
 
         private Label CreateLabel(int indexRow, int indexColumn)
         {
-            var label = new Label();
-            label.Font = new Font("Segoe UI", 18F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
-            label.BackColor = Color.Gray;
-            label.ForeColor = Color.Black;
-            label.Size = new Size(70, 70);
-            label.TextAlign = ContentAlignment.MiddleCenter;
+            var label = new Label
+            {
+                Font = new Font("Segoe UI", 18F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204),
+                BackColor = Color.Gray,
+                ForeColor = Color.Black,
+                Height = 70,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Text = string.Empty,
+            };
+            label.TextChanged += (sender, e) =>
+            {
+                UpdateCellColor(sender as Label);
+            };
             return label;
         }
 
