@@ -20,7 +20,7 @@ namespace _2048WinFormsApp
                  "5. Игра заканчивается поражением, если после очередного хода невозможно совершить действие.";
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ButtonBackMenu_Click(object sender, EventArgs e)
         {
             Form userForm = new StartMenu();
             userForm.Show();
