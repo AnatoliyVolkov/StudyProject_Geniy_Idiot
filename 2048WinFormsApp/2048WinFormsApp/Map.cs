@@ -47,12 +47,12 @@ namespace _2048WinFormsApp
             var panel = new TableLayoutPanel();
             panel.RowCount = size;
             panel.ColumnCount = size;
-           panel.AutoSize = true;
+            // panel.AutoSize = true;
             panel.Location = new Point(100, 100);
             for (int i = 0 ; i < size ; i++)
             {
-                panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 76)); 
-                panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 76)); 
+                panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 76));
+                panel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             }
             panel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
 
