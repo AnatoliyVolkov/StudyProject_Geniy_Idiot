@@ -28,23 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            createBallButton = new Button();
+            stopMoveBallButton = new Button();
             createRandomBullButton = new Button();
+            label1 = new Label();
+            countBallLabel = new Label();
             SuspendLayout();
             // 
-            // createBallButton
+            // stopMoveBallButton
             // 
-            createBallButton.Location = new Point(622, 43);
-            createBallButton.Name = "createBallButton";
-            createBallButton.Size = new Size(122, 41);
-            createBallButton.TabIndex = 0;
-            createBallButton.Text = "Рисивать шарик";
-            createBallButton.UseVisualStyleBackColor = true;
-            createBallButton.Click += CreateBallButton_Click;
+            stopMoveBallButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            stopMoveBallButton.Location = new Point(666, 43);
+            stopMoveBallButton.Name = "stopMoveBallButton";
+            stopMoveBallButton.Size = new Size(122, 41);
+            stopMoveBallButton.TabIndex = 0;
+            stopMoveBallButton.Text = "Остановить шарики";
+            stopMoveBallButton.UseVisualStyleBackColor = true;
+            stopMoveBallButton.Click += StopMoveBallButton_Click;
             // 
             // createRandomBullButton
             // 
-            createRandomBullButton.Location = new Point(622, 112);
+            createRandomBullButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            createRandomBullButton.Location = new Point(666, 115);
             createRandomBullButton.Name = "createRandomBullButton";
             createRandomBullButton.Size = new Size(122, 41);
             createRandomBullButton.TabIndex = 1;
@@ -52,22 +56,47 @@
             createRandomBullButton.UseVisualStyleBackColor = true;
             createRandomBullButton.Click += CreateRandomBullButton_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            label1.Location = new Point(16, 12);
+            label1.Name = "label1";
+            label1.Size = new Size(144, 21);
+            label1.TabIndex = 2;
+            label1.Text = "Поймано шариков";
+            // 
+            // countBallLabel
+            // 
+            countBallLabel.AutoSize = true;
+            countBallLabel.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
+            countBallLabel.Location = new Point(43, 43);
+            countBallLabel.Name = "countBallLabel";
+            countBallLabel.Size = new Size(64, 25);
+            countBallLabel.TabIndex = 3;
+            countBallLabel.Text = "label2";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(countBallLabel);
+            Controls.Add(label1);
             Controls.Add(createRandomBullButton);
-            Controls.Add(createBallButton);
+            Controls.Add(stopMoveBallButton);
             Name = "MainForm";
             Text = "Игра Шарики";
             MouseDown += MainForm_MouseDown;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private Button createBallButton;
+        private Button stopMoveBallButton;
         private Button createRandomBullButton;
+        private Label label1;
+        private Label countBallLabel;
     }
 }

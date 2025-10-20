@@ -6,6 +6,8 @@ namespace BallGamesWinFormsApp;
 public class Ball
 {
     private MainForm mainForm;
+    protected int vx = 3;
+    protected int vy = 4;
     protected int x = 150;
     protected int y = 150;
     protected int size = 70;
@@ -21,4 +23,26 @@ public class Ball
         var rectangle = new Rectangle(x, y, size, size);
         graphiscs.FillEllipse(brush, rectangle);
     }
+    public void Move()
+    {
+        Clear();
+        Go();
+        Show();
+    }
+
+    private void Go()
+    {
+        x += vx;
+        y += vy;
+    }
+
+    private void Clear()
+    {
+        var graphiscs = mainForm.CreateGraphics();
+        var brush = SystemBrushes.Control;
+        var rectangle = new Rectangle(x, y, size, size);
+        graphiscs.FillEllipse(brush, rectangle);
+    }
+
+
 }

@@ -2,21 +2,31 @@ namespace BallGamesWinFormsApp;
 
 public partial class MainForm : Form
 {
+    List<MoveBall> MoveBalls;
     public MainForm()
     {
         InitializeComponent();
     }
 
-    private void CreateBallButton_Click(object sender, EventArgs e)
+    private void StopMoveBallButton_Click(object sender, EventArgs e)
     {
-        var ball = new Ball(this);
-        ball.Show();
+        for (int i = 0 ; i < MoveBalls.Count ; i++)
+        {
+            MoveBalls[i].Stop();
+        }
     }
 
     private void CreateRandomBullButton_Click(object sender, EventArgs e)
     {
-        var randomBall = new RandomSizeAndPointBall(this);
-        randomBall.Show();
+        MoveBalls = new List<MoveBall>();
+        int i = 0;
+        while ( i  < 20 )
+        {
+            var maveRandomBall = new MoveBall(this);
+            MoveBalls.Add(maveRandomBall);
+            maveRandomBall.Start();
+            i++;
+        }
     }
 
     private void MainForm_MouseDown(object sender, MouseEventArgs e)
@@ -24,4 +34,9 @@ public partial class MainForm : Form
         var pointBall = new PiontBall(this, e.X, e.Y);
         pointBall.Show();
     }
+
+    private void ShowBallDisplay() { countBallLabel.Text = MoveBalls.Count.ToString(); }
+    
+      
+    
 }
