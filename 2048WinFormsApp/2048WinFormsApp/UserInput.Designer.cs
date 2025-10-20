@@ -32,7 +32,7 @@
             userTextBox = new TextBox();
             label2 = new Label();
             userTextBoxMapSize = new TextBox();
-            button1 = new Button();
+            buttonStartGame = new Button();
             SuspendLayout();
             // 
             // label1
@@ -69,22 +69,22 @@
             userTextBoxMapSize.Size = new Size(355, 23);
             userTextBoxMapSize.TabIndex = 3;
             // 
-            // button1
+            // buttonStartGame
             // 
-            button1.Location = new Point(281, 384);
-            button1.Name = "button1";
-            button1.Size = new Size(236, 54);
-            button1.TabIndex = 4;
-            button1.Text = "СТАРТ";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            buttonStartGame.Location = new Point(281, 384);
+            buttonStartGame.Name = "buttonStartGame";
+            buttonStartGame.Size = new Size(236, 54);
+            buttonStartGame.TabIndex = 4;
+            buttonStartGame.Text = "СТАРТ";
+            buttonStartGame.UseVisualStyleBackColor = true;
+            buttonStartGame.Click += ButtonStartGame_Click;
             // 
             // UserInput
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(button1);
+            Controls.Add(buttonStartGame);
             Controls.Add(userTextBoxMapSize);
             Controls.Add(label2);
             Controls.Add(userTextBox);
@@ -102,7 +102,7 @@
         private TextBox textBox1;
         private Label label2;
         private TextBox userTextBoxMapSize;
-        private Button button1;
+        private Button buttonStartGame;
         private TextBox userTextBox;
     }
 }

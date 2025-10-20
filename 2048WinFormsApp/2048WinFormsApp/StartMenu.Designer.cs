@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             label1 = new Label();
-            button1 = new Button();
+            buttonForStartGame = new Button();
             infoGameButton = new Button();
             button3 = new Button();
             button4 = new Button();
@@ -45,16 +45,16 @@
             label1.Text = "Приветствие";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // button1
+            // buttonForStartGame
             // 
-            button1.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            button1.Location = new Point(310, 243);
-            button1.Name = "button1";
-            button1.Size = new Size(188, 75);
-            button1.TabIndex = 1;
-            button1.Text = "Начать игру";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            buttonForStartGame.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            buttonForStartGame.Location = new Point(310, 243);
+            buttonForStartGame.Name = "buttonForStartGame";
+            buttonForStartGame.Size = new Size(188, 75);
+            buttonForStartGame.TabIndex = 1;
+            buttonForStartGame.Text = "Начать игру";
+            buttonForStartGame.UseVisualStyleBackColor = true;
+            buttonForStartGame.Click += ButtonForStartGame_Click;
             // 
             // infoGameButton
             // 
@@ -74,7 +74,7 @@
             button3.TabIndex = 3;
             button3.Text = "Выход";
             button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            button3.Click += ButtonForExit_Click;
             // 
             // button4
             // 
@@ -84,7 +84,7 @@
             button4.TabIndex = 4;
             button4.Text = "Таблица лидеров";
             button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
+            button4.Click += ButtonShowResult_Click;
             // 
             // StartMenu
             // 
@@ -94,7 +94,7 @@
             Controls.Add(button4);
             Controls.Add(button3);
             Controls.Add(infoGameButton);
-            Controls.Add(button1);
+            Controls.Add(buttonForStartGame);
             Controls.Add(label1);
             Name = "StartMenu";
             Text = "Form1";
@@ -105,7 +105,7 @@
         #endregion
 
         private Label label1;
-        private Button button1;
+        private Button buttonForStartGame;
         private Button infoGameButton;
         private Button button3;
         private Button button4;

@@ -7,14 +7,14 @@ namespace _2048WinFormsApp
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ButtonForStartGame_Click(object sender, EventArgs e)
         {
             Form userForm = new UserInput();
             userForm.Show();
             this.Hide();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void ButtonForExit_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show("Вы уверены, что хотите выйти?", "Подтверждение",
                                                MessageBoxButtons.YesNo);
@@ -31,7 +31,7 @@ namespace _2048WinFormsApp
             this.Hide();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void ButtonShowResult_Click(object sender, EventArgs e)
         {
             Form resultsForm = new ResultsForm();
             resultsForm.Show();

@@ -9,7 +9,7 @@ namespace _2048WinFormsApp
         }
 
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ButtonStartGame_Click(object sender, EventArgs e)
         {
             var name = ValidationHelper.CheckUsernameEntry(userTextBox.Text);
             var size = ValidationHelper.CheckMapSize(userTextBoxMapSize.Text);

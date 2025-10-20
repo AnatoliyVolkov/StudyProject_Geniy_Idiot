@@ -30,6 +30,8 @@
         {
             scoreLabel = new Label();
             label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
             SuspendLayout();
             // 
             // scoreLabel
@@ -54,11 +56,35 @@
             label1.TabIndex = 1;
             label1.Text = "Текущий счет: ";
             // 
+            // label2
+            // 
+            label2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold | FontStyle.Italic | FontStyle.Underline, GraphicsUnit.Point, 204);
+            label2.Location = new Point(631, 53);
+            label2.Name = "label2";
+            label2.Size = new Size(64, 25);
+            label2.TabIndex = 2;
+            label2.Text = "label2";
+            // 
+            // label3
+            // 
+            label3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold | FontStyle.Italic | FontStyle.Underline, GraphicsUnit.Point, 204);
+            label3.Location = new Point(424, 53);
+            label3.Name = "label3";
+            label3.Size = new Size(202, 25);
+            label3.TabIndex = 3;
+            label3.Text = "Лучший счет в игре:";
+            // 
             // Map
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(769, 733);
+            ClientSize = new Size(710, 643);
+            Controls.Add(label3);
+            Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(scoreLabel);
             Name = "Map";
@@ -74,5 +100,7 @@
 
         private Label scoreLabel;
         private Label label1;
+        private Label label2;
+        private Label label3;
     }
 }
