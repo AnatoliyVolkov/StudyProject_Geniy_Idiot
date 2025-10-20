@@ -39,7 +39,7 @@
             scoreLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             scoreLabel.AutoSize = true;
             scoreLabel.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            scoreLabel.Location = new Point(690, 9);
+            scoreLabel.Location = new Point(601, 9);
             scoreLabel.Name = "scoreLabel";
             scoreLabel.Size = new Size(25, 30);
             scoreLabel.TabIndex = 0;
@@ -50,7 +50,7 @@
             label1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            label1.Location = new Point(507, 9);
+            label1.Location = new Point(424, 9);
             label1.Name = "label1";
             label1.Size = new Size(164, 30);
             label1.TabIndex = 1;
