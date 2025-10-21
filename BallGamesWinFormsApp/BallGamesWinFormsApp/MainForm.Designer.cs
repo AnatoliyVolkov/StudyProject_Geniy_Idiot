@@ -28,75 +28,78 @@
         /// </summary>
         private void InitializeComponent()
         {
-            stopMoveBallButton = new Button();
-            createRandomBullButton = new Button();
-            label1 = new Label();
-            countBallLabel = new Label();
+            menuStrip1 = new MenuStrip();
+            остановитьШарикиToolStripMenuItem = new ToolStripMenuItem();
+            запуститьШарикиToolStripMenuItem = new ToolStripMenuItem();
+            toolStripTextBox1 = new ToolStripTextBox();
+            toolStripTextBox = new ToolStripTextBox();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
-            // stopMoveBallButton
+            // menuStrip1
             // 
-            stopMoveBallButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            stopMoveBallButton.Location = new Point(666, 43);
-            stopMoveBallButton.Name = "stopMoveBallButton";
-            stopMoveBallButton.Size = new Size(122, 41);
-            stopMoveBallButton.TabIndex = 0;
-            stopMoveBallButton.Text = "Остановить шарики";
-            stopMoveBallButton.UseVisualStyleBackColor = true;
-            stopMoveBallButton.Click += StopMoveBallButton_Click;
+            menuStrip1.AutoSize = false;
+            menuStrip1.Items.AddRange(new ToolStripItem[] { остановитьШарикиToolStripMenuItem, запуститьШарикиToolStripMenuItem, toolStripTextBox1, toolStripTextBox });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(841, 40);
+            menuStrip1.TabIndex = 5;
+            menuStrip1.Text = "menuStrip1";
             // 
-            // createRandomBullButton
+            // остановитьШарикиToolStripMenuItem
             // 
-            createRandomBullButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            createRandomBullButton.Location = new Point(666, 115);
-            createRandomBullButton.Name = "createRandomBullButton";
-            createRandomBullButton.Size = new Size(122, 41);
-            createRandomBullButton.TabIndex = 1;
-            createRandomBullButton.Text = "Случайный шарик";
-            createRandomBullButton.UseVisualStyleBackColor = true;
-            createRandomBullButton.Click += CreateRandomBullButton_Click;
+            остановитьШарикиToolStripMenuItem.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            остановитьШарикиToolStripMenuItem.Name = "остановитьШарикиToolStripMenuItem";
+            остановитьШарикиToolStripMenuItem.Size = new Size(170, 36);
+            остановитьШарикиToolStripMenuItem.Text = "Остановить шарики ";
+            остановитьШарикиToolStripMenuItem.Click += StopMoveBallToolStripMenuItem_Click;
             // 
-            // label1
+            // запуститьШарикиToolStripMenuItem
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            label1.Location = new Point(16, 12);
-            label1.Name = "label1";
-            label1.Size = new Size(144, 21);
-            label1.TabIndex = 2;
-            label1.Text = "Поймано шариков";
+            запуститьШарикиToolStripMenuItem.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            запуститьШарикиToolStripMenuItem.Name = "запуститьШарикиToolStripMenuItem";
+            запуститьШарикиToolStripMenuItem.Size = new Size(154, 36);
+            запуститьШарикиToolStripMenuItem.Text = "Запустить шарики";
+            запуститьШарикиToolStripMenuItem.Click += CreateRandomBullToolStripMenuItem_Click;
             // 
-            // countBallLabel
+            // toolStripTextBox1
             // 
-            countBallLabel.AutoSize = true;
-            countBallLabel.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
-            countBallLabel.Location = new Point(43, 43);
-            countBallLabel.Name = "countBallLabel";
-            countBallLabel.Size = new Size(64, 25);
-            countBallLabel.TabIndex = 3;
-            countBallLabel.Text = "label2";
+            toolStripTextBox1.AutoSize = false;
+            toolStripTextBox1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            toolStripTextBox1.Name = "toolStripTextBox1";
+            toolStripTextBox1.Size = new Size(160, 40);
+            toolStripTextBox1.Text = "Поймано шариков";
+            toolStripTextBox1.TextBoxTextAlign = HorizontalAlignment.Center;
+            // 
+            // toolStripTextBox
+            // 
+            toolStripTextBox.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            toolStripTextBox.ForeColor = Color.Red;
+            toolStripTextBox.Name = "toolStripTextBox";
+            toolStripTextBox.Size = new Size(100, 36);
+            toolStripTextBox.Text = "0";
+            toolStripTextBox.TextBoxTextAlign = HorizontalAlignment.Center;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(countBallLabel);
-            Controls.Add(label1);
-            Controls.Add(createRandomBullButton);
-            Controls.Add(stopMoveBallButton);
+            AutoSize = true;
+            ClientSize = new Size(841, 571);
+            Controls.Add(menuStrip1);
             Name = "MainForm";
             Text = "Игра Шарики";
             MouseDown += MainForm_MouseDown;
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private Button stopMoveBallButton;
-        private Button createRandomBullButton;
-        private Label label1;
-        private Label countBallLabel;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem остановитьШарикиToolStripMenuItem;
+        private ToolStripMenuItem запуститьШарикиToolStripMenuItem;
+        private ToolStripTextBox toolStripTextBox1;
+        private ToolStripTextBox toolStripTextBox;
     }
 }
