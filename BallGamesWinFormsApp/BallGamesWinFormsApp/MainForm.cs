@@ -6,6 +6,10 @@ public partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
+        this.DoubleBuffered = true; 
+        SetStyle(ControlStyles.AllPaintingInWmPaint |
+                 ControlStyles.UserPaint |
+                 ControlStyles.DoubleBuffer, true);
     }
 
     private void MainForm_MouseDown(object sender, MouseEventArgs e)
@@ -33,7 +37,8 @@ public partial class MainForm : Form
 
     private void CreateRandomBullToolStripMenuItem_Click(object sender, EventArgs e)
     {
-
+        this.Invalidate();
+        this.Update();
         MoveBalls = new List<MoveBall>();
         int i = 0;
         while (i < 20)
