@@ -71,7 +71,7 @@
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
             Text = "Поймаай Шарик";
-            MouseClick += MainForm_MouseClick;
+            MouseDown += MainForm_MouseDown;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
