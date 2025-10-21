@@ -20,10 +20,9 @@ public class Ball
     public void Show()
     {
         var graphiscs = mainForm.CreateGraphics();
-        //var brush = Brushes.Orange;
-        var ball = Properties.Resources.BlackCat;
+        var brush = Brushes.Orange;
         var rectangle = new Rectangle(X, Y, size, size);
-        graphiscs.DrawImage(ball, rectangle);
+        graphiscs.FillEllipse(brush, rectangle);
     }
     public void Move()
     {

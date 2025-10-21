@@ -39,6 +39,7 @@ public partial class MainForm : Form
     {
         this.Invalidate();
         this.Update();
+        toolStripTextBox.Text = "0";
         MoveBalls = new List<MoveBall>();
         int i = 0;
         while (i < 20)
