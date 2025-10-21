@@ -11,6 +11,7 @@ public class Ball
     public int X { get; protected set; } = 150;
     public int Y { get; protected set; } = 150;
     protected int size = 70;
+
     public Ball(MainForm form)
     {
         this.mainForm = form;
@@ -19,9 +20,10 @@ public class Ball
     public void Show()
     {
         var graphiscs = mainForm.CreateGraphics();
-        var brush = Brushes.Orange;
+        //var brush = Brushes.Orange;
+        var ball = Properties.Resources.BlackCat;
         var rectangle = new Rectangle(X, Y, size, size);
-        graphiscs.FillEllipse(brush, rectangle);
+        graphiscs.DrawImage(ball, rectangle);
     }
     public void Move()
     {
