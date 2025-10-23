@@ -52,7 +52,7 @@
             остановитьШарикиToolStripMenuItem.Name = "остановитьШарикиToolStripMenuItem";
             остановитьШарикиToolStripMenuItem.Size = new Size(170, 36);
             остановитьШарикиToolStripMenuItem.Text = "Остановить шарики ";
-            остановитьШарикиToolStripMenuItem.Click += StopMoveBallToolStripMenuItem_Click;
+            остановитьШарикиToolStripMenuItem.Click += StopMoveBall_Click;
             // 
             // запуститьШарикиToolStripMenuItem
             // 
@@ -60,7 +60,7 @@
             запуститьШарикиToolStripMenuItem.Name = "запуститьШарикиToolStripMenuItem";
             запуститьШарикиToolStripMenuItem.Size = new Size(154, 36);
             запуститьШарикиToolStripMenuItem.Text = "Запустить шарики";
-            запуститьШарикиToolStripMenuItem.Click += CreateRandomBullToolStripMenuItem_Click;
+            запуститьШарикиToolStripMenuItem.Click += CreateRandomBull_Click;
             // 
             // toolStripTextBox1
             // 
@@ -89,7 +89,7 @@
             Controls.Add(menuStrip1);
             Name = "MainForm";
             Text = "Игра Шарики";
-            MouseDown += MainForm_MouseDown;
+            MouseDown += BallMousKlick_MouseDown;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);

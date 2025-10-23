@@ -16,7 +16,7 @@ namespace BallCatchWinFormsApp
 
         }
 
-        private void CreateRandomBullToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CreateRandomBull_Click(object sender, EventArgs e)
         {
             this.Invalidate();
             this.Update();
@@ -33,18 +33,22 @@ namespace BallCatchWinFormsApp
             }
         }
 
-        private void MainForm_MouseDown(object sender, MouseEventArgs e)
+        private void BallMousKlick_MouseDown(object sender, MouseEventArgs e)
         {
-            for (int i = 0 ; i < MoveBalls.Count ; i++)
+            for (int i = 0; i < MoveBalls.Count; i++)
             {
                 double distance = Math.Sqrt(Math.Pow(e.X - MoveBalls[i].X, 2) +
                                     Math.Pow(e.Y - MoveBalls[i].Y, 2));
-                if (distance <= MoveBalls[i].size / 2)
+                if (MoveBalls[i].X - MoveBalls[i].radius >= ClientRectangle.Left &&
+                MoveBalls[i].X + MoveBalls[i].radius <= ClientRectangle.Right &&
+                MoveBalls[i].Y - MoveBalls[i].radius >= ClientRectangle.Top &&
+                MoveBalls[i].Y + MoveBalls[i].radius <= ClientRectangle.Bottom)
                 {
-                    MoveBalls[i].Stop();
-                    count++;
-                    
-                   
+                    if (distance <= MoveBalls[i].size / 2)
+                    {
+                        MoveBalls[i].Stop();
+                        count++;
+                    }
                 }
             }
             cathBallToolStripTextBox.Text = count.ToString();

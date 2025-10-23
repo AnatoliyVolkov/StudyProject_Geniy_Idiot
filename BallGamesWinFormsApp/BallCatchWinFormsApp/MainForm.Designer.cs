@@ -49,7 +49,7 @@
             запуститьШарикиToolStripMenuItem.Name = "запуститьШарикиToolStripMenuItem";
             запуститьШарикиToolStripMenuItem.Size = new Size(121, 23);
             запуститьШарикиToolStripMenuItem.Text = "Запустить шарики";
-            запуститьШарикиToolStripMenuItem.Click += CreateRandomBullToolStripMenuItem_Click;
+            запуститьШарикиToolStripMenuItem.Click += CreateRandomBull_Click;
             // 
             // количествоПойманныхШариковToolStripMenuItem
             // 
@@ -71,7 +71,7 @@
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
             Text = "Поймаай Шарик";
-            MouseDown += MainForm_MouseDown;
+            MouseDown += BallMousKlick_MouseDown;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);

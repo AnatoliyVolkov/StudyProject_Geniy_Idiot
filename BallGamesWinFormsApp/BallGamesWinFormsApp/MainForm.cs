@@ -6,19 +6,13 @@ public partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
-        this.DoubleBuffered = true; 
+        this.DoubleBuffered = true;
         SetStyle(ControlStyles.AllPaintingInWmPaint |
                  ControlStyles.UserPaint |
                  ControlStyles.DoubleBuffer, true);
     }
 
-    private void MainForm_MouseDown(object sender, MouseEventArgs e)
-    {
-        var pointBall = new PiontBall(this, e.X, e.Y);
-        pointBall.Show();
-    }
-
-    private void StopMoveBallToolStripMenuItem_Click(object sender, EventArgs e)
+    private void StopMoveBall_Click(object sender, EventArgs e)
     {
         int count = 0;
         for (int i = 0; i < MoveBalls.Count; i++)
@@ -35,7 +29,7 @@ public partial class MainForm : Form
         toolStripTextBox.Text = count.ToString();
     }
 
-    private void CreateRandomBullToolStripMenuItem_Click(object sender, EventArgs e)
+    private void CreateRandomBull_Click(object sender, EventArgs e)
     {
         this.Invalidate();
         this.Update();
@@ -49,5 +43,11 @@ public partial class MainForm : Form
             maveRandomBall.Start();
             i++;
         }
+    }
+
+    private void BallMousKlick_MouseDown(object sender, MouseEventArgs e)
+    {
+        var pointBall = new PiontBall(this, e.X, e.Y);
+        pointBall.Show();
     }
 }
