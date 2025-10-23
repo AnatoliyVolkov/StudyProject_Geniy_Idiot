@@ -16,19 +16,28 @@ public partial class MainForm : Form
 
     private void StopMoveBall_Click(object sender, EventArgs e)
     {
-        int count = 0;
-        for (int i = 0; i < MoveBalls.Count; i++)
+        try
         {
-            MoveBalls[i].Stop();
-            if (MoveBalls[i].X - MoveBalls[i].radius >= ClientRectangle.Left &&
-                MoveBalls[i].X + MoveBalls[i].radius <= ClientRectangle.Right &&
-                MoveBalls[i].Y - MoveBalls[i].radius >= ClientRectangle.Top &&
-                MoveBalls[i].Y + MoveBalls[i].radius <= ClientRectangle.Bottom)
+            if (MoveBalls == null)
             {
-                count++;
+                toolStripTextBox.Text = "0";
+                return;
             }
+            int count = 0;
+            for (int i = 0 ; i < MoveBalls.Count ; i++)
+            {
+                MoveBalls[i].Stop();
+                if (MoveBalls[i].X - MoveBalls[i].radius >= ClientRectangle.Left &&
+                    MoveBalls[i].X + MoveBalls[i].radius <= ClientRectangle.Right &&
+                    MoveBalls[i].Y - MoveBalls[i].radius >= ClientRectangle.Top &&
+                    MoveBalls[i].Y + MoveBalls[i].radius <= ClientRectangle.Bottom)
+                {
+                    count++;
+                }
+            }
+            toolStripTextBox.Text = count.ToString();
         }
-        toolStripTextBox.Text = count.ToString();
+        catch (Exception ex) { MessageBox.Show("ѕрежде чем останавливать, запусти шарики!"); }
     }
 
     private void CreateRandomBull_Click(object sender, EventArgs e)
