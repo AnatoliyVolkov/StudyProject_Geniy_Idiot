@@ -1,18 +1,19 @@
-﻿using System.Drawing;
+﻿using System;
 using System.Windows.Forms;
+
 
 namespace BallLibrary;
 
 public class Ball
 {
-    private MainForm mainForm;
+    private Form mainForm;
     protected int vx = 3;
     protected int vy = 4;
     public int X { get; protected set; } = 150;
     public int Y { get; protected set; } = 150;
     public int size { get; protected set; } = 70;
 
-    public Ball(MainForm form)
+    public Ball(Form form)
     {
         this.mainForm = form;
     }

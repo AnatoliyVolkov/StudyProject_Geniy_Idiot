@@ -1,5 +1,5 @@
 ﻿using Timer = System.Windows.Forms.Timer;
-using BallCatchWinFormsApp;
+using BallLibrary;
 
 
 public class MoveBall : RandomSizeAndPointBall

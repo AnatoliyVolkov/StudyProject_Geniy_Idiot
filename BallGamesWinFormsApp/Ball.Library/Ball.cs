@@ -1,5 +1,6 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
+﻿using BallGamesWinFormsApp;
+using System.Drawing;
+
 
 namespace BallLibrary;
 
@@ -12,7 +13,7 @@ public class Ball
     public int Y { get; protected set; } = 150;
     public int size { get; protected set; } = 70;
 
-    public Ball(MainForm form)
+    public Ball(MainForm form) : base (Form)
     {
         this.mainForm = form;
     }

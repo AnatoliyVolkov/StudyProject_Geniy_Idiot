@@ -1,4 +1,4 @@
-﻿namespace BallCatchWinFormsApp;
+﻿namespace BallLibrary;
 
 public class RandomBall : Ball
 {

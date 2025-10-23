@@ -1,6 +1,6 @@
 using System.Windows.Forms;
 
-namespace BallCatchWinFormsApp
+namespace BallLibrary
 {
     public partial class MainForm : Form
     {

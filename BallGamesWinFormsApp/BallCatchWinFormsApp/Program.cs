@@ -1,4 +1,4 @@
-namespace BallCatchWinFormsApp
+namespace BallLibrary
 {
     internal static class Program
     {
