@@ -7,11 +7,13 @@ namespace BallLibrary;
 public class Ball
 {
     private Form mainForm;
-    protected int vx = 3;
-    protected int vy = 4;
+    public int vx { get; protected set; } = 3;
+    public int vy { get; protected set; } = 4;
     public int X { get; protected set; } = 150;
     public int Y { get; protected set; } = 150;
     public int size { get; protected set; } = 70;
+    
+
 
     public Ball(Form form)
     {

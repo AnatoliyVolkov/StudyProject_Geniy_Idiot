@@ -1,3 +1,5 @@
+using BallLibrary;
+
 namespace BallGamesWinFormsApp;
 
 public partial class MainForm : Form

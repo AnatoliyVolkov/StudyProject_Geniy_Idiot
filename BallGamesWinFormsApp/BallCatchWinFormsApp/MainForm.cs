@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using System.Windows.Forms;
 
 namespace BallLibrary
@@ -35,10 +36,12 @@ namespace BallLibrary
 
         private void BallMousKlick_MouseDown(object sender, MouseEventArgs e)
         {
-            for (int i = 0; i < MoveBalls.Count; i++)
+            for (int i = 0 ; i < MoveBalls.Count ; i++)
             {
+                if (MoveBalls[i].IsStopped)
+                    continue;
                 double distance = Math.Sqrt(Math.Pow(e.X - MoveBalls[i].X, 2) +
-                                    Math.Pow(e.Y - MoveBalls[i].Y, 2));
+                                Math.Pow(e.Y - MoveBalls[i].Y, 2));
                 if (MoveBalls[i].X - MoveBalls[i].radius >= ClientRectangle.Left &&
                 MoveBalls[i].X + MoveBalls[i].radius <= ClientRectangle.Right &&
                 MoveBalls[i].Y - MoveBalls[i].radius >= ClientRectangle.Top &&
@@ -46,8 +49,8 @@ namespace BallLibrary
                 {
                     if (distance <= MoveBalls[i].size / 2)
                     {
-                        MoveBalls[i].Stop();
                         count++;
+                        MoveBalls[i].Stop();
                     }
                 }
             }
