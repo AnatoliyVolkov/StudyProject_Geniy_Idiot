@@ -13,14 +13,12 @@ public class Ball
     public int Y { get; protected set; } = 150;
     public int size { get; protected set; } = 70;
 
-
-
     public Ball(Form form)
     {
         this.mainForm = form;
     }
 
-    public bool DefiningBallForm(int x, int y, int radius, Form form)
+    public bool IsForm(int x, int y, int radius, Form form)
     {
         if (
             x - radius >= form.ClientRectangle.Left &&
@@ -40,6 +38,7 @@ public class Ball
         var rectangle = new Rectangle(X - size / 2, Y - size / 2, size, size);
         graphiscs.FillEllipse(brush, rectangle);
     }
+
     public void Move()
     {
         Clear();
@@ -60,6 +59,5 @@ public class Ball
         var rectangle = new Rectangle(X - size / 2, Y - size / 2, size, size);
         graphiscs.FillEllipse(brush, rectangle);
     }
-
 
 }

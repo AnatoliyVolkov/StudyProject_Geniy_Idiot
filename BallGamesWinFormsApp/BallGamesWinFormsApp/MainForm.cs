@@ -28,7 +28,7 @@ public partial class MainForm : Form
             for (int i = 0; i < MoveBalls.Count; i++)
             {
                 MoveBalls[i].Stop();
-                if (MoveBalls[i].DefiningBallForm(MoveBalls[i].X, MoveBalls[i].Y, MoveBalls[i].size, this))
+                if (MoveBalls[i].IsForm(MoveBalls[i].X, MoveBalls[i].Y, MoveBalls[i].size, this))
                {
                     count++;
                 }
