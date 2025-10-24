@@ -23,10 +23,10 @@ public class Ball
     public bool DefiningBallForm(int x, int y, int radius, Form form)
     {
         if (
-            x - radius >= form.Left &&
-            x + radius <= form.Right &&
-            y - radius >= form.Top &&
-            y + radius <= form.Bottom)
+            x - radius >= form.ClientRectangle.Left &&
+            x + radius <= form.ClientRectangle.Right &&
+            y - radius >= form.ClientRectangle.Top &&
+            y + radius <= form.ClientRectangle.Bottom)
         {
             return true;
         }
