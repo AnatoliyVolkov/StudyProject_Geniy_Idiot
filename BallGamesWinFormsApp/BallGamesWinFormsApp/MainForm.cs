@@ -21,23 +21,21 @@ public partial class MainForm : Form
             if (MoveBalls == null)
             {
                 toolStripTextBox.Text = "0";
+                MessageBox.Show("Прежде чем останавливать, запусти шарики!");
                 return;
             }
             int count = 0;
-            for (int i = 0 ; i < MoveBalls.Count ; i++)
+            for (int i = 0; i < MoveBalls.Count; i++)
             {
                 MoveBalls[i].Stop();
-                if (MoveBalls[i].X - MoveBalls[i].radius >= tableLayoutPanel.Left &&
-                    MoveBalls[i].X + MoveBalls[i].radius <= tableLayoutPanel.Right &&
-                    MoveBalls[i].Y - MoveBalls[i].radius >= tableLayoutPanel.Top &&
-                    MoveBalls[i].Y + MoveBalls[i].radius <= tableLayoutPanel.Bottom)
-                {
+                if (MoveBalls[i].DefiningBallForm(MoveBalls[i].X, MoveBalls[i].Y, MoveBalls[i].size, this))
+               {
                     count++;
                 }
             }
             toolStripTextBox.Text = count.ToString();
         }
-        catch (Exception ex) { MessageBox.Show("Прежде чем останавливать, запусти шарики!"); }
+        catch (Exception ex) { MessageBox.Show($"Ошибка: {ex.Message}"); }
     }
 
     private void CreateRandomBull_Click(object sender, EventArgs e)
@@ -49,9 +47,9 @@ public partial class MainForm : Form
         int i = 0;
         while (i < 20)
         {
-            var maveRandomBall = new MoveBall(this);
-            MoveBalls.Add(maveRandomBall);
-            maveRandomBall.Start();
+            var moveRandomBall = new MoveBall(this);
+            MoveBalls.Add(moveRandomBall);
+            moveRandomBall.Start();
             i++;
         }
     }

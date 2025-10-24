@@ -42,10 +42,7 @@ namespace BallLibrary
                     continue;
                 double distance = Math.Sqrt(Math.Pow(e.X - MoveBalls[i].X, 2) +
                                 Math.Pow(e.Y - MoveBalls[i].Y, 2));
-                if (MoveBalls[i].X - MoveBalls[i].radius >= ClientRectangle.Left &&
-                MoveBalls[i].X + MoveBalls[i].radius <= ClientRectangle.Right &&
-                MoveBalls[i].Y - MoveBalls[i].radius >= ClientRectangle.Top &&
-                MoveBalls[i].Y + MoveBalls[i].radius <= ClientRectangle.Bottom)
+                if (MoveBalls[i].DefiningBallForm(MoveBalls[i].X, MoveBalls[i].Y, MoveBalls[i].size, this))
                 {
                     if (distance <= MoveBalls[i].size / 2)
                     {

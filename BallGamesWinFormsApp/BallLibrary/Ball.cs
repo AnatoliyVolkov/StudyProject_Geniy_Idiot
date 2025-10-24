@@ -12,12 +12,25 @@ public class Ball
     public int X { get; protected set; } = 150;
     public int Y { get; protected set; } = 150;
     public int size { get; protected set; } = 70;
-    
+
 
 
     public Ball(Form form)
     {
         this.mainForm = form;
+    }
+
+    public bool DefiningBallForm(int x, int y, int radius, Form form)
+    {
+        if (
+            x - radius >= form.Left &&
+            x + radius <= form.Right &&
+            y - radius >= form.Top &&
+            y + radius <= form.Bottom)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void Show()
