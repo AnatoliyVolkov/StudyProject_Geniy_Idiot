@@ -27,10 +27,10 @@ public partial class MainForm : Form
             for (int i = 0 ; i < MoveBalls.Count ; i++)
             {
                 MoveBalls[i].Stop();
-                if (MoveBalls[i].X - MoveBalls[i].radius >= ClientRectangle.Left &&
-                    MoveBalls[i].X + MoveBalls[i].radius <= ClientRectangle.Right &&
-                    MoveBalls[i].Y - MoveBalls[i].radius >= ClientRectangle.Top &&
-                    MoveBalls[i].Y + MoveBalls[i].radius <= ClientRectangle.Bottom)
+                if (MoveBalls[i].X - MoveBalls[i].radius >= tableLayoutPanel.Left &&
+                    MoveBalls[i].X + MoveBalls[i].radius <= tableLayoutPanel.Right &&
+                    MoveBalls[i].Y - MoveBalls[i].radius >= tableLayoutPanel.Top &&
+                    MoveBalls[i].Y + MoveBalls[i].radius <= tableLayoutPanel.Bottom)
                 {
                     count++;
                 }
@@ -54,11 +54,5 @@ public partial class MainForm : Form
             maveRandomBall.Start();
             i++;
         }
-    }
-
-    private void BallMousKlick_MouseDown(object sender, MouseEventArgs e)
-    {
-        var pointBall = new PiontBall(this, e.X, e.Y);
-        pointBall.Show();
     }
 }

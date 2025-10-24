@@ -33,12 +33,14 @@
             запуститьШарикиToolStripMenuItem = new ToolStripMenuItem();
             toolStripTextBox1 = new ToolStripTextBox();
             toolStripTextBox = new ToolStripTextBox();
+            tableLayoutPanel = new TableLayoutPanel();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
             menuStrip1.AutoSize = false;
+            menuStrip1.BackColor = Color.FromArgb(128, 255, 128);
             menuStrip1.Items.AddRange(new ToolStripItem[] { остановитьШарикиToolStripMenuItem, запуститьШарикиToolStripMenuItem, toolStripTextBox1, toolStripTextBox });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
@@ -80,16 +82,29 @@
             toolStripTextBox.Text = "0";
             toolStripTextBox.TextBoxTextAlign = HorizontalAlignment.Center;
             // 
+            // tableLayoutPanel
+            // 
+            tableLayoutPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel.ColumnCount = 1;
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel.Location = new Point(0, 43);
+            tableLayoutPanel.Name = "tableLayoutPanel";
+            tableLayoutPanel.RowCount = 1;
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel.Size = new Size(841, 524);
+            tableLayoutPanel.TabIndex = 6;
+            tableLayoutPanel.Visible = false;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             ClientSize = new Size(841, 571);
+            Controls.Add(tableLayoutPanel);
             Controls.Add(menuStrip1);
             Name = "MainForm";
             Text = "Игра Шарики";
-            MouseDown += BallMousKlick_MouseDown;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -101,5 +116,6 @@
         private ToolStripMenuItem запуститьШарикиToolStripMenuItem;
         private ToolStripTextBox toolStripTextBox1;
         private ToolStripTextBox toolStripTextBox;
+        private TableLayoutPanel tableLayoutPanel;
     }
 }
