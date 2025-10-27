@@ -102,5 +102,30 @@ namespace GeniyIdiotWinForm
             _currentUserInfoStep = 0;
         }
 
+        public (bool success, string errorMessage) ProcessAnswer(string userAnswer, bool timeExpired = false)
+        {
+            if (timeExpired)
+            {
+                _testEngine.CurrentQuestionIndex++;
+                if (_testEngine.CurrentQuestionIndex >= _testEngine._Question.Count)
+                {
+                    SaveTestResults();
+                    return (true, null);
+                }
+                else
+                {
+                    return (true, null);
+                }
+            }
+            else
+            {
+                var answerResult = _testEngine.ProcessAnswer(userAnswer);
+                if (answerResult.success && answerResult.testFinished)
+                {
+                    SaveTestResults();
+                }
+                return (answerResult.success, answerResult.error);
+            }
+        }
     }
 }

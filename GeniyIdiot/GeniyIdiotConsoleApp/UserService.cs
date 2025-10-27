@@ -18,6 +18,7 @@ namespace GeniyIdiotConsoleApp
             User.SafeData(name, lastName, patronymic);
             return user;
         }
+        
         public string GetValidUserName()
         {
             while (true)

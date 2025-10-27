@@ -42,13 +42,23 @@ public class Services
 
     private void StartApp()
     {
-        if (_userService.CheckLogin())
+        while (true)
         {
-            RunUserMode();
-        }
-        else
-        {
-            RunAdminMode();
+            if (_userService.CheckLogin())
+            {
+                RunUserMode();
+            }
+            else
+            {
+                RunAdminMode();
+            }
+
+            Console.WriteLine("\nВернуться в главное меню? (да/нет)");
+            var answer = Console.ReadLine();
+            if (answer?.ToLower() != "да")
+            {
+                break;
+            }
         }
     }
 
@@ -66,7 +76,7 @@ public class Services
             restart = _userService.GetUserConfirm(User.UserName);
         }
 
-        _testService.ShowAllResults();
+        TestService.ShowAllResults();
         Console.WriteLine(string.Format(Messages.Thanks, User.UserName));
     }
 
@@ -74,9 +84,8 @@ public class Services
     {
         int maxAttempts = 3;
 
-        for (int i = 0; i < maxAttempts; i++)
+        for (int i = 0 ; i < maxAttempts ; i++)
         {
-
             var authResult = _adminMenu.TryLogin();
             int attemptsLeft = maxAttempts - i - 1;
 
@@ -101,7 +110,6 @@ public class Services
             {
                 Console.WriteLine(Messages.MaxAttempts);
                 Console.WriteLine("\nВозврат в главное меню...");
-                StartApp();
                 return;
             }
         }

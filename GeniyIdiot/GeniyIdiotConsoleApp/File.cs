@@ -19,15 +19,20 @@ public class File
     public void CheckFiles()
     {
         Directory.CreateDirectory(_directoryPath);
-        var testHeader = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||", "ФИО", "Набранные баллы", "Диагноз");
-        var questionHeader = string.Format("{0,-5} || {1,-85} || {2,-15}", "П/П", "Вопрос", "Ответ");
-        var testSeparator = new string('=', testHeader.Length);
-        using (var sw = new StreamWriter(_testPath, false, Encoding.UTF8))
+        if (!System.IO.File.Exists(_questionPath))
         {
-            sw.WriteLine(testHeader);
-            sw.WriteLine(testSeparator);
+            QuestionsStorage.CreateFirst(_questionPath);
         }
-        FileProvider.Create(_questionPath, questionHeader);
-        QuestionsStorage.CreateFirst(_questionPath);
+
+        if (!System.IO.File.Exists(_testPath))
+        {
+            UserResultStorage.CreateEmptyResultsFile(_testPath);
+        }
+
+        var adminPath = Path.Combine(_directoryPath, "admin.json");
+        if (!System.IO.File.Exists(adminPath))
+        {
+            var adminStorage = new AdminStorage(adminPath);
+        }
     }
 }

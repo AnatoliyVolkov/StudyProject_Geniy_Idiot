@@ -1,48 +1,25 @@
-﻿namespace GeniyIdiotClassLibrary;
+﻿using Newtonsoft.Json;
+using System.Text;
+
+namespace GeniyIdiotClassLibrary;
 
 public static class UserResultStorage
 {
-    public static string ResultsFilePath { get; set; } = "test_results";
+    public static string ResultsFilePath { get; set; } = "results.json";
 
     public static List<User> LoadFromFile(string filePath)
     {
         try
         {
-            var userResults = new List<User>();
-
-            if (!File.Exists(filePath))
-                return userResults;
+            if (!FileProvider.Exists(filePath))
+                return new List<User>();
 
             var lines = FileProvider.Read(filePath);
+            if (lines.Count == 0)
+                return new List<User>();
 
-            int startIndex = 0;
-            if (lines.Count > 2)
-            {
-                if (lines[0].Contains("ФИО") && lines[1].Contains("="))
-                {
-                    startIndex = 2;
-                }
-            }
-
-            for (int i = startIndex ; i < lines.Count ; i++)
-            {
-                var line = lines[i];
-                if (string.IsNullOrWhiteSpace(line)) continue;
-
-                var parts = line.Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length >= 3)
-                {
-                    var fio = parts[0].Trim();
-                    var answerText = parts[1].Trim();
-                    var diagnostic = parts[2].Trim();
-
-                    if (int.TryParse(answerText, out int answer))
-                    {
-                        userResults.Add(new User(fio, answer, diagnostic));
-                    }
-                }
-            }
-            return userResults;
+            var json = string.Join("", lines);
+            return JsonConvert.DeserializeObject<List<User>>(json);
         }
         catch (Exception ex)
         {
@@ -50,20 +27,37 @@ public static class UserResultStorage
         }
     }
 
-    public static void SaveResult(string filePath, string userFullName, int answer, string diagnostic)
+    public static void SaveResult(string filePath, string userFullName, int correctAnswers, string diagnosis)
     {
         try
         {
-            var line = string.Format("|| {0,-35} || {1,-25} || {2,-15} ||",
-                userFullName,
-                answer.ToString(),
-                diagnostic);
+            var results = LoadFromFile(filePath);
+            results.Add(new User(userFullName, correctAnswers, diagnosis));
 
-            FileProvider.Append(filePath, line);
+            var json = JsonConvert.SerializeObject(results, Formatting.Indented);
+
+            using var sw = new StreamWriter(filePath, false, Encoding.UTF8);
+            sw.Write(json);
         }
         catch (Exception ex)
         {
             throw new Exception($"Ошибка сохранения результата: {ex.Message}");
+        }
+    }
+
+    public static void CreateEmptyResultsFile(string filePath)
+    {
+        try
+        {
+            var emptyResults = new List<User>();
+            var json = JsonConvert.SerializeObject(emptyResults, Formatting.Indented);
+
+            using var sw = new StreamWriter(filePath, false, Encoding.UTF8);
+            sw.Write(json);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Ошибка создания файла результатов: {ex.Message}");
         }
     }
 }

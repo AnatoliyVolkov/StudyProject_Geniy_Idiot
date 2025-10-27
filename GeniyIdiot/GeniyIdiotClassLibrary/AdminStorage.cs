@@ -1,18 +1,17 @@
-﻿using System.Text;
+﻿using Newtonsoft.Json;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace GeniyIdiotClassLibrary;
 
 public class AdminStorage
 {
-    public static string AdminFilePath { get; set; } = "Admin";
+    public static string AdminFilePath { get; set; } = "Admin.json";
     public List<Admin> admins = new List<Admin>();
-    private string adminFilePath;
-
-    public AdminStorage(string filePath)
+    
+    public AdminStorage(string AdminFilePath)
     {
-        adminFilePath = filePath;
         LoadFromFile();
-
     }
 
     public void AddAdmin(string login, int password)
@@ -24,28 +23,12 @@ public class AdminStorage
         }
     }
 
-    public void RemoveAdmin(string login)
-    {
-        admins.RemoveAll(admin => admin.Login == login);
-        SaveToFile();
-    }
-
-    private void SaveToFile()
+    public void SaveToFile()
     {
         try
         {
-            var header = string.Format("{0,-45} || {1,-30}", "Логин", "Пароль");
-            var separator = new string('=', header.Length);
-
-            using var sw = new StreamWriter(adminFilePath, false, Encoding.UTF8);
-            sw.WriteLine(header);
-            sw.WriteLine(separator);
-
-            foreach (var admin in admins)
-            {
-                var line = string.Format("{0,-45} || {1,-30}", admin.Login, admin.Password.ToString());
-                sw.WriteLine(line);
-            }
+            var newAdmin = JsonConvert.SerializeObject(admins, Formatting.Indented);
+            File.WriteAllText(AdminFilePath, newAdmin);
         }
         catch (Exception ex)
         {
@@ -56,49 +39,24 @@ public class AdminStorage
     private void LoadFromFile()
     {
         admins.Clear();
-
-        if (!File.Exists(adminFilePath))
+        if (!File.Exists(AdminFilePath))
         {
-            admins.Add(new Admin("qwerty", "123"));
+            admins.Add(new Admin("q", "1"));
             SaveToFile();
             return;
         }
-
-        var lines = File.ReadAllLines(adminFilePath);
-
-        if (lines.Length < 3)
+        try
         {
-            admins.Add(new Admin("qwerty", "123"));
-            SaveToFile();
-            return;
-        }
-
-        for (int i = 2 ; i < lines.Length ; i++)
-        {
-            var line = lines[i];
-            if (string.IsNullOrWhiteSpace(line)) continue;
-
-            try
+            var json = File.ReadAllText(AdminFilePath);
+            if (string.IsNullOrEmpty(json))
             {
-                var parts = line.Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length >= 2)
-                {
-                    var login = parts[0].Trim();
-                    var passwordText = parts[1].Trim();
-
-                    admins.Add(new Admin(login, passwordText));
-                }
+                admins.Add(new Admin("q", "1"));
+                SaveToFile();
+                return;
             }
-            catch (Exception ex)
-            {
-                throw new Exception($"Ошибка при чтении администратора: {ex.Message}");
-            }
+            var adminJson = JsonConvert.DeserializeObject<List<Admin>>(json);
+                admins.AddRange(adminJson);
         }
-
-        if (admins.Count == 0)
-        {
-            admins.Add(new Admin("qwerty", "123"));
-            SaveToFile();
-        }
+        catch (Exception ex) { throw new Exception($"Ошибка при чтении администраторов из JSON: {ex.Message}"); }
     }
 }

@@ -38,6 +38,7 @@
             restartTestButton = new Button();
             exitButton = new Button();
             viewResultsButton = new Button();
+            timerLable = new Label();
             SuspendLayout();
             // 
             // infoUserLabel
@@ -157,11 +158,24 @@
             viewResultsButton.Visible = false;
             viewResultsButton.Click += viewResultsButton_Click;
             // 
+            // timerLable
+            // 
+            timerLable.AutoSize = true;
+            timerLable.Font = new Font("Segoe UI", 27.75F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point, 204);
+            timerLable.ForeColor = Color.Red;
+            timerLable.Location = new Point(287, 84);
+            timerLable.Name = "timerLable";
+            timerLable.Size = new Size(128, 50);
+            timerLable.TabIndex = 13;
+            timerLable.Text = "label1";
+            timerLable.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // UserForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(timerLable);
             Controls.Add(viewResultsButton);
             Controls.Add(exitButton);
             Controls.Add(restartTestButton);
@@ -192,5 +206,6 @@
         private Button restartTestButton;
         private Button exitButton;
         private Button viewResultsButton;
+        private Label timerLable;
     }
 }

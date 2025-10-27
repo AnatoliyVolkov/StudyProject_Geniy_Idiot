@@ -122,7 +122,7 @@
             Name = "AdminLoginForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Вход для администратора";
-            Load += AdminLoginForm_Load;
+           // Load += AdminLoginForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }
