@@ -4,7 +4,7 @@ namespace BallGamesWinFormsApp;
 
 public partial class MainForm : Form
 {
-    List<MoveBall> MoveBalls;
+    List<Ball> balls;
     public MainForm()
     {
         InitializeComponent();
@@ -18,17 +18,17 @@ public partial class MainForm : Form
     {
         try
         {
-            if (MoveBalls == null)
+            if (balls == null)
             {
                 toolStripTextBox.Text = "0";
                 MessageBox.Show("ѕрежде чем останавливать, запусти шарики!");
                 return;
             }
             int count = 0;
-            for (int i = 0; i < MoveBalls.Count; i++)
+            for (int i = 0; i < balls.Count; i++)
             {
-                MoveBalls[i].Stop();
-                if (MoveBalls[i].IsForm(MoveBalls[i].X, MoveBalls[i].Y, MoveBalls[i].size, this))
+                balls[i].Stop();
+                if (balls[i].IsForm(balls[i].CenterX, balls[i].CenterY, balls[i].Radius,ballPanel))
                {
                     count++;
                 }
@@ -43,12 +43,12 @@ public partial class MainForm : Form
         this.Invalidate();
         this.Update();
         toolStripTextBox.Text = "0";
-        MoveBalls = new List<MoveBall>();
+        balls = new List<Ball>();
         int i = 0;
         while (i < 20)
         {
             var moveRandomBall = new MoveBall(this);
-            MoveBalls.Add(moveRandomBall);
+            balls.Add(moveRandomBall);
             moveRandomBall.Start();
             i++;
         }

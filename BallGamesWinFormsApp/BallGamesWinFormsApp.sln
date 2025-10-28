@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BallCatchMouseWinFormsApp",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BallLibrary", "BallLibrary\BallLibrary.csproj", "{A9BE8BD2-814E-4482-958E-F0E2A85063A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillyardBallWinFormsApp", "BillyardBallWinFormsApp\BillyardBallWinFormsApp.csproj", "{EEF01AAC-4D6D-4289-B63B-AE0D1D3568CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A9BE8BD2-814E-4482-958E-F0E2A85063A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9BE8BD2-814E-4482-958E-F0E2A85063A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9BE8BD2-814E-4482-958E-F0E2A85063A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEF01AAC-4D6D-4289-B63B-AE0D1D3568CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEF01AAC-4D6D-4289-B63B-AE0D1D3568CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEF01AAC-4D6D-4289-B63B-AE0D1D3568CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEF01AAC-4D6D-4289-B63B-AE0D1D3568CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
