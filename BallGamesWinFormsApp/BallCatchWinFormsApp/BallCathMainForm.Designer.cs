@@ -1,6 +1,6 @@
 ﻿namespace BallLibrary
 {
-    partial class MainForm
+    partial class BallCathMainForm
     {
         /// <summary>
         ///  Required designer variable.

@@ -3,11 +3,11 @@ using System.Windows.Forms;
 
 namespace BallLibrary;
 
-public partial class MainForm : Form
+public partial class BallCathMainForm : Form
 {
     int count = 0;
-    List<global::MoveBall> MoveBalls;
-    public MainForm()
+    List<MoveBall> MoveBalls;
+    public BallCathMainForm()
     {
         InitializeComponent();
         this.DoubleBuffered = true;
@@ -23,11 +23,11 @@ public partial class MainForm : Form
         this.Update();
         count = 0;
         cathBallToolStripTextBox.Text = "0";
-        MoveBalls = new List<global::MoveBall>();
+        MoveBalls = new List<MoveBall>();
         int i = 0;
         while (i < 20)
         {
-            var maveRandomBall = new global::MoveBall(this);
+            var maveRandomBall = new MoveBall(this);
             MoveBalls.Add(maveRandomBall);
             maveRandomBall.Start();
             i++;

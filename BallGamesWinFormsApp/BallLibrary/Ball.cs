@@ -12,7 +12,8 @@ namespace BallLibrary
         public int CenterY { get; protected set; } = 150;
         public int Radius { get; protected set; } = 15;
         public bool IsStopped { get; protected set; } = false;
-
+      
+        
         private Timer _timer;
 
         public Ball(Form form)

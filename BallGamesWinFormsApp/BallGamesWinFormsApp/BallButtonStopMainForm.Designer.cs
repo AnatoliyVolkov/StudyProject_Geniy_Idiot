@@ -1,6 +1,6 @@
 ﻿namespace BallGamesWinFormsApp
 {
-    partial class MainForm
+    partial class BallButtonStopMainForm
     {
         /// <summary>
         ///  Required designer variable.

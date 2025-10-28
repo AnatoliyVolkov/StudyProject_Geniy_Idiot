@@ -2,10 +2,10 @@ using BallLibrary;
 
 namespace BallGamesWinFormsApp;
 
-public partial class MainForm : Form
+public partial class BallButtonStopMainForm : Form
 {
     List<Ball> balls;
-    public MainForm()
+    public BallButtonStopMainForm()
     {
         InitializeComponent();
         this.DoubleBuffered = true;
