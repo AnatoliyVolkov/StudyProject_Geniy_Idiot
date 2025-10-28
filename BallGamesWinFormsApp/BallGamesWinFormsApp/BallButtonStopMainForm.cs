@@ -47,7 +47,7 @@ public partial class BallButtonStopMainForm : Form
         int i = 0;
         while (i < 20)
         {
-            var moveRandomBall = new MoveBall(this);
+            var moveRandomBall = new RandomSizeAndPointBall(this);
             balls.Add(moveRandomBall);
             moveRandomBall.Start();
             i++;

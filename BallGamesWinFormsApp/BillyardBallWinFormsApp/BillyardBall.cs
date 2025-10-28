@@ -3,7 +3,7 @@
 namespace BillyardBallWinFormsApp
 {
 
-    public class BillyardBall : RandomBall
+    public class BillyardBall : MoveBall
     {
         public event EventHandler<HitEventArgs> OnHited;
 

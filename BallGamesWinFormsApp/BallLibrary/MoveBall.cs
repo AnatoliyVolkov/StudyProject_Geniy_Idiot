@@ -1,6 +1,6 @@
 ﻿using BallLibrary;
 
-public class MoveBall : RandomSizeAndPointBall
+public class MoveBall : RandomBall
 {
     public MoveBall(Form form) : base(form)
     {

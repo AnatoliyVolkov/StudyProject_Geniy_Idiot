@@ -6,7 +6,7 @@ namespace BallLibrary;
 public partial class BallCathMainForm : Form
 {
     int count = 0;
-    List<MoveBall> MoveBalls;
+    List<RandomSizeAndPointBall> MoveBalls;
     public BallCathMainForm()
     {
         InitializeComponent();
@@ -23,11 +23,11 @@ public partial class BallCathMainForm : Form
         this.Update();
         count = 0;
         cathBallToolStripTextBox.Text = "0";
-        MoveBalls = new List<MoveBall>();
+        MoveBalls = new List<RandomSizeAndPointBall>();
         int i = 0;
         while (i < 20)
         {
-            var maveRandomBall = new MoveBall(this);
+            var maveRandomBall = new RandomSizeAndPointBall(this);
             MoveBalls.Add(maveRandomBall);
             maveRandomBall.Start();
             i++;
