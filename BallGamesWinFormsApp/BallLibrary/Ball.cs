@@ -25,7 +25,7 @@ namespace BallLibrary
             _timer.Tick += _timer_Tick;
         }
 
-        public void Start() { _timer.Start(); }
+        public void Start() { _timer.Start(); IsStopped = false; }
 
         public void Stop() { _timer.Stop(); IsStopped = true; }
 

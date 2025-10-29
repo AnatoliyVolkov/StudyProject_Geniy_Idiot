@@ -5,13 +5,13 @@ namespace DiffusionBallWinFormsApp;
 
 public partial class DiffusionBallMainForm : Form
 {
-    List<BillyardBall> redBalls; 
+    List<BillyardBall> redBalls;
     List<BillyardBall> blueBalls;
     Random random = new Random();
     public DiffusionBallMainForm()
     {
         InitializeComponent();
-        redBalls = new List<BillyardBall>(); 
+        redBalls = new List<BillyardBall>();
         blueBalls = new List<BillyardBall>();
         SetStyle(ControlStyles.AllPaintingInWmPaint |
             ControlStyles.UserPaint |
@@ -20,7 +20,7 @@ public partial class DiffusionBallMainForm : Form
 
     private void DiffusionBallMainForm_Load(object sender, EventArgs e)
     {
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 15; i++)
         {
             var ball = new DiffusionBall(this, isRed: true);
             ball.OnHited += MaveRandomBall_OnHited;
@@ -28,7 +28,7 @@ public partial class DiffusionBallMainForm : Form
             ball.Start();
         }
 
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 15; i++)
         {
             var ball = new DiffusionBall(this, isRed: false);
             ball.OnHited += MaveRandomBall_OnHited;
@@ -53,6 +53,23 @@ public partial class DiffusionBallMainForm : Form
             case Side.Down:
                 dawnLabel.Text = (int.Parse(dawnLabel.Text) + 1).ToString();
                 break;
+        }
+    }
+
+    private void MouseKlickStartStopBall_MouseDown(object sender, MouseEventArgs e)
+    {
+        foreach (var ball in redBalls)
+        {
+            if (ball.IsStopped)
+                ball.Start();
+            else ball.Stop();
+        }
+
+        foreach (var ball in blueBalls)
+        {
+            if (ball.IsStopped)
+                ball.Start();
+            else ball.Stop();
         }
     }
 }

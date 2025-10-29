@@ -89,6 +89,7 @@
             Name = "DiffusionBallMainForm";
             Text = "DiffusionBall";
             Load += DiffusionBallMainForm_Load;
+            MouseDown += MouseKlickStartStopBall_MouseDown;
             ResumeLayout(false);
             PerformLayout();
         }
