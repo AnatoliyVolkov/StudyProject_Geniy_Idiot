@@ -43,7 +43,7 @@ namespace BallLibrary
             return false;
         }
 
-        public void Show()
+        public virtual void Show()
         {
             var brush = Brushes.Green;
             Draw(brush);
@@ -68,7 +68,7 @@ namespace BallLibrary
             Draw(brush);
         }
 
-        private void Draw(Brush brush)
+        protected void Draw(Brush brush)
         {
             var graphics = form.CreateGraphics();
             var rectangle = new Rectangle(CenterX - Radius, CenterY - Radius, Radius * 2, Radius * 2);

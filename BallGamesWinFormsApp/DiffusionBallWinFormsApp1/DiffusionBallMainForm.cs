@@ -11,6 +11,8 @@ public partial class DiffusionBallMainForm : Form
     public DiffusionBallMainForm()
     {
         InitializeComponent();
+        redBalls = new List<BillyardBall>(); 
+        blueBalls = new List<BillyardBall>();
         SetStyle(ControlStyles.AllPaintingInWmPaint |
             ControlStyles.UserPaint |
             ControlStyles.DoubleBuffer, true);
@@ -18,19 +20,20 @@ public partial class DiffusionBallMainForm : Form
 
     private void DiffusionBallMainForm_Load(object sender, EventArgs e)
     {
-        for (int i = 0 ; i < 7 ; i++)
+        for (int i = 0; i < 7; i++)
         {
-            var ball = new DiffusionBall(this);
-            ball.CreateRedBall(); 
-            ball.OnHited += MaveRandomBall_OnHited; 
-            redBalls.Add(ball);
-        }
-        for (int i = 0 ; i < 7 ; i++)
-        {
-            var ball = new DiffusionBall(this);
-            ball.CreateBlueBall();
+            var ball = new DiffusionBall(this, isRed: true);
             ball.OnHited += MaveRandomBall_OnHited;
             redBalls.Add(ball);
+            ball.Start();
+        }
+
+        for (int i = 0; i < 7; i++)
+        {
+            var ball = new DiffusionBall(this, isRed: false);
+            ball.OnHited += MaveRandomBall_OnHited;
+            blueBalls.Add(ball);
+            ball.Start();
         }
     }
 
