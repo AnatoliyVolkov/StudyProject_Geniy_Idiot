@@ -1,18 +1,23 @@
 using BallLibrary;
-using System;
-using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
+
 namespace DiffusionBallWinFormsApp;
 
 public partial class DiffusionBallMainForm : Form
 {
     List<BillyardBall> redBalls;
     List<BillyardBall> blueBalls;
-    Random random = new Random();
+    Timer timer = new Timer();
+
     public DiffusionBallMainForm()
     {
         InitializeComponent();
         redBalls = new List<BillyardBall>();
         blueBalls = new List<BillyardBall>();
+
+        timer.Interval = 100; 
+        timer.Tick += Timer_Tick;
+
         SetStyle(ControlStyles.AllPaintingInWmPaint |
             ControlStyles.UserPaint |
             ControlStyles.DoubleBuffer, true);
@@ -20,7 +25,7 @@ public partial class DiffusionBallMainForm : Form
 
     private void DiffusionBallMainForm_Load(object sender, EventArgs e)
     {
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 10; i++)
         {
             var ball = new DiffusionBall(this, isRed: true);
             ball.OnHited += MaveRandomBall_OnHited;
@@ -28,12 +33,22 @@ public partial class DiffusionBallMainForm : Form
             ball.Start();
         }
 
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 10; i++)
         {
             var ball = new DiffusionBall(this, isRed: false);
             ball.OnHited += MaveRandomBall_OnHited;
             blueBalls.Add(ball);
             ball.Start();
+        }
+
+        timer.Start();
+    }
+
+    private void Timer_Tick(object? sender, EventArgs e)
+    {
+        if (DetermingPositionBalls())
+        {
+            StopDiffision();
         }
     }
 
@@ -61,15 +76,57 @@ public partial class DiffusionBallMainForm : Form
         foreach (var ball in redBalls)
         {
             if (ball.IsStopped)
+            {
                 ball.Start();
-            else ball.Stop();
+            }
+            else
+            {
+                ball.Stop();
+            }
         }
 
         foreach (var ball in blueBalls)
         {
             if (ball.IsStopped)
+            {
                 ball.Start();
-            else ball.Stop();
+            }
+            else
+            {
+                ball.Stop();
+            }
         }
+    }
+
+    private void StopDiffision()
+    {
+        foreach (var ball in redBalls)
+        {
+            ball.Stop();
+        }
+
+        foreach (var ball in blueBalls)
+        {
+            ball.Stop();
+        }
+        timer.Stop();
+    }
+
+    private bool DetermingPositionBalls()
+    {
+        int count = 0;
+        for (int i = 0; i < redBalls.Count; i++)
+        {
+            if (redBalls[i].CenterX > this.ClientSize.Width / 2)
+                count++;
+        }
+
+        for (int i = 0; i < blueBalls.Count; i++)
+        {
+            if (blueBalls[i].CenterX < this.ClientSize.Width / 2)
+                count++;
+        }
+        double positionBall = count * 100.0 / (redBalls.Count + blueBalls.Count);
+        return positionBall >= 48 && positionBall <= 53;
     }
 }

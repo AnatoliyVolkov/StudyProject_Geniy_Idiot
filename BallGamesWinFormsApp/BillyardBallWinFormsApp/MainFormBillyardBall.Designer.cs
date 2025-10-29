@@ -36,6 +36,7 @@
             // 
             // leftLabel
             // 
+            leftLabel.Anchor = AnchorStyles.Left;
             leftLabel.AutoSize = true;
             leftLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             leftLabel.Location = new Point(12, 211);
@@ -47,6 +48,7 @@
             // 
             // rightLabel
             // 
+            rightLabel.Anchor = AnchorStyles.Right;
             rightLabel.AutoSize = true;
             rightLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             rightLabel.Location = new Point(769, 211);
@@ -57,6 +59,7 @@
             // 
             // topLabel
             // 
+            topLabel.Anchor = AnchorStyles.Top;
             topLabel.AutoSize = true;
             topLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             topLabel.Location = new Point(381, 9);
@@ -67,6 +70,7 @@
             // 
             // dawnLabel
             // 
+            dawnLabel.Anchor = AnchorStyles.Bottom;
             dawnLabel.AutoSize = true;
             dawnLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             dawnLabel.Location = new Point(381, 420);
