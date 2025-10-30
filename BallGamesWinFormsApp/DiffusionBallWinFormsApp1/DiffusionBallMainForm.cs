@@ -1,4 +1,6 @@
 using BallLibrary;
+using System.Drawing;
+using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
 namespace DiffusionBallWinFormsApp;
@@ -41,34 +43,63 @@ public partial class DiffusionBallMainForm : Form
             blueBalls.Add(ball);
             ball.Start();
         }
-
+        countRedLableLeft.Hide();
+        countRedLableRight.Hide();
+        countBlueLabelLeft.Hide();
+        countBlueLableRight.Hide();
         timer.Start();
     }
 
     private void Timer_Tick(object? sender, EventArgs e)
     {
+
         if (DetermingPositionBalls())
         {
             StopDiffision();
+            countRedLableLeft.Show();
+            countRedLableRight.Show();
+            countBlueLabelLeft.Show();
+            countBlueLableRight.Show();
         }
     }
 
     private void MaveRandomBall_OnHited(object? sender, HitEventArgs e)
     {
-        switch (e.Side)
+        if (sender is Ball ball && redBalls.Contains(ball))
         {
-            case Side.Left:
-                leftLabel.Text = (int.Parse(leftLabel.Text) + 1).ToString();
-                break;
-            case Side.Right:
-                rightLabel.Text = (int.Parse(rightLabel.Text) + 1).ToString();
-                break;
-            case Side.Top:
-                topLabel.Text = (int.Parse(topLabel.Text) + 1).ToString();
-                break;
-            case Side.Down:
-                dawnLabel.Text = (int.Parse(dawnLabel.Text) + 1).ToString();
-                break;
+            switch (e.Side)
+            {
+                case Side.Left:
+                    leftRedLabel.Text = (int.Parse(leftRedLabel.Text) + 1).ToString();
+                    break;
+                case Side.Right:
+                    rightRedLabel.Text = (int.Parse(rightRedLabel.Text) + 1).ToString();
+                    break;
+                case Side.Top:
+                    topRedLabel.Text = (int.Parse(topRedLabel.Text) + 1).ToString();
+                    break;
+                case Side.Down:
+                    dawnRedLabel.Text = (int.Parse(dawnRedLabel.Text) + 1).ToString();
+                    break;
+            }
+        }
+        if (sender is Ball blueball && blueBalls.Contains(blueball))
+        {
+            switch (e.Side)
+            {
+                case Side.Left:
+                    leftBlueLabel.Text = (int.Parse(leftBlueLabel.Text) + 1).ToString();
+                    break;
+                case Side.Right:
+                    rightBlueLabel.Text = (int.Parse(rightBlueLabel.Text) + 1).ToString();
+                    break;
+                case Side.Top:
+                    topBlueLabel.Text = (int.Parse(topBlueLabel.Text) + 1).ToString();
+                    break;
+                case Side.Down:
+                    dawnBlueLabel.Text = (int.Parse(dawnBlueLabel.Text) + 1).ToString();
+                    break;
+            }
         }
     }
 
@@ -115,19 +146,28 @@ public partial class DiffusionBallMainForm : Form
 
     private bool DetermingPositionBalls()
     {
-        var count = 0;
+        var blueCount = 0;
+        var redCount = 0;
         for (int i = 0; i < redBalls.Count; i++)
         {
             if (redBalls[i].CenterX > this.ClientSize.Width / 2)
-                count++;
+            {
+                redCount++;
+                countRedLableRight.Text = redCount.ToString();
+                countRedLableLeft.Text = (redBalls.Count - redCount).ToString();
+            }
         }
 
         for (int i = 0; i < blueBalls.Count; i++)
         {
             if (blueBalls[i].CenterX < this.ClientSize.Width / 2)
-                count++;
+            {
+                blueCount++;
+                countBlueLabelLeft.Text = blueCount.ToString();
+                countBlueLableRight.Text = (blueBalls.Count - blueCount).ToString();
+            }
         }
-        var positionBall = count * 100.0 / (redBalls.Count + blueBalls.Count);
+        var positionBall = (blueCount+redCount) * 100.0 / (redBalls.Count + blueBalls.Count);
         var minValueProcent = 48.0;
         var maxValueProcent = 53.0;
         return positionBall >= minValueProcent && maxValueProcent <= 53;
