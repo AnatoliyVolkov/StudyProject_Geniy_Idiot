@@ -41,7 +41,7 @@
             leftLabel.BackColor = Color.Yellow;
             leftLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             leftLabel.ForeColor = Color.DarkGreen;
-            leftLabel.Location = new Point(13, 380);
+            leftLabel.Location = new Point(13, 202);
             leftLabel.Name = "leftLabel";
             leftLabel.Size = new Size(19, 21);
             leftLabel.TabIndex = 0;
@@ -54,7 +54,7 @@
             rightLabel.BackColor = Color.Yellow;
             rightLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             rightLabel.ForeColor = Color.DarkGreen;
-            rightLabel.Location = new Point(1551, 380);
+            rightLabel.Location = new Point(688, 202);
             rightLabel.Name = "rightLabel";
             rightLabel.Size = new Size(19, 21);
             rightLabel.TabIndex = 1;
@@ -67,7 +67,7 @@
             topLabel.BackColor = Color.Yellow;
             topLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             topLabel.ForeColor = Color.DarkGreen;
-            topLabel.Location = new Point(772, 9);
+            topLabel.Location = new Point(341, 9);
             topLabel.Name = "topLabel";
             topLabel.Size = new Size(19, 21);
             topLabel.TabIndex = 2;
@@ -80,7 +80,7 @@
             dawnLabel.BackColor = Color.Yellow;
             dawnLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             dawnLabel.ForeColor = Color.DarkGreen;
-            dawnLabel.Location = new Point(772, 784);
+            dawnLabel.Location = new Point(341, 429);
             dawnLabel.Name = "dawnLabel";
             dawnLabel.Size = new Size(19, 21);
             dawnLabel.TabIndex = 3;
@@ -90,7 +90,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1601, 808);
+            ClientSize = new Size(738, 453);
             Controls.Add(dawnLabel);
             Controls.Add(topLabel);
             Controls.Add(rightLabel);
