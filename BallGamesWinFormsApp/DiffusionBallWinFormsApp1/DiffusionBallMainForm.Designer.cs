@@ -36,10 +36,12 @@
             // 
             // leftLabel
             // 
-            leftLabel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            leftLabel.Anchor = AnchorStyles.Left;
             leftLabel.AutoSize = true;
+            leftLabel.BackColor = Color.Yellow;
             leftLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            leftLabel.Location = new Point(13, 201);
+            leftLabel.ForeColor = Color.DarkGreen;
+            leftLabel.Location = new Point(13, 380);
             leftLabel.Name = "leftLabel";
             leftLabel.Size = new Size(19, 21);
             leftLabel.TabIndex = 0;
@@ -47,10 +49,12 @@
             // 
             // rightLabel
             // 
-            rightLabel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            rightLabel.Anchor = AnchorStyles.Right;
             rightLabel.AutoSize = true;
+            rightLabel.BackColor = Color.Yellow;
             rightLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            rightLabel.Location = new Point(750, 201);
+            rightLabel.ForeColor = Color.DarkGreen;
+            rightLabel.Location = new Point(1551, 380);
             rightLabel.Name = "rightLabel";
             rightLabel.Size = new Size(19, 21);
             rightLabel.TabIndex = 1;
@@ -58,9 +62,12 @@
             // 
             // topLabel
             // 
+            topLabel.Anchor = AnchorStyles.Top;
             topLabel.AutoSize = true;
+            topLabel.BackColor = Color.Yellow;
             topLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            topLabel.Location = new Point(372, 9);
+            topLabel.ForeColor = Color.DarkGreen;
+            topLabel.Location = new Point(772, 9);
             topLabel.Name = "topLabel";
             topLabel.Size = new Size(19, 21);
             topLabel.TabIndex = 2;
@@ -68,10 +75,12 @@
             // 
             // dawnLabel
             // 
-            dawnLabel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dawnLabel.Anchor = AnchorStyles.Bottom;
             dawnLabel.AutoSize = true;
+            dawnLabel.BackColor = Color.Yellow;
             dawnLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            dawnLabel.Location = new Point(372, 426);
+            dawnLabel.ForeColor = Color.DarkGreen;
+            dawnLabel.Location = new Point(772, 784);
             dawnLabel.Name = "dawnLabel";
             dawnLabel.Size = new Size(19, 21);
             dawnLabel.TabIndex = 3;
@@ -81,13 +90,14 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1601, 808);
             Controls.Add(dawnLabel);
             Controls.Add(topLabel);
             Controls.Add(rightLabel);
             Controls.Add(leftLabel);
             Name = "DiffusionBallMainForm";
             Text = "DiffusionBall";
+            FormClosed += DiffusionBallMainForm_FormClosed;
             Load += DiffusionBallMainForm_Load;
             MouseDown += MouseKlickStartStopBall_MouseDown;
             ResumeLayout(false);

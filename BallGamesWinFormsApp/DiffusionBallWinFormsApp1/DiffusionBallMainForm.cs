@@ -8,14 +8,15 @@ public partial class DiffusionBallMainForm : Form
     List<BillyardBall> redBalls;
     List<BillyardBall> blueBalls;
     Timer timer = new Timer();
+    int ball;
 
-    public DiffusionBallMainForm()
+    public DiffusionBallMainForm(int ball)
     {
         InitializeComponent();
         redBalls = new List<BillyardBall>();
         blueBalls = new List<BillyardBall>();
-
-        timer.Interval = 100; 
+        this.ball = ball;
+        timer.Interval = 100;
         timer.Tick += Timer_Tick;
 
         SetStyle(ControlStyles.AllPaintingInWmPaint |
@@ -25,7 +26,7 @@ public partial class DiffusionBallMainForm : Form
 
     private void DiffusionBallMainForm_Load(object sender, EventArgs e)
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < ball; i++)
         {
             var ball = new DiffusionBall(this, isRed: true);
             ball.OnHited += MaveRandomBall_OnHited;
@@ -33,7 +34,7 @@ public partial class DiffusionBallMainForm : Form
             ball.Start();
         }
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < ball; i++)
         {
             var ball = new DiffusionBall(this, isRed: false);
             ball.OnHited += MaveRandomBall_OnHited;
@@ -114,7 +115,7 @@ public partial class DiffusionBallMainForm : Form
 
     private bool DetermingPositionBalls()
     {
-        int count = 0;
+        var count = 0;
         for (int i = 0; i < redBalls.Count; i++)
         {
             if (redBalls[i].CenterX > this.ClientSize.Width / 2)
@@ -126,7 +127,14 @@ public partial class DiffusionBallMainForm : Form
             if (blueBalls[i].CenterX < this.ClientSize.Width / 2)
                 count++;
         }
-        double positionBall = count * 100.0 / (redBalls.Count + blueBalls.Count);
-        return positionBall >= 48 && positionBall <= 53;
+        var positionBall = count * 100.0 / (redBalls.Count + blueBalls.Count);
+        var minValueProcent = 48.0;
+        var maxValueProcent = 53.0;
+        return positionBall >= minValueProcent && maxValueProcent <= 53;
+    }
+
+    private void DiffusionBallMainForm_FormClosed(object sender, FormClosedEventArgs e)
+    {
+        Application.Exit();
     }
 }

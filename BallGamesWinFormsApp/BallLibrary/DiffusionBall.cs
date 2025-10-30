@@ -1,9 +1,6 @@
-﻿using BallLibrary;
-using System.Drawing;
+﻿namespace BallLibrary;
 
-namespace DiffusionBallWinFormsApp;
-
-internal class DiffusionBall : BillyardBall
+public class DiffusionBall : BillyardBall
 {
 
     private Brush ballBrush;
