@@ -6,7 +6,7 @@ public class RandomBall : Ball
 
     public RandomBall(Form form) : base(form)
     {
-        CenterX = random.Next(10, form.ClientSize.Width-10);
-        CenterY = random.Next(10, form.ClientSize.Height-10);
+        CenterX = random.Next(55, form.ClientSize.Width-55);
+        CenterY = random.Next(55, form.ClientSize.Height-55);
     }
 }

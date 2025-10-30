@@ -105,43 +105,38 @@ public partial class DiffusionBallMainForm : Form
 
     private void MouseKlickStartStopBall_MouseDown(object sender, MouseEventArgs e)
     {
-        foreach (var ball in redBalls)
-        {
-            if (ball.IsStopped)
-            {
-                ball.Start();
-            }
-            else
-            {
-                ball.Stop();
-            }
-        }
-
-        foreach (var ball in blueBalls)
-        {
-            if (ball.IsStopped)
-            {
-                ball.Start();
-            }
-            else
-            {
-                ball.Stop();
-            }
-        }
+        ToggleBalls(redBalls);
+        ToggleBalls(blueBalls);
     }
 
     private void StopDiffision()
     {
-        foreach (var ball in redBalls)
-        {
-            ball.Stop();
-        }
-
-        foreach (var ball in blueBalls)
-        {
-            ball.Stop();
-        }
+        StopBalls(redBalls);
+        StopBalls(blueBalls);
         timer.Stop();
+    }
+
+    private void StopBalls(IEnumerable<Ball> balls)
+    {
+        foreach (var ball in balls)
+        {
+            ball.Stop();
+        }
+    }
+
+    private void ToggleBalls(IEnumerable<Ball> balls)
+    {
+        foreach (var ball in balls)
+        {
+            if (ball.IsStopped)
+            {
+                ball.Start();
+            }
+            else
+            {
+                ball.Stop(); 
+            }
+        }
     }
 
     private bool DetermingPositionBalls()
