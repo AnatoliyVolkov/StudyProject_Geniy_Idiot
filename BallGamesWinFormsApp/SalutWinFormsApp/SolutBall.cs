@@ -27,9 +27,9 @@ public class SolutBall : MoveBall
     private Brush CreateRandomBrush()
     {
         Color randomColor = Color.FromArgb(
-            random.Next(50, 200),
-            random.Next(50, 200),
-            random.Next(100, 200)
+            random.Next(50, 225),
+            random.Next(50, 225),
+            random.Next(100, 225)
         );
         return new SolidBrush(randomColor);
     }

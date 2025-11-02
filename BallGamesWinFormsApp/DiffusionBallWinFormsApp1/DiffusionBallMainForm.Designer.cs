@@ -53,7 +53,7 @@
             leftRedLabel.BackColor = Color.Yellow;
             leftRedLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             leftRedLabel.ForeColor = Color.Red;
-            leftRedLabel.Location = new Point(12, 389);
+            leftRedLabel.Location = new Point(12, 166);
             leftRedLabel.Name = "leftRedLabel";
             leftRedLabel.Size = new Size(19, 21);
             leftRedLabel.TabIndex = 0;
@@ -66,7 +66,7 @@
             rightRedLabel.BackColor = Color.Yellow;
             rightRedLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             rightRedLabel.ForeColor = Color.Red;
-            rightRedLabel.Location = new Point(1604, 389);
+            rightRedLabel.Location = new Point(624, 166);
             rightRedLabel.Name = "rightRedLabel";
             rightRedLabel.Size = new Size(19, 21);
             rightRedLabel.TabIndex = 1;
@@ -79,7 +79,7 @@
             topRedLabel.BackColor = Color.Yellow;
             topRedLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             topRedLabel.ForeColor = Color.Red;
-            topRedLabel.Location = new Point(799, 9);
+            topRedLabel.Location = new Point(309, 9);
             topRedLabel.Name = "topRedLabel";
             topRedLabel.Size = new Size(19, 21);
             topRedLabel.TabIndex = 2;
@@ -92,7 +92,7 @@
             dawnRedLabel.BackColor = Color.Yellow;
             dawnRedLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             dawnRedLabel.ForeColor = Color.Red;
-            dawnRedLabel.Location = new Point(799, 803);
+            dawnRedLabel.Location = new Point(309, 356);
             dawnRedLabel.Name = "dawnRedLabel";
             dawnRedLabel.Size = new Size(19, 21);
             dawnRedLabel.TabIndex = 3;
@@ -105,7 +105,7 @@
             leftBlueLabel.AutoSize = true;
             leftBlueLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             leftBlueLabel.ForeColor = Color.Blue;
-            leftBlueLabel.Location = new Point(12, 357);
+            leftBlueLabel.Location = new Point(12, 134);
             leftBlueLabel.Name = "leftBlueLabel";
             leftBlueLabel.Size = new Size(19, 21);
             leftBlueLabel.TabIndex = 4;
@@ -117,7 +117,7 @@
             topBlueLabel.AutoSize = true;
             topBlueLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             topBlueLabel.ForeColor = Color.Blue;
-            topBlueLabel.Location = new Point(769, 9);
+            topBlueLabel.Location = new Point(279, 9);
             topBlueLabel.Name = "topBlueLabel";
             topBlueLabel.Size = new Size(19, 21);
             topBlueLabel.TabIndex = 5;
@@ -129,7 +129,7 @@
             rightBlueLabel.AutoSize = true;
             rightBlueLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             rightBlueLabel.ForeColor = Color.Blue;
-            rightBlueLabel.Location = new Point(1604, 357);
+            rightBlueLabel.Location = new Point(624, 134);
             rightBlueLabel.Name = "rightBlueLabel";
             rightBlueLabel.Size = new Size(19, 21);
             rightBlueLabel.TabIndex = 6;
@@ -141,7 +141,7 @@
             dawnBlueLabel.AutoSize = true;
             dawnBlueLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             dawnBlueLabel.ForeColor = Color.Blue;
-            dawnBlueLabel.Location = new Point(769, 803);
+            dawnBlueLabel.Location = new Point(279, 356);
             dawnBlueLabel.Name = "dawnBlueLabel";
             dawnBlueLabel.Size = new Size(19, 21);
             dawnBlueLabel.TabIndex = 7;
@@ -198,7 +198,7 @@
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
             label5.ForeColor = Color.Blue;
-            label5.Location = new Point(1420, 15);
+            label5.Location = new Point(440, 15);
             label5.Name = "label5";
             label5.Size = new Size(206, 15);
             label5.TabIndex = 12;
@@ -221,7 +221,7 @@
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
             label7.ForeColor = Color.FromArgb(192, 0, 0);
-            label7.Location = new Point(1420, 78);
+            label7.Location = new Point(440, 78);
             label7.Name = "label7";
             label7.Size = new Size(220, 15);
             label7.TabIndex = 14;
@@ -242,7 +242,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1654, 827);
+            ClientSize = new Size(674, 380);
             Controls.Add(countRedLableRight);
             Controls.Add(label7);
             Controls.Add(countBlueLableRight);
