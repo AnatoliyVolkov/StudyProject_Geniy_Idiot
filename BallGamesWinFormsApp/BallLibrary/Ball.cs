@@ -6,10 +6,10 @@ namespace BallLibrary
     public class Ball
     {
         protected Form form;
-        public int Vx { get; protected set; } = 3;
-        public int Vy { get; protected set; } = 4;
-        public int CenterX { get; protected set; } = 150;
-        public int CenterY { get; protected set; } = 150;
+        public float Vx { get; protected set; } = 3;
+        public float Vy { get; protected set; } = 4;
+        public float CenterX { get; protected set; } = 150;
+        public float CenterY { get; protected set; } = 150;
         public int Radius { get; protected set; } = 15;
         public bool IsStopped { get; protected set; } = false;
         public Brush Brush { get; protected set; } = Brushes.Green;
@@ -29,7 +29,7 @@ namespace BallLibrary
 
         public void Stop() { _timer.Stop(); IsStopped = true; }
 
-        public bool IsForm(int x, int y, int radius, Panel ballPanel)
+        public bool IsForm(float x, float y, int radius, Panel ballPanel)
         {
             if (
                x - radius >= ballPanel.Left &&
@@ -71,7 +71,7 @@ namespace BallLibrary
         protected void Draw(Brush brush)
         {
             var graphics = form.CreateGraphics();
-            var rectangle = new Rectangle(CenterX - Radius, CenterY - Radius, Radius * 2, Radius * 2);
+            var rectangle = new RectangleF(CenterX - Radius, CenterY - Radius, Radius * 2, Radius * 2);
             graphics.FillEllipse(brush, rectangle);
         }
 
