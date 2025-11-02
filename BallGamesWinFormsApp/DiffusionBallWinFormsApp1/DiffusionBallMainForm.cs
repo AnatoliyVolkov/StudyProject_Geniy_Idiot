@@ -42,9 +42,9 @@ public partial class DiffusionBallMainForm : Form
             ball.Start();
         }
         countRedLableLeft.Hide();
-        countRedLableRight.Hide();
+        countRedLabelRight.Hide();
         countBlueLabelLeft.Hide();
-        countBlueLableRight.Hide();
+        countBlueLabelRight.Hide();
         timer.Start();
     }
 
@@ -55,9 +55,9 @@ public partial class DiffusionBallMainForm : Form
         {
             StopDiffision();
             countRedLableLeft.Show();
-            countRedLableRight.Show();
+            countRedLabelRight.Show();
             countBlueLabelLeft.Show();
-            countBlueLableRight.Show();
+            countBlueLabelRight.Show();
         }
     }
 
@@ -146,7 +146,7 @@ public partial class DiffusionBallMainForm : Form
             if (redBalls[i].CenterX > this.ClientSize.Width / 2)
             {
                 redCount++;
-                countRedLableRight.Text = redCount.ToString();
+                countRedLabelRight.Text = redCount.ToString();
                 countRedLableLeft.Text = (redBalls.Count - redCount).ToString();
             }
         }
@@ -157,7 +157,7 @@ public partial class DiffusionBallMainForm : Form
             {
                 blueCount++;
                 countBlueLabelLeft.Text = blueCount.ToString();
-                countBlueLableRight.Text = (blueBalls.Count - blueCount).ToString();
+                countBlueLabelRight.Text = (blueBalls.Count - blueCount).ToString();
             }
         }
         var positionBall = (blueCount+redCount) * 100.0 / (redBalls.Count + blueBalls.Count);
