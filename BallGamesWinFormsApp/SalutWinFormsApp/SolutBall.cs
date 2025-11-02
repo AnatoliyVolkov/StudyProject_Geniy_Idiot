@@ -3,12 +3,13 @@
 public class SolutBall : MoveBall
 {
     private float G { get; set; } = 0.2f;
-
+    private Brush ballBrush;
     public SolutBall(Form form, int CentrX, int CentrY) : base(form) 
     {
         this.CenterX = CentrX;
         this.CenterY = CentrY;
         Vy = -Math.Abs(Vy);
+        ballBrush = CreateRandomBrush();
 
     }
 
@@ -20,15 +21,14 @@ public class SolutBall : MoveBall
 
     public override void Show()
     {
-        var brush = CreateRandomBrush();
-        Draw(brush);
+        Draw(ballBrush);
     }
 
     private Brush CreateRandomBrush()
     {
         Color randomColor = Color.FromArgb(
-            random.Next(100, 256),
-            random.Next(100, 256),
+            random.Next(50, 256),
+            random.Next(50, 256),
             random.Next(100, 256)
         );
         return new SolidBrush(randomColor);
