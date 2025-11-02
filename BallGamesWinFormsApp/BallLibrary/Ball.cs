@@ -68,7 +68,7 @@ namespace BallLibrary
             Draw(brush);
         }
 
-        protected void Draw(Brush brush)
+        public void Draw(Brush brush)
         {
             var graphics = form.CreateGraphics();
             var rectangle = new RectangleF(CenterX - Radius, CenterY - Radius, Radius * 2, Radius * 2);
