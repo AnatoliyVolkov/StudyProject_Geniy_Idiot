@@ -1,6 +1,3 @@
-using System.Reflection.Metadata;
-using System.Windows.Forms;
-
 namespace BallLibrary;
 
 public partial class BallCathMainForm : Form
