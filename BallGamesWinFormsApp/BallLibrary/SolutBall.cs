@@ -1,10 +1,10 @@
-﻿namespace SalutWinFormsApp;
+﻿namespace BallLibrary;
 
 public class SolutBall : MoveBall
 {
     private float G { get; set; } = 0.2f;
     private Brush ballBrush;
-    public SolutBall(Form form, int CentrX, int CentrY) : base(form) 
+    public SolutBall(Form form, float CentrX, float CentrY) : base(form) 
     {
         this.CenterX = CentrX;
         this.CenterY = CentrY;
@@ -33,4 +33,5 @@ public class SolutBall : MoveBall
         );
         return new SolidBrush(randomColor);
     }
+
 }

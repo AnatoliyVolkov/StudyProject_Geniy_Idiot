@@ -37,6 +37,7 @@
             ClientSize = new Size(800, 450);
             Name = "SolutMainForm";
             Text = "Solut";
+            Load += SolutMainForm_Load;
             MouseDown += SolutMainForm_MouseDown;
             ResumeLayout(false);
         }
