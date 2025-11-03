@@ -55,7 +55,7 @@
             leftRedLabel.BackColor = Color.Yellow;
             leftRedLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             leftRedLabel.ForeColor = Color.Red;
-            leftRedLabel.Location = new Point(12, 184);
+            leftRedLabel.Location = new Point(12, 256);
             leftRedLabel.Name = "leftRedLabel";
             leftRedLabel.Size = new Size(19, 21);
             leftRedLabel.TabIndex = 0;
@@ -68,7 +68,7 @@
             rightRedLabel.BackColor = Color.Yellow;
             rightRedLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             rightRedLabel.ForeColor = Color.Red;
-            rightRedLabel.Location = new Point(693, 184);
+            rightRedLabel.Location = new Point(734, 256);
             rightRedLabel.Name = "rightRedLabel";
             rightRedLabel.Size = new Size(19, 21);
             rightRedLabel.TabIndex = 1;
@@ -81,7 +81,7 @@
             topRedLabel.BackColor = Color.Yellow;
             topRedLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             topRedLabel.ForeColor = Color.Red;
-            topRedLabel.Location = new Point(343, 9);
+            topRedLabel.Location = new Point(364, 9);
             topRedLabel.Name = "topRedLabel";
             topRedLabel.Size = new Size(19, 21);
             topRedLabel.TabIndex = 2;
@@ -94,7 +94,7 @@
             dawnRedLabel.BackColor = Color.Yellow;
             dawnRedLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             dawnRedLabel.ForeColor = Color.Red;
-            dawnRedLabel.Location = new Point(343, 392);
+            dawnRedLabel.Location = new Point(364, 537);
             dawnRedLabel.Name = "dawnRedLabel";
             dawnRedLabel.Size = new Size(19, 21);
             dawnRedLabel.TabIndex = 3;
@@ -107,7 +107,7 @@
             leftBlueLabel.AutoSize = true;
             leftBlueLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             leftBlueLabel.ForeColor = Color.Blue;
-            leftBlueLabel.Location = new Point(12, 152);
+            leftBlueLabel.Location = new Point(12, 224);
             leftBlueLabel.Name = "leftBlueLabel";
             leftBlueLabel.Size = new Size(19, 21);
             leftBlueLabel.TabIndex = 4;
@@ -119,7 +119,7 @@
             topBlueLabel.AutoSize = true;
             topBlueLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             topBlueLabel.ForeColor = Color.Blue;
-            topBlueLabel.Location = new Point(313, 9);
+            topBlueLabel.Location = new Point(334, 9);
             topBlueLabel.Name = "topBlueLabel";
             topBlueLabel.Size = new Size(19, 21);
             topBlueLabel.TabIndex = 5;
@@ -131,7 +131,7 @@
             rightBlueLabel.AutoSize = true;
             rightBlueLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             rightBlueLabel.ForeColor = Color.Blue;
-            rightBlueLabel.Location = new Point(693, 152);
+            rightBlueLabel.Location = new Point(734, 224);
             rightBlueLabel.Name = "rightBlueLabel";
             rightBlueLabel.Size = new Size(19, 21);
             rightBlueLabel.TabIndex = 6;
@@ -143,7 +143,7 @@
             dawnBlueLabel.AutoSize = true;
             dawnBlueLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             dawnBlueLabel.ForeColor = Color.Blue;
-            dawnBlueLabel.Location = new Point(313, 392);
+            dawnBlueLabel.Location = new Point(334, 537);
             dawnBlueLabel.Name = "dawnBlueLabel";
             dawnBlueLabel.Size = new Size(19, 21);
             dawnBlueLabel.TabIndex = 7;
@@ -200,7 +200,7 @@
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
             label5.ForeColor = Color.Blue;
-            label5.Location = new Point(509, 15);
+            label5.Location = new Point(550, 15);
             label5.Name = "label5";
             label5.Size = new Size(206, 15);
             label5.TabIndex = 12;
@@ -223,7 +223,7 @@
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
             label7.ForeColor = Color.FromArgb(192, 0, 0);
-            label7.Location = new Point(509, 78);
+            label7.Location = new Point(550, 78);
             label7.Name = "label7";
             label7.Size = new Size(220, 15);
             label7.TabIndex = 14;
@@ -247,7 +247,7 @@
             countBlueLabelRight.AutoSize = true;
             countBlueLabelRight.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 204);
             countBlueLabelRight.ForeColor = Color.Blue;
-            countBlueLabelRight.Location = new Point(611, 53);
+            countBlueLabelRight.Location = new Point(652, 53);
             countBlueLabelRight.Name = "countBlueLabelRight";
             countBlueLabelRight.Size = new Size(15, 17);
             countBlueLabelRight.TabIndex = 16;
@@ -259,7 +259,7 @@
             countRedLabelRight.AutoSize = true;
             countRedLabelRight.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point, 204);
             countRedLabelRight.ForeColor = Color.Red;
-            countRedLabelRight.Location = new Point(611, 103);
+            countRedLabelRight.Location = new Point(652, 103);
             countRedLabelRight.Name = "countRedLabelRight";
             countRedLabelRight.Size = new Size(15, 17);
             countRedLabelRight.TabIndex = 17;
@@ -269,7 +269,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(743, 416);
+            ClientSize = new Size(784, 561);
             Controls.Add(countRedLabelRight);
             Controls.Add(countBlueLabelRight);
             Controls.Add(countRedLableRight);
