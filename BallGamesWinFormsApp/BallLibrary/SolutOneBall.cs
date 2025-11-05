@@ -1,4 +1,4 @@
-﻿namespace SalutWinFormsApp;
+﻿namespace BallLibrary;
 
 public class SolutOneBall : MoveBall
 {

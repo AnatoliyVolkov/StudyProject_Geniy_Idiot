@@ -1,83 +1,82 @@
 ﻿using Timer = System.Windows.Forms.Timer;
 
 
-namespace BallLibrary
+namespace BallLibrary;
+
+public class Ball
 {
-    public class Ball
+    protected Form form;
+    public float Vx { get; protected set; } = 3;
+    public float Vy { get; protected set; } = 4;
+    public float CenterX { get; protected set; } = 150;
+    public float CenterY { get; protected set; } = 150;
+    public int Radius { get; protected set; } = 15;
+    public bool IsStopped { get; protected set; } = false;
+    public Brush Brush { get; protected set; } = Brushes.Green;
+
+
+    private Timer _timer;
+
+    public Ball(Form form)
     {
-        protected Form form;
-        public float Vx { get; protected set; } = 3;
-        public float Vy { get; protected set; } = 4;
-        public float CenterX { get; protected set; } = 150;
-        public float CenterY { get; protected set; } = 150;
-        public int Radius { get; protected set; } = 15;
-        public bool IsStopped { get; protected set; } = false;
-        public Brush Brush { get; protected set; } = Brushes.Green;
+        this.form = form;
+        _timer = new Timer();
+        _timer.Interval = 20;
+        _timer.Tick += _timer_Tick;
+    }
 
+    public void Start() { _timer.Start(); IsStopped = false; }
 
-        private Timer _timer;
+    public void Stop() { _timer.Stop(); IsStopped = true; }
 
-        public Ball(Form form)
+    public bool IsForm(float x, float y, int radius, Panel ballPanel)
+    {
+        if (
+           x - radius >= ballPanel.Left &&
+           x + radius <= ballPanel.Right &&
+           y - radius >= ballPanel.Top &&
+           y + radius <= ballPanel.Bottom
+           )
         {
-            this.form = form;
-            _timer = new Timer();
-            _timer.Interval = 20;
-            _timer.Tick += _timer_Tick;
+            return true;
         }
+        return false;
+    }
 
-        public void Start() { _timer.Start(); IsStopped = false; }
+    public virtual void Show()
+    {
+        Draw(Brush);
+    }
 
-        public void Stop() { _timer.Stop(); IsStopped = true; }
+    public void Move()
+    {
+        Clear();
+        Go();
+        Show();
+    }
 
-        public bool IsForm(float x, float y, int radius, Panel ballPanel)
-        {
-            if (
-               x - radius >= ballPanel.Left &&
-               x + radius <= ballPanel.Right &&
-               y - radius >= ballPanel.Top &&
-               y + radius <= ballPanel.Bottom
-               )
-            {
-                return true;
-            }
-            return false;
-        }
+    protected virtual void Go()
+    {
+        CenterX += Vx;
+        CenterY += Vy;
+    }
 
-        public virtual void Show()
-        {
-            var brush = Brushes.Green;
-            Draw(brush);
-        }
+    protected void Clear()
+    {
+        var brush = SystemBrushes.Control;
+        Draw(brush);
+    }
 
-        public void Move()
-        {
-            Clear();
-            Go();
-            Show();
-        }
+    public void Draw(Brush brush)
+    {
+        var drawBrush = brush ?? Brushes.Green;
+        var graphics = form.CreateGraphics();
+        var rectangle = new RectangleF(CenterX - Radius, CenterY - Radius, Radius * 2, Radius * 2);
+        graphics.FillEllipse(brush, rectangle);
+    }
 
-        protected virtual void Go()
-        {
-            CenterX += Vx;
-            CenterY += Vy;
-        }
-
-        private void Clear()
-        {
-            var brush = SystemBrushes.Control;
-            Draw(brush);
-        }
-
-        public void Draw(Brush brush)
-        {
-            var graphics = form.CreateGraphics();
-            var rectangle = new RectangleF(CenterX - Radius, CenterY - Radius, Radius * 2, Radius * 2);
-            graphics.FillEllipse(brush, rectangle);
-        }
-
-        private void _timer_Tick(object? sender, EventArgs e)
-        {
-            Move();
-        }
+    private void _timer_Tick(object? sender, EventArgs e)
+    {
+        Move();
     }
 }
