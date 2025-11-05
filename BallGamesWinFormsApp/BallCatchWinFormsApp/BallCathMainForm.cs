@@ -1,13 +1,10 @@
-using System.Reflection.Metadata;
-using System.Windows.Forms;
-
 namespace BallLibrary;
 
-public partial class MainForm : Form
+public partial class BallCathMainForm : Form
 {
     int count = 0;
-    List<MoveBall> MoveBalls;
-    public MainForm()
+    List<RandomSizeAndPointBall> MoveBalls;
+    public BallCathMainForm()
     {
         InitializeComponent();
         this.DoubleBuffered = true;
@@ -23,11 +20,11 @@ public partial class MainForm : Form
         this.Update();
         count = 0;
         cathBallToolStripTextBox.Text = "0";
-        MoveBalls = new List<MoveBall>();
+        MoveBalls = new List<RandomSizeAndPointBall>();
         int i = 0;
         while (i < 20)
         {
-            var maveRandomBall = new MoveBall(this);
+            var maveRandomBall = new RandomSizeAndPointBall(this);
             MoveBalls.Add(maveRandomBall);
             maveRandomBall.Start();
             i++;
@@ -40,11 +37,11 @@ public partial class MainForm : Form
         {
             if (MoveBalls[i].IsStopped)
                 continue;
-            double distance = Math.Sqrt(Math.Pow(e.X - MoveBalls[i].X, 2) +
-                            Math.Pow(e.Y - MoveBalls[i].Y, 2));
-            if (MoveBalls[i].IsForm(MoveBalls[i].X, MoveBalls[i].Y, MoveBalls[i].size, this))
+            double distance = Math.Sqrt(Math.Pow(e.X - MoveBalls[i].CenterX, 2) +
+                            Math.Pow(e.Y - MoveBalls[i].CenterY, 2));
+            if (MoveBalls[i].IsForm(MoveBalls[i].CenterX, MoveBalls[i].CenterY, MoveBalls[i].Radius, ballPanel))
             {
-                if (distance <= MoveBalls[i].size / 2)
+                if (distance <= MoveBalls[i].Radius)
                 {
                     count++;
                     MoveBalls[i].Stop();

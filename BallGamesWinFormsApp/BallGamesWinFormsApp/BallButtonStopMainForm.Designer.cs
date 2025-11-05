@@ -1,6 +1,6 @@
 ﻿namespace BallGamesWinFormsApp
 {
-    partial class MainForm
+    partial class BallButtonStopMainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -33,6 +33,7 @@
             запуститьШарикиToolStripMenuItem = new ToolStripMenuItem();
             toolStripTextBox1 = new ToolStripTextBox();
             toolStripTextBox = new ToolStripTextBox();
+            ballPanel = new Panel();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -81,12 +82,22 @@
             toolStripTextBox.Text = "0";
             toolStripTextBox.TextBoxTextAlign = HorizontalAlignment.Center;
             // 
+            // ballPanel
+            // 
+            ballPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            ballPanel.Location = new Point(0, 43);
+            ballPanel.Name = "ballPanel";
+            ballPanel.Size = new Size(841, 528);
+            ballPanel.TabIndex = 6;
+            ballPanel.Visible = false;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             ClientSize = new Size(841, 571);
+            Controls.Add(ballPanel);
             Controls.Add(menuStrip1);
             Name = "MainForm";
             Text = "Игра Шарики";
@@ -101,5 +112,6 @@
         private ToolStripMenuItem запуститьШарикиToolStripMenuItem;
         private ToolStripTextBox toolStripTextBox1;
         private ToolStripTextBox toolStripTextBox;
+        private Panel ballPanel;
     }
 }

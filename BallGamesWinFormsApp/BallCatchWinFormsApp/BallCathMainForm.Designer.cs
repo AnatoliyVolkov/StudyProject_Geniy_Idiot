@@ -1,6 +1,6 @@
 ﻿namespace BallLibrary
 {
-    partial class MainForm
+    partial class BallCathMainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -32,6 +32,7 @@
             запуститьШарикиToolStripMenuItem = new ToolStripMenuItem();
             количествоПойманныхШариковToolStripMenuItem = new ToolStripMenuItem();
             cathBallToolStripTextBox = new ToolStripTextBox();
+            ballPanel = new Panel();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -62,11 +63,22 @@
             cathBallToolStripTextBox.Name = "cathBallToolStripTextBox";
             cathBallToolStripTextBox.Size = new Size(100, 23);
             // 
+            // ballPanel
+            // 
+            ballPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            ballPanel.AutoSize = true;
+            ballPanel.Location = new Point(0, 30);
+            ballPanel.Name = "ballPanel";
+            ballPanel.Size = new Size(800, 417);
+            ballPanel.TabIndex = 1;
+            ballPanel.Visible = false;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(ballPanel);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
@@ -84,5 +96,6 @@
         private ToolStripMenuItem запуститьШарикиToolStripMenuItem;
         private ToolStripMenuItem количествоПойманныхШариковToolStripMenuItem;
         private ToolStripTextBox cathBallToolStripTextBox;
+        private Panel ballPanel;
     }
 }
