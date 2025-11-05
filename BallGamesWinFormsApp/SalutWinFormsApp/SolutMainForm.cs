@@ -1,4 +1,5 @@
 using BallLibrary;
+using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
 namespace SalutWinFormsApp;
@@ -18,20 +19,17 @@ public partial class SolutMainForm : Form
 
     private void SolutMainForm_MouseDown(object sender, MouseEventArgs e)
     {
-        StartSolut(e.X, e.Y);
+        StartBallSolut(e.X);
     }
 
     private void SolutMainForm_Load(object sender, EventArgs e)
     {
-        currentBall = new SolutOneBall(this);
-        currentBall.Start();
-        timer.Tick += CheckBallPosition;
-        timer.Start();
+        StartBallSolut(random.Next (0, this.ClientRectangle.Right));
     }
 
     private void CheckBallPosition(object sender, EventArgs e)
     {
-        if (random.Next(0, 100) < 7 || currentBall.CenterY == -35)
+        if (currentBall.CenterY <= 155) 
         {
             StartSolut(currentBall.CenterX, currentBall.CenterY);
             currentBall.HideBall();
@@ -40,7 +38,7 @@ public partial class SolutMainForm : Form
 
     private void StartSolut(float x, float y)
     {
-        var count = random.Next(3, 16);
+        var count = random.Next(3, 7);
 
         for (int i = 0 ; i < count ; i++)
         {
@@ -48,6 +46,14 @@ public partial class SolutMainForm : Form
             salut.Start();
             timer.Stop();
         }
+    }
+
+    private void StartBallSolut(float x)
+    {
+        currentBall = new SolutOneBall(this, x);
+        currentBall.Start();
+        timer.Tick += CheckBallPosition;
+        timer.Start();
     }
 
 

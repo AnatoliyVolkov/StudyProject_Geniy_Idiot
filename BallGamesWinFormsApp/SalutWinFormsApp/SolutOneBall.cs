@@ -2,11 +2,12 @@
 
 public class SolutOneBall : MoveBall
 {
-    public SolutOneBall(Form form) : base(form)
+    public SolutOneBall(Form form,float x) : base(form)
     {
         Vx = 0;
         Vy = -5;
-        CenterY = form.ClientRectangle.Bottom + 55;
+        CenterX = x;
+        CenterY = form.ClientRectangle.Bottom + Radius;
     }
 
     public void HideBall()
