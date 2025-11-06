@@ -11,6 +11,7 @@ public class FruitBall : SolutOneBall
     {
         Vx = random.Next(-5, 6);
         Vy = random.Next(-15, -8);
+        Radius = random.Next(10, 45);
         ballBrush = Brushes.Orange;
     }
 
