@@ -8,13 +8,17 @@ public partial class FrutNinjaMainForm : Form
     private List<FruitBall> balls = new List<FruitBall>();
     Timer timer = new Timer();
     private Random random = new Random();
+    int count = 0;
 
     public FrutNinjaMainForm()
     {
         InitializeComponent();
-        SetStyle(ControlStyles.AllPaintingInWmPaint |
-        ControlStyles.UserPaint |
-        ControlStyles.DoubleBuffer, true);
+        this.SetStyle(ControlStyles.AllPaintingInWmPaint |
+                        ControlStyles.UserPaint |
+                        ControlStyles.DoubleBuffer |
+                        ControlStyles.OptimizedDoubleBuffer, true);
+
+        this.BackgroundImageLayout = ImageLayout.Stretch;
         timer.Tick += SpawnTimer_Tick;
     }
 
@@ -47,8 +51,19 @@ public partial class FrutNinjaMainForm : Form
 
     private void StartBall()
     {
-        var x = random.Next(50, this.ClientRectangle.Right - 50);
-        var ball = new FruitBall(this, x);
+        var direction = random.Next(0, 2) == 0 ? 1f : -1f;
+
+        float x;
+        if (direction > 0)
+        {
+            x = -50;
+        }
+        else
+        {
+            x = this.ClientRectangle.Right + 50;
+        }
+
+        var ball = new FruitBall(this, x, direction);
 
         var ballType = random.Next(0, 100);
         if (ballType < 15)
@@ -71,6 +86,8 @@ public partial class FrutNinjaMainForm : Form
         {
             if (!ball.IsHidden && IsMouseOverBall(mouseX, mouseY, ball))
             {
+                count++;
+                countLabel.Text = count.ToString();
                 HandleBallTouch(ball);
             }
         }
@@ -88,6 +105,7 @@ public partial class FrutNinjaMainForm : Form
     {
         if (ball.IsBomb)
         {
+            StopAllBalls();
             MessageBox.Show($"Игра окончена!");
             Application.Exit();
             return;
@@ -95,6 +113,16 @@ public partial class FrutNinjaMainForm : Form
         ball.HideBall();
         balls.Remove(ball);
     }
+
+    private void StopAllBalls()
+    {
+        foreach (var ball in balls)
+        {
+            ball.Stop();
+        }
+        timer.Stop();
+    }
+
 }
 
 
