@@ -3,7 +3,7 @@
 public class DiffusionBall : BillyardBall
 {
 
-    private Brush ballBrush;
+    protected Brush ballBrush;
 
     public DiffusionBall(Form form, bool isRed) : base(form)
     {
