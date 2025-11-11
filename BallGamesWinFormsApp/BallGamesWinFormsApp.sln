@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalutWinFormsApp", "SalutWi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrutNinjaWinFormsApp", "FrutNinjaWinFormsApp\FrutNinjaWinFormsApp.csproj", "{28249251-ECC0-473C-8A1C-98EDEB5E4A31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngryBirdWinFormsApp", "AmgtyBirdWinFormsApp\AngryBirdWinFormsApp.csproj", "{48980F8B-1AA3-4189-947D-5A6A25E9F640}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngryBirdWinFormApp", "AngryBirdWinFormApp\AngryBirdWinFormApp.csproj", "{E6131F9E-F608-47E3-A24C-B57221495759}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{28249251-ECC0-473C-8A1C-98EDEB5E4A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28249251-ECC0-473C-8A1C-98EDEB5E4A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28249251-ECC0-473C-8A1C-98EDEB5E4A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48980F8B-1AA3-4189-947D-5A6A25E9F640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48980F8B-1AA3-4189-947D-5A6A25E9F640}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48980F8B-1AA3-4189-947D-5A6A25E9F640}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48980F8B-1AA3-4189-947D-5A6A25E9F640}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6131F9E-F608-47E3-A24C-B57221495759}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6131F9E-F608-47E3-A24C-B57221495759}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6131F9E-F608-47E3-A24C-B57221495759}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6131F9E-F608-47E3-A24C-B57221495759}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -24,6 +24,11 @@ public class Ball
         _timer.Interval = 20;
         _timer.Tick += _timer_Tick;
     }
+    public void SetVelocity(float vx, float vy)
+    {
+        Vx = vx;
+        Vy = vy;
+    }
 
     public void Start() { _timer.Start(); IsStopped = false; }
 
