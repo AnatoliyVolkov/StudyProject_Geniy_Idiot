@@ -30,19 +30,6 @@ public class GameManager
         IsLevelComplete = false;
     }
 
-    public void ResetGame()
-    {
-        Score = 0;
-        Level = 1;
-        PigsCount = 1;
-        IsLevelComplete = false;
-    }
-
-    public bool AllPigsDestroyed()
-    {
-        return Pigs.Count == 0;
-    }
-
     public void InitializePigs(int formWidth, int groundLevel, int pigRadius)
     {
         Pigs.Clear();

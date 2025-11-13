@@ -11,15 +11,12 @@ public class Bird
     public bool IsMoving => Math.Abs(Vx) > 0.1f || Math.Abs(Vy) > 0.1f;
     public bool IsAtStartPosition { get; private set; } = true;
 
-    private float startX, startY;
 
     public Bird(float x, float y, int radius)
     {
         CenterX = x;
         CenterY = y;
         Radius = radius;
-        startX = x;
-        startY = y;
     }
 
     public void Move()
@@ -48,8 +45,6 @@ public class Bird
         Vx = 0;
         Vy = 0;
         IsAtStartPosition = true;
-        startX = x;
-        startY = y;
     }
 
     public void Draw(Graphics g, Brush brush)

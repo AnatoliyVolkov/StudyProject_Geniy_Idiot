@@ -12,13 +12,13 @@ namespace AngryBerdWinFormsApp
         private const int GroundLevel = 400;
         private const float Gravity = 0.5f;
         private const float Elasticity = 0.7f;
-        private Random random;
+        private const float MaxBallSpeed = 5f;
 
         public AngryBallForm()
         {
             InitializeComponent();
             this.Size = new Size(800, 600);
-            random = new Random();
+            Random random = new Random();
 
             gameManager = new GameManager();
 
@@ -43,68 +43,61 @@ namespace AngryBerdWinFormsApp
             gameTimer.Start();
         }
 
-        private void GameTimer_Tick(object sender, EventArgs e)
+       private void GameTimer_Tick(object sender, EventArgs e)
+{
+    if (!bird.IsAtStartPosition && bird.IsMoving)
+    {
+        bird.ApplyGravity(Gravity);
+        bird.Move();
+
+        HandlePigCollisions();
+        HandleBoundaryCollisions();
+
+        if (ShouldResetBird())
         {
-            if (!bird.IsAtStartPosition && bird.IsMoving)
+            bird.ResetToStart(50, GroundLevel - 20);
+            if (gameManager.IsLevelComplete)
             {
-                bird.ApplyGravity(Gravity);
-                bird.Move();
-
-                foreach (var pig in gameManager.Pigs.ToList())
-                {
-                    if (CheckCollision(bird, pig))
-                    {
-                        gameManager.RemovePig(pig);
-                        break; 
-                    }
-                }
-
-                bool isOutOfBounds = bird.CenterY < -bird.Radius || 
-                           bird.CenterX > ClientSize.Width + bird.Radius;
-
-                bool isStoppedOnGround = bird.CenterY >= GroundLevel - bird.Radius - 2 &&
-                                       Math.Abs(bird.Vx) < 0.3f &&
-                                       Math.Abs(bird.Vy) < 0.3f;
-
-                if (isOutOfBounds || isStoppedOnGround)
-                {
-                    bird.ResetToStart(50, GroundLevel - 20);
-
-                    if (gameManager.IsLevelComplete)
-                    {
-                        gameManager.NextLevel();
-                        gameManager.InitializePigs(ClientSize.Width, GroundLevel, 15);
-                    }
-                }
-
-                if (bird.CenterY >= GroundLevel - bird.Radius)
-                {
-                    bird.CenterY = GroundLevel - bird.Radius;
-                    bird.Vy = -bird.Vy * Elasticity;
-                    bird.Vx *= 0.9f;
-                }
-
-                if (bird.CenterX <= bird.Radius)
-                {
-                    bird.CenterX = bird.Radius;
-                    bird.Vx = -bird.Vx * Elasticity;
-                }
-                //если раскоментировать то будет билиардбёрдс
-                //if (bird.CenterX >= ClientSize.Width - bird.Radius)
-                //{
-                //    bird.CenterX = ClientSize.Width - bird.Radius;
-                //    bird.Vx = -bird.Vx * Elasticity;
-                //}
-
-                //if (bird.CenterY <= bird.Radius)
-                //{
-                //    bird.CenterY = bird.Radius;
-                //    bird.Vy = -bird.Vy * Elasticity;
-                //}
+                gameManager.NextLevel();
+                gameManager.InitializePigs(ClientSize.Width, GroundLevel, 15);
             }
-
-            Invalidate();
         }
+    }
+    Invalidate();
+}
+
+private void HandlePigCollisions()
+{
+    foreach (var pig in gameManager.Pigs.ToList())
+    {
+        if (CheckCollision(bird, pig))
+        {
+            gameManager.RemovePig(pig);
+            break;
+        }
+    }
+}
+
+private void HandleBoundaryCollisions()
+{
+    if (bird.CenterY >= GroundLevel - bird.Radius)
+    {
+        bird.CenterY = GroundLevel - bird.Radius;
+        bird.Vy = -bird.Vy * Elasticity;
+        bird.Vx *= 0.9f;
+    } 
+    
+}
+
+private bool ShouldResetBird()
+{
+    bool isOutOfBounds = bird.CenterY < -bird.Radius ||
+                         bird.CenterX > ClientSize.Width + bird.Radius;
+    bool isStoppedOnGround = bird.CenterY >= GroundLevel - bird.Radius - 2 &&
+                             Math.Abs(bird.Vx) < 0.3f &&
+                             Math.Abs(bird.Vy) < 0.3f;
+    return isOutOfBounds || isStoppedOnGround;
+}
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -144,9 +137,8 @@ namespace AngryBerdWinFormsApp
             float dx = targetPoint.X - birdCenter.X;
             float dy = targetPoint.Y - birdCenter.Y;
 
-            float maxSpeed = 15f;
             float distance = (float)Math.Min(Math.Sqrt(dx * dx + dy * dy), 100);
-            float scale = distance / 100f * maxSpeed;
+            float scale = distance / 100f * MaxBallSpeed;
 
             if (distance > 0)
             {
