@@ -38,8 +38,8 @@ public class GameManager
         for (int i = 0 ; i < PigsCount ; i++)
         {
             var pig = new Pig(0, 0, pigRadius);
-            int attempts = 0;
-            bool positionFound = false;
+            var attempts = 0;
+            var positionFound = false;
 
             while (attempts < 50 && !positionFound)
             {
@@ -48,9 +48,9 @@ public class GameManager
 
                 foreach (var existingPig in Pigs)
                 {
-                    float dx = pig.CenterX - existingPig.CenterX;
-                    float dy = pig.CenterY - existingPig.CenterY;
-                    float distance = (float)Math.Sqrt(dx * dx + dy * dy);
+                    var dx = pig.CenterX - existingPig.CenterX;
+                    var dy = pig.CenterY - existingPig.CenterY;
+                    var distance = (float)Math.Sqrt(dx * dx + dy * dy);
 
                     if (distance < (pig.Radius + existingPig.Radius + 30)) 
                     {

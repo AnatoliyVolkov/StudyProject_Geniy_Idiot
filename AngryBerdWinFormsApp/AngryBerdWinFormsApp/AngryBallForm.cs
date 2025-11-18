@@ -91,9 +91,9 @@ private void HandleBoundaryCollisions()
 
 private bool ShouldResetBird()
 {
-    bool isOutOfBounds = bird.CenterY < -bird.Radius ||
+            var isOutOfBounds = bird.CenterY < -bird.Radius ||
                          bird.CenterX > ClientSize.Width + bird.Radius;
-    bool isStoppedOnGround = bird.CenterY >= GroundLevel - bird.Radius - 2 &&
+            var isStoppedOnGround = bird.CenterY >= GroundLevel - bird.Radius - 2 &&
                              Math.Abs(bird.Vx) < 0.3f &&
                              Math.Abs(bird.Vy) < 0.3f;
     return isOutOfBounds || isStoppedOnGround;
@@ -113,7 +113,7 @@ private bool ShouldResetBird()
 
             }
 
-            string gameInfo = $"Уровень: {gameManager.Level}\n" +
+            var gameInfo = $"Уровень: {gameManager.Level}\n" +
                             $"Очки: {gameManager.Score}\n" +
                             $"Свинки: {gameManager.Pigs.Count}/{gameManager.PigsCount}";
 
@@ -134,11 +134,11 @@ private bool ShouldResetBird()
         {
             PointF birdCenter = new PointF(bird.CenterX, bird.CenterY);
 
-            float dx = targetPoint.X - birdCenter.X;
-            float dy = targetPoint.Y - birdCenter.Y;
+            var dx = targetPoint.X - birdCenter.X;
+            var dy = targetPoint.Y - birdCenter.Y;
 
-            float distance = (float)Math.Min(Math.Sqrt(dx * dx + dy * dy), 100);
-            float scale = distance / 100f * MaxBallSpeed;
+            var distance = (float)Math.Min(Math.Sqrt(dx * dx + dy * dy), 100);
+            var scale = distance / 100f * MaxBallSpeed;
 
             if (distance > 0)
             {
@@ -148,9 +148,9 @@ private bool ShouldResetBird()
 
         private bool CheckCollision(Bird b, Pig p)
         {
-            float dx = b.CenterX - p.CenterX;
-            float dy = b.CenterY - p.CenterY;
-            float distance = (float)Math.Sqrt(dx * dx + dy * dy);
+            var dx = b.CenterX - p.CenterX;
+            var dy = b.CenterY - p.CenterY;
+            var distance = (float)Math.Sqrt(dx * dx + dy * dy);
 
             return distance < (b.Radius + p.Radius);
         }

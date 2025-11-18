@@ -17,10 +17,10 @@ public class Pig
 
     public void Respawn(int formWidth, int groundLevel)
     {
-        int minX = 150; 
-        int maxX = formWidth - 150; 
-        int minY = 100; 
-        int maxY = groundLevel - 30;
+        var minX = 150;
+        var maxX = formWidth - 150;
+        var minY = 100;
+        var maxY = groundLevel - 30;
 
         CenterX = random.Next(minX, maxX);
         CenterY = random.Next(minY, maxY);
