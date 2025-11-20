@@ -165,10 +165,7 @@
             // 
             // gameToolStripMenuItem
             // 
-            gameToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] {
-            newGameToolStripMenuItem,
-            rulesToolStripMenuItem,
-            exitToolStripMenuItem});
+            gameToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { newGameToolStripMenuItem, rulesToolStripMenuItem, exitToolStripMenuItem });
             gameToolStripMenuItem.Name = "gameToolStripMenuItem";
             gameToolStripMenuItem.Size = new Size(46, 20);
             gameToolStripMenuItem.Text = "Игра";
@@ -176,21 +173,21 @@
             // newGameToolStripMenuItem
             // 
             newGameToolStripMenuItem.Name = "newGameToolStripMenuItem";
-            newGameToolStripMenuItem.Size = new Size(180, 22);
+            newGameToolStripMenuItem.Size = new Size(161, 22);
             newGameToolStripMenuItem.Text = "Начать сначала";
             newGameToolStripMenuItem.Click += newGameToolStripMenuItem_Click;
             // 
             // rulesToolStripMenuItem
             // 
             rulesToolStripMenuItem.Name = "rulesToolStripMenuItem";
-            rulesToolStripMenuItem.Size = new Size(180, 22);
+            rulesToolStripMenuItem.Size = new Size(161, 22);
             rulesToolStripMenuItem.Text = "Правила";
             rulesToolStripMenuItem.Click += rulesToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(180, 22);
+            exitToolStripMenuItem.Size = new Size(161, 22);
             exitToolStripMenuItem.Text = "Выход";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 

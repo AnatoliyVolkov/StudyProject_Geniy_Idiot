@@ -8,7 +8,15 @@ public partial class MainForm : Form
     private const int startY = 24;
     private const int totalPositions = 9;
     private bool gameWon = false;
-
+    const int winFormWidth = 400;
+    const int winFormHeight = 450;
+    const int imageSize = 200;
+    const int imageTop = 0;
+    const int labelHeight = 80;
+    const int labelTop = 250;
+    const int buttonWidth = 120;
+    const int buttonHeight = 35;
+    const int buttonTop = 340;
     private PictureBox[] allFrogs;
     private readonly List<PictureBox> leftFrogs = new();
     private readonly List<PictureBox> rightFrogs = new();
@@ -50,24 +58,15 @@ public partial class MainForm : Form
         var distance = Math.Abs(clickedX - emptyX) / step;
         if (distance > 2)
         {
-            MessageBox.Show("Вам нужно идти на соседнюю клетку или через одну лягушку.");
+            MessageBox.Show("Вам нужно прыгать на соседнюю клетку или через одну лягушку.");
             return;
         }
 
-        if (distance == 2)
-        {
-            int middleX = (clickedX + emptyX) / 2;
-            bool hasFrogBetween = Controls.OfType<PictureBox>()
-                .Any(pb => pb != clickedPicture &&
-                          pb != emptyPictureBox &&
-                          pb.Location.X == middleX);
-
-            if (!hasFrogBetween)
-            {
-                MessageBox.Show("Прыгать можно только через лягушку!");
-                return;
-            }
-        }
+        int middleX = (clickedX + emptyX) / 2;
+        bool hasFrogBetween = Controls.OfType<PictureBox>()
+            .Any(pb => pb != clickedPicture &&
+                      pb != emptyPictureBox &&
+                      pb.Location.X == middleX);
 
         moveCount++;
         UpdateMoveCount();
@@ -128,7 +127,7 @@ public partial class MainForm : Form
 
             var message = $"Поздравляем! Вы победили!\n\nСделано ходов: {moveCount}\n\n{performance}";
 
-            ShowWinMessage(message);
+            ShowWinMessage(message, moveCount == optimalMoves);
         }
     }
 
@@ -138,18 +137,8 @@ public partial class MainForm : Form
             .FirstOrDefault(pb => pb.Location.X == xPosition && pb != emptyPictureBox);
     }
 
-    private void ShowWinMessage(string message)
+    private void ShowWinMessage(string message, bool isOptimal)
     {
-        const int winFormWidth = 400;
-        const int winFormHeight = 350;
-        const int imageSize = 150;
-        const int imageTop = 20;
-        const int labelHeight = 80;
-        const int labelTop = 180;
-        const int buttonWidth = 120;
-        const int buttonHeight = 35;
-        const int buttonTop = 270;
-
         Form winForm = new Form()
         {
             Text = "Победа!",
@@ -163,12 +152,27 @@ public partial class MainForm : Form
         var centerX = (winFormWidth - imageSize) / 2;
 
         Control winImageControl = CreateWinImage(imageSize, centerX, imageTop);
-        Label messageLabel = CreateMessageLabel(message, winFormWidth - 20, labelHeight, 10, labelTop);
-        Button okButton = CreateOkButton(buttonWidth, buttonHeight, (winFormWidth - buttonWidth) / 2, buttonTop, winForm);
+        Label messageLabel = CreateMessageLabel(message, winFormWidth, labelHeight, 10, labelTop);
+
+        if (isOptimal)
+        {
+            Button exitButton = CreateExitButton(buttonWidth, buttonHeight, (winFormWidth - buttonWidth) / 2, buttonTop, winForm);
+            winForm.Controls.Add(exitButton);
+        }
+        else
+        {
+            int buttonSpacing = 10;
+            int startX = (winFormWidth - (buttonWidth * 2 + buttonSpacing)) / 2;
+
+            Button newGameButton = CreateNewGameButton(buttonWidth, buttonHeight, startX, buttonTop, winForm);
+            Button exitButton = CreateExitButton(buttonWidth, buttonHeight, startX + buttonWidth + buttonSpacing, buttonTop, winForm);
+
+            winForm.Controls.Add(newGameButton);
+            winForm.Controls.Add(exitButton);
+        }
 
         winForm.Controls.Add(winImageControl);
         winForm.Controls.Add(messageLabel);
-        winForm.Controls.Add(okButton);
         winForm.ShowDialog(this);
     }
 
@@ -196,7 +200,7 @@ public partial class MainForm : Form
         };
     }
 
-    private Button CreateOkButton(int width, int height, int x, int y, Form parentForm)
+    private Button CreateNewGameButton(int width, int height, int x, int y, Form parentForm)
     {
         Button button = new Button()
         {
@@ -209,6 +213,24 @@ public partial class MainForm : Form
         {
             parentForm.Close();
             StartNewGame();
+        };
+
+        return button;
+    }
+
+    private Button CreateExitButton(int width, int height, int x, int y, Form parentForm)
+    {
+        Button button = new Button()
+        {
+            Text = "Выход",
+            Size = new Size(width, height),
+            Location = new Point(x, y)
+        };
+
+        button.Click += (s, e) =>
+        {
+            parentForm.Close();
+            Application.Exit();
         };
 
         return button;
