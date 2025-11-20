@@ -122,10 +122,10 @@ public partial class MainForm : Form
             gameWon = true;
 
             var performance = moveCount == optimalMoves ?
-                "Отлично! Вы достигли оптимального результата!" :
+                "Отлично! Вы достигли идеального результата!" :
                 $"Можно было решить за {optimalMoves} ходов!";
 
-            var message = $"Поздравляем! Вы победили!\n\nСделано ходов: {moveCount}\n\n{performance}";
+            var message = $"Поздравляем!\n\nСделано ходов: {moveCount}\n\n{performance}";
 
             ShowWinMessage(message, moveCount == optimalMoves);
         }
