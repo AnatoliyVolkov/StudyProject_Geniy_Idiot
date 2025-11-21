@@ -8,6 +8,7 @@ public partial class MainForm : Form
     private const int startY = 24;
     private const int totalPositions = 9;
     private bool gameWon = false;
+    private bool gameStart = false;
     const int winFormWidth = 400;
     const int winFormHeight = 450;
     const int imageSize = 200;
@@ -26,6 +27,21 @@ public partial class MainForm : Form
         InitializeComponent();
         InitializeFrogArray();
         UpdateMoveCount();
+        InitialiState();
+    }
+
+    private void InitialiState()
+    {
+        gameStart = false;
+        foreach (var frog in allFrogs)
+        {
+            if (frog != emptyPictureBox)
+            {
+                frog.Visible = false;
+            }
+        }
+        startGameButton.Visible = true;
+        moveCountLabel.Visible = false;
     }
 
     private void InitializeFrogArray()
@@ -43,7 +59,7 @@ public partial class MainForm : Form
 
     private void PictureBox_Click(object sender, EventArgs e)
     {
-        if (gameWon) return;
+        if (!gameStart || gameWon) return;
         Swap((PictureBox)sender);
     }
 
@@ -90,7 +106,7 @@ public partial class MainForm : Form
         var leftWin = true;
         var rightWin = true;
 
-        for (int i = 0 ; i < 4 ; i++)
+        for (int i = 0; i < 4; i++)
         {
             var currentX = i * pictureBoxWidth;
             var frogAtPosition = GetFrogAtPosition(currentX);
@@ -103,7 +119,7 @@ public partial class MainForm : Form
         }
 
 
-        for (int i = 5 ; i < totalPositions ; i++)
+        for (int i = 5; i < totalPositions; i++)
         {
             var currentX = i * pictureBoxWidth;
             var frogAtPosition = GetFrogAtPosition(currentX);
@@ -120,6 +136,7 @@ public partial class MainForm : Form
         if (leftWin && rightWin && centerEmpty)
         {
             gameWon = true;
+            gameStart = false;
 
             var performance = moveCount == optimalMoves ?
                 "Отлично! Вы достигли идеального результата!" :
@@ -238,13 +255,21 @@ public partial class MainForm : Form
 
     private void StartNewGame()
     {
-        for (int i = 0 ; i < allFrogs.Length ; i++)
+        for (int i = 0; i < allFrogs.Length; i++)
         {
             allFrogs[i].Location = new Point(i * pictureBoxWidth, startY);
         }
 
         moveCount = 0;
         gameWon = false;
+        gameStart = true;
+        foreach (var frog in allFrogs)
+        {
+            frog.Visible = true;
+            frog.Enabled = true;
+        }
+        startGameButton.Visible = false;
+        moveCountLabel.Visible = true;
         UpdateMoveCount();
     }
 
@@ -277,5 +302,10 @@ public partial class MainForm : Form
     private void exitToolStripMenuItem_Click(object sender, EventArgs e)
     {
         Application.Exit();
+    }
+
+    private void startGameButton_Click(object sender, EventArgs e)
+    {
+        StartNewGame();
     }
 }

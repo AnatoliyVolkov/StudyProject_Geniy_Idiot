@@ -44,6 +44,7 @@
             rulesToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
             moveCountLabel = new Label();
+            startGameButton = new Button();
             ((System.ComponentModel.ISupportInitialize)leftPictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)leftPictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)leftPictureBox3).BeginInit();
@@ -201,11 +202,23 @@
             moveCountLabel.TabIndex = 10;
             moveCountLabel.Text = "Ходы: 0";
             // 
+            // startGameButton
+            // 
+            startGameButton.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            startGameButton.Location = new Point(440, 160);
+            startGameButton.Name = "startGameButton";
+            startGameButton.Size = new Size(110, 77);
+            startGameButton.TabIndex = 11;
+            startGameButton.Text = "Начать игру";
+            startGameButton.UseVisualStyleBackColor = true;
+            startGameButton.Click += startGameButton_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(990, 249);
+            Controls.Add(startGameButton);
             Controls.Add(moveCountLabel);
             Controls.Add(rightPictureBox4);
             Controls.Add(rightPictureBox3);
@@ -252,5 +265,6 @@
         private ToolStripMenuItem rulesToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
         private Label moveCountLabel;
+        private Button startGameButton;
     }
 }
