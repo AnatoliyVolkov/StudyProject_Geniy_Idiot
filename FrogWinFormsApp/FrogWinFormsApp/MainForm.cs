@@ -4,7 +4,7 @@ public partial class MainForm : Form
 {
     private int moveCount = 0;
     private const int optimalMoves = 24;
-    private const int pictureBoxWidth = 110;
+    public int pictureBoxWidth { get; private set; }
     private const int startY = 24;
     private const int totalPositions = 9;
     private bool gameWon = false;
@@ -24,6 +24,7 @@ public partial class MainForm : Form
 
     public MainForm()
     {
+        pictureBoxWidth = (int)(this.Width * 0.35);
         InitializeComponent();
         InitializeFrogArray();
         UpdateMoveCount();
