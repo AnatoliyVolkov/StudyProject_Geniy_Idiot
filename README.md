@@ -83,3 +83,7 @@
 ```bash
 git clone https://github.com/AnatoliyVolkov/StudyProject_Geniy_Idiot.git
 cd StudyProject_Geniy_Idiot
+
+
+## 📸 Скриншоты
+![Screenshot](path/to/screenshot.png)
